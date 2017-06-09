@@ -1,0 +1,6 @@
+{
+  "token": "01234567:sosecret",
+  "mongodb" : {
+    "url" : "mongodb://localhost:27017/bot"
+  }
+}

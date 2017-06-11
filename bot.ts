@@ -49,7 +49,11 @@ export class Bot {
 
 
         this.TgBot.on('message', function(msg) {
-            console.dir(msg);
+            if(self.Config.debug &&
+                self.Config.debug.incoming &&
+                self.Config.debug.incoming.message) {
+                console.dir(msg);
+            }
             self.buildIncomingMessage(msg, function(Message : IncomingMessage){
                 if(Message.From.hasRole("user")) {
                     self.MessageChain.start(Message,
@@ -64,7 +68,12 @@ export class Bot {
         });
 
         this.TgBot.on('inline_query', function(msg){
-            //console.dir(msg);
+            if(self.Config.debug &&
+                self.Config.debug.incoming &&
+                self.Config.debug.incoming.inline) {
+                console.dir(msg);
+            }
+
             self.buildIncomingMessage(msg, function(Message : IncomingMessage){
                 if(Message.From.hasRole("user")) {
                     self.InlineChain.start(Message,

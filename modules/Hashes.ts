@@ -453,8 +453,22 @@ export class Hashes extends Module {
                         if(err) {
                             self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: "+ JSON.stringify(err)), msg.Message.chat.id);
                         } else {
-                            return self.HashService.SaveHash(
-                                new DocumentHash(
+                            var hashToSave : Hash;
+
+                            if(msg.Message.reply_to_message.document.mime_type === "audio/x-opus+ogg") {
+                                hashToSave = new VoiceHash(
+                                    command,
+                                    msg.From.ID,
+                                    data.DataStreamHex,
+                                    data.DataStreamSize,
+                                    data.DataStreamMime,
+                                    msg.Message.reply_to_message.document.file_id,
+                                    "UNKNOWN",
+                                    undefined
+                                );
+                                self.Bot.sendReply(new OutgoingTextMessage("This will not work properly if the file isn't mono."), msg.Message.chat.id);
+                            } else {
+                                hashToSave = new DocumentHash(
                                     command,
                                     msg.From.ID,
                                     data.DataStreamHex,
@@ -462,8 +476,10 @@ export class Hashes extends Module {
                                     data.DataStreamMime,
                                     msg.Message.reply_to_message.document.file_id,
                                     "UNKNOWN"
-                                ), function() {
-                                    self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as DocumentHash"), msg.Message.chat.id);
+                                );
+                            }
+                            return self.HashService.SaveHash(hashToSave, function() {
+                                    self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as "+ hashToSave.HashType), msg.Message.chat.id);
                                 });
                         }
                     });

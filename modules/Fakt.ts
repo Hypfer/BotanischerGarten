@@ -23,7 +23,7 @@ export class Fakt extends Module {
 
             const command = Helpers.checkForCommand("fakt", msg.Message.text, true);
             if (command) {
-                var answer = Fakt.Fallback;
+                let answer = Fakt.Fallback;
                 if(command.Args && command.Args.length > 0) {
                     if(command.Args[0] === "?") {
                         answer = "Kategorien: " + self.FactSets.join(", ");
@@ -49,12 +49,12 @@ export class Fakt extends Module {
         const self = this;
 
         InlineChain.add(function emo(msg : IncomingMessage, next) {
-            var query = msg.Message.query.toLowerCase();
+            let query = msg.Message.query.toLowerCase();
 
             const command = Helpers.checkForCommand("fakt", query, false);
             if (command) {
                 const offset = msg.Message.offset === "" ? 0 : parseInt(msg.Message.offset);
-                var category;
+                let category;
 
                 if (command.Args && command.Args.length > 0) {
                     if (self.Facts[command.Args[0]]) {
@@ -64,10 +64,10 @@ export class Fakt extends Module {
                     }
                 }
 
-                var results = [];
+                let results = [];
 
-                for (var i = 0; i <= 50; i++) {
-                    var result;
+                for (let i = 0; i <= 50; i++) {
+                    let result;
                     if (category) {
                         result = Helpers.arrayRandom(self.Facts[category], false);
                     } else {

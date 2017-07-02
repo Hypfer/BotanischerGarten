@@ -58,8 +58,8 @@ export class Hashes extends Module {
 
     //TODO: Remove redundant code (not gonna happen)
 
-    private migrationMessageBuilder(oldhash : any, migratorChat : string) : IncomingMessage {
-        var replyToMessage;
+    private static migrationMessageBuilder(oldhash : any, migratorChat : string) : IncomingMessage {
+        let replyToMessage;
 
         switch(oldhash.type) {
             case "text":
@@ -127,11 +127,11 @@ export class Hashes extends Module {
                 msg.Message.chat.type === "private" && msg.Message.text === "migrateHashes") {
                 const oldHashes = require("../commands.json");
                 const oldHashKeys = Object.keys(oldHashes);
-                var timeout = 0;
+                let timeout = 0;
                 oldHashKeys.forEach(function(hashKey){
                     self.checkCommandExists(hashKey, function(exists){
                         if(exists === false) {
-                            const migrationMessage = self.migrationMessageBuilder(oldHashes[hashKey], msg.From.ID);
+                            const migrationMessage = Hashes.migrationMessageBuilder(oldHashes[hashKey], msg.From.ID);
                             if(migrationMessage) {
                                 setTimeout(function() {
                                     self.saveNewHash(hashKey, migrationMessage);
@@ -175,7 +175,7 @@ export class Hashes extends Module {
         MessageChain.add(function defineHash(msg : IncomingMessage, next){
             //TODO: Save Hash As Type
             //TODO: If hash is url of image try to get and save image
-            var commandContainingString;
+            let commandContainingString;
             if(msg.Message.text) {
                 commandContainingString = msg.Message.text;
             } else if (msg.Message.caption) {
@@ -222,7 +222,7 @@ export class Hashes extends Module {
         });
 
         MessageChain.add(function getHash(msg : IncomingMessage, next){
-            var commandContainingString;
+            let commandContainingString;
             if(msg.Message.text) {
                 commandContainingString = msg.Message.text;
             } else if (msg.Message.caption) {
@@ -417,7 +417,7 @@ export class Hashes extends Module {
                         if(err) {
                             self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: "+ JSON.stringify(err)), msg.Message.chat.id);
                         } else {
-                            var hash : Hash;
+                            let hash : Hash;
                             if(msg.Message.reply_to_message.audio.title && msg.Message.reply_to_message.audio.mime_type === "audio/mpeg") {
                                 hash = new AudioHash(
                                     command,
@@ -453,7 +453,7 @@ export class Hashes extends Module {
                         if(err) {
                             self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: "+ JSON.stringify(err)), msg.Message.chat.id);
                         } else {
-                            var hashToSave : Hash;
+                            let hashToSave : Hash;
 
                             if(msg.Message.reply_to_message.document.mime_type === "audio/x-opus+ogg") {
                                 hashToSave = new VoiceHash(
@@ -605,7 +605,7 @@ export class Hashes extends Module {
 
         InlineChain.add(function hashesInlineHandler(msg : IncomingMessage, next : Function) {
             const offset = msg.Message.offset === "" ? 0 : parseInt(msg.Message.offset);
-            var query = msg.Message.query.toLowerCase();
+            let query = msg.Message.query.toLowerCase();
 
             if(query === "") {
                 self.HashService.GetRandomIds(50, function(IDs){
@@ -827,7 +827,7 @@ export class Hashes extends Module {
     }
 
     private checkCommandExists(command : string, callback) {
-        var result = this.Bot.CommandManager.isRegistered(command);
+        let result = this.Bot.CommandManager.isRegistered(command);
 
         this.HashService.GetHashById(command,function(hash) {
             if(hash) {

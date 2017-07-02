@@ -33,12 +33,12 @@ export class Dawa extends Module {
     protected registerInlineHandlers(InlineChain: any): void {
         const self = this;
         InlineChain.add(function dawa(msg : IncomingMessage, next : Function){
-            var query = msg.Message.query.toLowerCase();
+            let query = msg.Message.query.toLowerCase();
 
             const command = Helpers.checkForCommand("dawa", query, false);
 
             if (command) {
-                var entity;
+                let entity;
 
                 if (command.Args && command.Args.length > 0) {
                     entity = command.Args.join(" ");

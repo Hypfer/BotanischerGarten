@@ -72,7 +72,7 @@ export class Dice extends Module {
             if (command) {
                 const roll = Dice.w(6).toString();
 
-                var results = [new InlineQueryResultArticle(
+                let results = [new InlineQueryResultArticle(
                     "w6:"+roll,
                     "Dice: W6",
                     new InputTextMessageContent("W6: " +roll),

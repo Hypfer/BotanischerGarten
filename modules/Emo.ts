@@ -46,9 +46,9 @@ export class Emo extends Module {
         const self = this;
 
         InlineChain.add(function emo(msg : IncomingMessage, next){
-            var query = msg.Message.query.toLowerCase();
+            let query = msg.Message.query.toLowerCase();
 
-            var command = Helpers.checkForCommand("emo", query, false);
+            let command = Helpers.checkForCommand("emo", query, false);
 
             if (command) {
                 const offset = msg.Message.offset === "" ? 0 : parseInt(msg.Message.offset);

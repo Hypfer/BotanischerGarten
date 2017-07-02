@@ -20,9 +20,9 @@ export class Unicode extends Module {
 
             const command = Helpers.checkForCommand("unicode", msg.Message.text, true);
             if(command) {
-                var result = "";
+                let result = "";
                 if(command.Args && command.Args.length > 0 && Number.isInteger(Number.parseInt(command.Args[0]))) {
-                    for (var i = 0; i <= Number.parseInt(command.Args[0]); i++) {
+                    for (let i = 0; i <= Number.parseInt(command.Args[0]); i++) {
                         result += self.getSymbol();
                     }
                 } else {
@@ -38,22 +38,22 @@ export class Unicode extends Module {
     protected registerInlineHandlers(InlineChain: any): void {
         const self = this;
         InlineChain.add(function unicode(msg : IncomingMessage, next : Function){
-            var query = msg.Message.query.toLowerCase();
+            let query = msg.Message.query.toLowerCase();
 
             const command = Helpers.checkForCommand("unicode", query, false);
 
             if (command) {
                 const offset = msg.Message.offset === "" ? 0 : parseInt(msg.Message.offset);
                 const results = [];
-                var count = (command.Args && command.Args.length > 0 &&
+                let count = (command.Args && command.Args.length > 0 &&
                                 Number.isInteger(Number.parseInt(command.Args[0]))) ? Number.parseInt(command.Args[0]) : 0;
 
                 count = count > 128 ? 128 : count;
 
-                for(var i = 0; i <= 10; i++) {
-                    var result = "";
+                for(let i = 0; i <= 10; i++) {
+                    let result = "";
 
-                    for (var j = 0; j <= count; j++) {
+                    for (let j = 0; j <= count; j++) {
                         result += self.getSymbol();
                     }
 

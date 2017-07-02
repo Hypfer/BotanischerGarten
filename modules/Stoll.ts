@@ -39,7 +39,7 @@ export class Stoll extends Module {
 
                 const results = [];
 
-                for (var i = 0; i <= 10; i++) {
+                for (let i = 0; i <= 10; i++) {
                     const stoll = self.getStoll();
 
                     results[i] = new InlineQueryResultArticle(

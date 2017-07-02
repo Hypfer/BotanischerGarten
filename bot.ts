@@ -224,10 +224,10 @@ export class Bot {
     }
 
     private buildIncomingMessage(msg : any, callback : Function) {
-        var user;
+        let user;
 
         if(msg.from) {
-            user = new User(msg.from.id, msg.from.first_name, []);
+            user = new User(msg.from.id, msg.from.first_name, [], msg.from.username);
         } else {
             user = new User("Unknown", "Unknown", []);
         }

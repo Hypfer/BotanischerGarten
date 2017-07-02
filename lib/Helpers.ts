@@ -15,7 +15,7 @@ export class Helpers {
     }
 
     static shuffleArray (arr : Array<any>) : Array<any> {
-        var i = 0
+        let i = 0
             , j = 0
             , temp = null;
 

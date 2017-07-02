@@ -39,7 +39,7 @@ export class Bullshit extends Module {
 
                 const results = [];
 
-                for (var i = 0; i <= 10; i++) {
+                for (let i = 0; i <= 10; i++) {
                     const bullshit = self.getBullshit();
 
                     results[i] = new InlineQueryResultArticle(
@@ -79,7 +79,7 @@ export class Bullshit extends Module {
                 const substantiv02 = Helpers.arrayRandom(bullshitAssets.substantiv, true);
                 const substantiv03 = Helpers.arrayRandom(bullshitAssets.substantiv, true);
 
-                var satz = "";
+                let satz = "";
                 satz += Helpers.arrayRandom(bullshitAssets.wenn, true) + ", dass ";
                 satz += bullshitAssets.artikel_bestimmt_fall_1[substantiv01[4]] + " ";
                 satz += Helpers.arrayRandom(bullshitAssets.adjektiv, true) + " ";
@@ -115,7 +115,7 @@ export class Bullshit extends Module {
                 const substantiv06 = Helpers.arrayRandom(bullshitAssets.substantiv, true);
                 const substantiv07 = Helpers.arrayRandom(bullshitAssets.substantiv, true);
 
-                var satz = "";
+                let satz = "";
                 satz += Helpers.arrayRandom(bullshitAssets.anfang, true) + " ";
                 satz += Helpers.arrayRandom(bullshitAssets.predikat[1], true) + " ";
                 satz += bullshitAssets.artikel_bestimmt_fall_1[substantiv01[4]] + " ";

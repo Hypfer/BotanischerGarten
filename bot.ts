@@ -231,7 +231,7 @@ export class Bot {
         } else {
             user = new User("Unknown", "Unknown", []);
         }
-        user = this.UserService.FindUser(user, function(user){
+        this.UserService.FindUser(user, function(user){
             callback(new IncomingMessage(user, msg));
         });
     }

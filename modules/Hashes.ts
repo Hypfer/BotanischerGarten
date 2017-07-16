@@ -51,8 +51,8 @@ import uuid = require("uuid");
 type DownloadedFileCallback = (err : any, data? : BinaryData) => any;
 export class Hashes extends Module {
     private HashService : HashService;
-    constructor(config : any, bot : Bot) {
-        super(config, bot);
+    constructor(config : any, bot : Bot, app: any) {
+        super(config, bot, app);
         this.HashService = new HashService(this.Bot.Repository);
     }
 
@@ -745,6 +745,40 @@ export class Hashes extends Module {
     protected loadAssets(): void {
     }
 
+    protected registerRoutes() {
+        const self = this;
+
+        this.App.get('/tsbanner/', function (req, res) {
+            self.getRandomPhotoHash(function(hash : PhotoHash) {
+                if(!hash) {
+                    return res.status(404).send('No Images.')
+                }
+                self.Bot.Repository.GetData(hash.DataStreamInternalID, function(data){
+                    res.end(Buffer.from(data, "hex"), 'binary');
+                });
+            });
+        });
+    }
+
+    private getRandomPhotoHash(callback, counter? : number) {
+        const self = this;
+        const thecounter : number = counter ? counter : 0;
+
+        //TODO: This is ugly
+        if(counter >= 10) {
+            callback()
+        } else {
+            this.HashService.GetRandomIds(1, function(IDs){
+                self.HashService.GetHashById(IDs[0], function(hash: Hash) {
+                    if(hash instanceof PhotoHash) {
+                        callback(hash);
+                    } else {
+                        self.getRandomPhotoHash(callback, thecounter + 1);
+                    }
+                });
+            })
+        }
+    }
 
     private saveVideoByFileId(command : string, file_id : string, height : number,
                               width: number, duration: number, msg : any) {

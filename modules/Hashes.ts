@@ -748,15 +748,29 @@ export class Hashes extends Module {
     protected registerRoutes() {
         const self = this;
 
-        this.App.get('/tsbanner/', function (req, res) {
-            self.getRandomPhotoHash(function(hash : PhotoHash) {
-                if(!hash) {
-                    return res.status(404).send('No Images.')
-                }
-                self.Bot.Repository.GetData(hash.DataStreamInternalID, function(data){
-                    res.end(Buffer.from(data, "hex"), 'binary');
+        const currentTSBannerStorage = {
+            date : undefined,
+            hash : undefined
+        };
+
+        this.App.get('/tsbanner/', function (req, res) { //cache for 60 seconds
+            if(currentTSBannerStorage.date && (new Date().getTime() - currentTSBannerStorage.date  <= 60000)) {
+                res.end(Buffer.from(currentTSBannerStorage.hash.DataStreamHex, "hex"), 'binary');
+            } else {
+                self.getRandomPhotoHash(function(hash : PhotoHash) {
+                    if(!hash) {
+                        return res.status(404).send('No Images.')
+                    }
+
+                    self.Bot.Repository.GetData(hash.DataStreamInternalID, function(data){
+                        hash.DataStreamHex = data;
+                        currentTSBannerStorage.date = new Date();
+                        currentTSBannerStorage.hash = hash;
+
+                        res.end(Buffer.from(data, "hex"), 'binary');
+                    });
                 });
-            });
+            }
         });
     }
 

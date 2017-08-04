@@ -890,6 +890,9 @@ export class Hashes extends Module {
                                 templateContent["audio"] = true;
                             } else if (hash instanceof VideoHash) {
                                 templateContent["video"] = true;
+                            } else {
+                                //TODO
+                                templateContent["text"] = "Unsupported Hash :-)";
                             }
                         } else if(hash instanceof TextHash) {
                             templateContent["text"] = hash.Text;

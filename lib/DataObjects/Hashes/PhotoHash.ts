@@ -8,10 +8,10 @@ export class PhotoHash extends BinaryDataHash {
     }
     Height : number;
     Width : number;
-    constructor(id : string, ownerID : string, dataStreamHex : string,
+    constructor(id : string, ownerID : string, DbId: string, dataStreamHex : string,
                 dataStreamSize : number, dataStreamMime : string, fileId : string,
                 dataStreamInternalID : string, height: number, width: number) {
-        super(id, ownerID, dataStreamHex, dataStreamSize, dataStreamMime, fileId, dataStreamInternalID);
+        super(id, ownerID, DbId, dataStreamHex, dataStreamSize, dataStreamMime, fileId, dataStreamInternalID);
         this.Height = height;
         this.Width = width;
     }

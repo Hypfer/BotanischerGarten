@@ -9,10 +9,10 @@ export class StickerHash extends BinaryDataHash {
     Width : number;
     Height : number;
     Emoji : string;
-    constructor(id : string, ownerID : string, dataStreamHex : string,
+    constructor(id : string, ownerID : string, DbId: string, dataStreamHex : string,
                 dataStreamSize : number, dataStreamMime : string, fileId : string,
                 dataStreamInternalID : string, width: number, height: number, emoji : string) {
-        super(id, ownerID, dataStreamHex, dataStreamSize, dataStreamMime, fileId, dataStreamInternalID);
+        super(id, ownerID, DbId, dataStreamHex, dataStreamSize, dataStreamMime, fileId, dataStreamInternalID);
         this.Width = width;
         this.Height = height;
         this.Emoji = emoji;

@@ -3,6 +3,8 @@
  */
 export interface IRepository {
     GetById(collection: string, id : string, callback : Function);
+    GetByDbId(collection: string, id: string, callback: Function);
+    GetPreviousAndNextByDbId(collection: string, id: string, callback: Function);
     /*GetAllByKeyValue(collection: string, key: string, value: string, callback : Function);
     GetAll(collection: string, callback : Function); */
     Save(collection: string, id: string, entity : any, callback : Function); //upsert

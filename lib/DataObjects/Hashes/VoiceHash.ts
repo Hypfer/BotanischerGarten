@@ -7,10 +7,10 @@ export class VoiceHash extends BinaryDataHash {
         return "VoiceHash";
     }
     Duration : number;
-    constructor(id : string, ownerID : string, dataStreamHex : string,
+    constructor(id : string, ownerID : string, DbId: string, dataStreamHex : string,
                 dataStreamSize : number, dataStreamMime : string, fileId : string,
                 dataStreamInternalID : string, duration : number) {
-        super(id, ownerID, dataStreamHex, dataStreamSize, dataStreamMime, fileId, dataStreamInternalID);
+        super(id, ownerID, DbId, dataStreamHex, dataStreamSize, dataStreamMime, fileId, dataStreamInternalID);
         this.Duration = duration;
     }
 }

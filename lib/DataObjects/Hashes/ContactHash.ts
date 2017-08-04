@@ -9,9 +9,9 @@ export class ContactHash extends Hash {
     Phone_number : string;
     First_name : string;
     Last_name : string;
-    constructor(id : string, ownerID : string,
+    constructor(id : string, ownerID : string, DbId: string,
                 phone_number : string, first_name : string, last_name? : string) {
-        super(id, ownerID);
+        super(id, ownerID, DbId);
         this.Phone_number = phone_number;
         this.First_name = first_name;
         this.Last_name = last_name;

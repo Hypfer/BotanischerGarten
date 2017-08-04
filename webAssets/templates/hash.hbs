@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+    <title>{{hash_name}} - {{bot_friedly_name}}</title>
+    <link rel="stylesheet" type="text/css" href="/s/plyr.css" />
+    <link rel="stylesheet" type="text/css" href="/s/style.css" />
+    <link rel="icon" type="image/gif" href="/s/favicon.gif" />
+
+    <meta name="Description" content="{{hash_name}}" />
+</head>
+<body>
+<div class="return"><a href="/" title="random">{{bot_friendly_name}}</a></div>
+<div class="controls">
+
+    {{#if next_id}}<a id="next" href="/{{next_id}}"><<-</a>&nbsp;|&nbsp;{{/if}}
+
+    <a id="random" href="/">random</a>&nbsp;
+
+    {{#if prev_id}}&nbsp;| <a id="prev" href="/{{prev_id}}">->></a>{{/if}}
+
+</div>
+<div class="wrapper">
+    <div class="medium">
+
+        {{#if image}}
+            <div><img src="/b/{{hash_db_id}}" style="max-width: 640px;height:auto;" /></div>
+        {{/if}}
+        {{#if video}}
+            <video id="player" src="/b/{{hash_db_id}}" preload="auto" controls loop></video>
+        {{/if}}
+        {{#if gif}}
+            <video id="player" src="/b/{{hash_db_id}}" preload="auto" loop></video>
+        {{/if}}
+        {{#if audio}}
+            <audio id="player" controls="" loop="" src="/b/{{hash_db_id}}"></audio>
+        {{/if}}
+        {{#if text}}
+            <span style="margin: 20px; font-size: 1.3em">{{text}}</span>
+        {{/if}}
+    </div>
+</div>
+
+<div class="panel info">
+      <span class="id">Hash: {{hash_name}} | by: <span class="name">
+          {{#if user_nickname}}
+            <a href="https://telegram.me/{{user_nickname}}" target="_blank">@{{user_nickname}}</a>
+          {{/if}}{{user_name}}</span>
+          </span><br />
+      {{#if mime}}<span class="mime">mime: {{mime}}</span>&nbsp;<br />{{/if}}
+      {{#if size}}<span class="size">size: {{size}} byte</span><br />{{/if}}
+      <span class="timestamp">{{timestamp}}</span><br>
+</div>
+
+<script src="/s/shit.js"></script>
+<script src="/s/plyr.js"></script>
+<script>plyr.setup( { autoplay: "false" }  );</script>
+</body>
+</html>

@@ -8,10 +8,10 @@ export abstract class BinaryDataHash extends Hash {
     DataStreamMime: string;
     FileId: string;
     DataStreamInternalID : string;
-    constructor(id : string, ownerID : string, dataStreamHex : string,
+    constructor(id : string, ownerID : string, DbId: string, dataStreamHex : string,
                 dataStreamSize : number, dataStreamMime : string,
                 fileId : string, dataStreamInternalID : string) {
-        super(id, ownerID);
+        super(id, ownerID, DbId);
         this.DataStreamHex = dataStreamHex;
         this.DataStreamSize = dataStreamSize;
         this.DataStreamMime = dataStreamMime;

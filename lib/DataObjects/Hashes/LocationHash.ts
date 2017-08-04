@@ -8,8 +8,8 @@ export class LocationHash extends Hash {
     }
     Latitude : number;
     Longitude : number;
-    constructor(id : string, ownerID : string, latitude : number, longitude : number) {
-        super(id, ownerID);
+    constructor(id : string, ownerID : string, DbId: string, latitude : number, longitude : number) {
+        super(id, ownerID, DbId);
         this.Latitude = latitude;
         this.Longitude = longitude;
     }

@@ -8,5 +8,10 @@
       "message" : false,
       "inline" : false
     }
-  }
+  },
+  "bot": {
+    "friendly_name": "Klaus",
+    "username": "@KlausKlausKlaus"
+  },
+  "sessionSecret": "foo"
 }

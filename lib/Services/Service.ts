@@ -14,6 +14,12 @@ export abstract class Service {
     protected GetById(id : string, callback : Function) {
         this.Repository.GetById(this.Collection, id, callback);
     };
+    protected GetByDbId(id : string, callback : Function) {
+        this.Repository.GetByDbId(this.Collection, id, callback);
+    };
+    protected GetPreviousAndNextByDbId(id: string, callback: Function) {
+        this.Repository.GetPreviousAndNextByDbId(this.Collection, id, callback);
+    }
     /*protected GetAllByKeyValue( key: string, value: string, callback : Function) {
         this.Repository.GetAllByKeyValue(this.Collection, key, value, callback);
     };

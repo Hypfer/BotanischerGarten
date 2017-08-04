@@ -25,70 +25,82 @@ export class HashService extends Service {
     }
     GetHashById(id: string, callback : HashCallback) {
         super.GetById(id, function(hash) {
-            if(hash) {
-                //"deserialize"
-                switch(hash.HashType) {
-                    case "TextHash":
-                        callback(new TextHash(hash.ID, hash.OwnerID, hash.Text));
-                        break;
-                    case "PhotoHash":
-                        callback(new PhotoHash(hash.ID, hash.OwnerID, hash.DataStreamHex,
-                                               hash.DataStreamSize, hash.DataStreamMime,
-                                               hash.FileId, hash.DataStreamInternalID,
-                                               hash.Height, hash.Width));
-                        break;
-                    case "VideoHash":
-                        callback(new VideoHash(hash.ID, hash.OwnerID, hash.DataStreamHex,
-                                               hash.DataStreamSize, hash.DataStreamMime,
-                                               hash.FileId, hash.DataStreamInternalID,
-                                               hash.Height, hash.Width, hash.Duration));
-                        break;
-                    case "VideoMessageHash":
-                        callback(new VideoMessageHash(hash.ID, hash.OwnerID, hash.DataStreamHex,
-                            hash.DataStreamSize, hash.DataStreamMime,
-                            hash.FileId, hash.DataStreamInternalID,
-                            hash.Height, hash.Width, hash.Duration));
-                        break;
-                    case "AudioHash":
-                        callback(new AudioHash(hash.ID, hash.OwnerID, hash.DataStreamHex,
-                            hash.DataStreamSize, hash.DataStreamMime,
-                            hash.FileId, hash.DataStreamInternalID,
-                            hash.Performer, hash.Title, hash.Duration));
-                        break;
-                    case "DocumentHash":
-                        callback(new DocumentHash(hash.ID, hash.OwnerID, hash.DataStreamHex,
-                            hash.DataStreamSize, hash.DataStreamMime, hash.FileId,
-                            hash.DataStreamInternalID));
-                        break;
-                    case "StickerHash":
-                        callback(new StickerHash(hash.ID, hash.OwnerID, hash.DataStreamHex,
-                            hash.DataStreamSize, hash.DataStreamMime, hash.FileId,
-                            hash.DataStreamInternalID, hash.Width, hash.Height, hash.Emoji));
-                        break;
-                    case "VoiceHash":
-                        callback(new VoiceHash(hash.ID, hash.OwnerID, hash.DataStreamHex,
-                            hash.DataStreamSize, hash.DataStreamMime,
-                            hash.FileId, hash.DataStreamInternalID, hash.Duration));
-                        break;
-                    case "LocationHash":
-                        callback(new LocationHash(hash.ID, hash.OwnerID, hash.Latitude, hash.Longitude));
-                        break;
-                    case "VenueHash":
-                        callback(new VenueHash(hash.ID, hash.OwnerID, hash.Latitude, hash.Longitude,
-                        hash.Title, hash.Address, hash.Foursquare_id));
-                        break;
-                    case "ContactHash":
-                        callback(new ContactHash(hash.ID, hash.OwnerID, hash.Phone_number,
-                        hash.First_name, hash.Last_name));
-                }
-            } else {
-                callback(undefined);
-            }
-
+           callback(HashService.deserializeHash(hash));
         });
     }
+    //TODO: remove duplicate code
+    GetHashByDbId(id: string, callback : HashCallback) {
+        super.GetByDbId(id, function(hash) {
+            callback(HashService.deserializeHash(hash));
+        });
+    }
+
+    GetPreviousAndNextByDbId(id: string, callback : Function) {
+        super.GetPreviousAndNextByDbId(id, function(obj){
+            if(obj.prev) {
+                obj.prev = HashService.deserializeHash(obj.prev);
+            }
+            if(obj.next) {
+                obj.next = HashService.deserializeHash(obj.next);
+            }
+            callback(obj);
+        })
+    }
+
     DeleteHash(hash:Hash, callback : Function) {
         super.DeleteById(hash.ID, callback);
+    }
+
+    private static deserializeHash(hash) {
+        if(hash) {
+            //"deserialize"
+            switch(hash.HashType) {
+                case "TextHash":
+                    return new TextHash(hash.ID, hash.OwnerID, hash._id, hash.Text);
+                case "PhotoHash":
+                    return new PhotoHash(hash.ID, hash.OwnerID, hash._id, hash.DataStreamHex,
+                        hash.DataStreamSize, hash.DataStreamMime,
+                        hash.FileId, hash.DataStreamInternalID,
+                        hash.Height, hash.Width);
+                case "VideoHash":
+                    return new VideoHash(hash.ID, hash.OwnerID, hash._id, hash.DataStreamHex,
+                        hash.DataStreamSize, hash.DataStreamMime,
+                        hash.FileId, hash.DataStreamInternalID,
+                        hash.Height, hash.Width, hash.Duration);
+                case "VideoMessageHash":
+                    return new VideoMessageHash(hash.ID, hash.OwnerID, hash._id, hash.DataStreamHex,
+                        hash.DataStreamSize, hash.DataStreamMime,
+                        hash.FileId, hash.DataStreamInternalID,
+                        hash.Height, hash.Width, hash.Duration);
+                case "AudioHash":
+                    return new AudioHash(hash.ID, hash.OwnerID, hash._id, hash.DataStreamHex,
+                        hash.DataStreamSize, hash.DataStreamMime,
+                        hash.FileId, hash.DataStreamInternalID,
+                        hash.Performer, hash.Title, hash.Duration);
+                case "DocumentHash":
+                    return new DocumentHash(hash.ID, hash.OwnerID, hash._id, hash.DataStreamHex,
+                        hash.DataStreamSize, hash.DataStreamMime, hash.FileId,
+                        hash.DataStreamInternalID);
+                case "StickerHash":
+                    return new StickerHash(hash.ID, hash.OwnerID, hash._id, hash.DataStreamHex,
+                        hash.DataStreamSize, hash.DataStreamMime, hash.FileId,
+                        hash.DataStreamInternalID, hash.Width, hash.Height, hash.Emoji);
+                case "VoiceHash":
+                    return new VoiceHash(hash.ID, hash.OwnerID, hash._id, hash.DataStreamHex,
+                        hash.DataStreamSize, hash.DataStreamMime,
+                        hash.FileId, hash.DataStreamInternalID, hash.Duration);
+                case "LocationHash":
+                    return new LocationHash(hash.ID, hash.OwnerID, hash._id, hash.Latitude, hash.Longitude);
+                case "VenueHash":
+                    return new VenueHash(hash.ID, hash.OwnerID, hash._id, hash.Latitude, hash.Longitude,
+                        hash.Title, hash.Address, hash.Foursquare_id);
+                case "ContactHash":
+                    return new ContactHash(hash.ID, hash.OwnerID, hash._id, hash.Phone_number,
+                        hash.First_name, hash.Last_name);
+            }
+        } else {
+            return;
+        }
     }
 
 }

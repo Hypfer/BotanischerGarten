@@ -1,6 +1,6 @@
 import {IRepository} from "./IRepository";
 import * as mongo from "mongodb";
-import {Db, MongoClient} from "mongodb";
+import {Db, MongoClient, ObjectID} from "mongodb";
 import * as Grid from "gridfs";
 /**
  * Created by hypfer on 08.06.17.
@@ -37,24 +37,83 @@ export class MongoRepository implements IRepository {
             if(doc) {
                 /*
 
-                if(doc["GFS_id"]) {
-                    console.log("Entity has GFS_id. Fetching from GFS");
-                    self.GFS.readFile({_id: doc["GFS_id"]}, function(err, data){
-                        if(err) {
-                            throw new Error(JSON.stringify(err));
-                        }
-                        doc["DataStreamHex"] = data.toString();
+                 if(doc["GFS_id"]) {
+                 console.log("Entity has GFS_id. Fetching from GFS");
+                 self.GFS.readFile({_id: doc["GFS_id"]}, function(err, data){
+                 if(err) {
+                 throw new Error(JSON.stringify(err));
+                 }
+                 doc["DataStreamHex"] = data.toString();
 
-                        callback(doc);
-                    });
-                } else {
-                    callback(doc);
-                } */
+                 callback(doc);
+                 });
+                 } else {
+                 callback(doc);
+                 } */
                 callback(doc);
             } else {
                 callback(doc);
             }
         });
+    }
+    GetByDbId(collection: string, id: string, callback: Function) {
+        const self = this;
+        const _collection = this.DB.collection(collection);
+
+        _collection.findOne({_id: new ObjectID(id)}, function(err, doc){
+            if(err) {
+                throw new Error(JSON.stringify(err));
+            }
+            if(doc) {
+                /*
+
+                 if(doc["GFS_id"]) {
+                 console.log("Entity has GFS_id. Fetching from GFS");
+                 self.GFS.readFile({_id: doc["GFS_id"]}, function(err, data){
+                 if(err) {
+                 throw new Error(JSON.stringify(err));
+                 }
+                 doc["DataStreamHex"] = data.toString();
+
+                 callback(doc);
+                 });
+                 } else {
+                 callback(doc);
+                 } */
+                callback(doc);
+            } else {
+                callback(doc);
+            }
+        });
+    }
+
+    GetPreviousAndNextByDbId(collection: string, id: string, callback: Function) {
+        const self = this;
+        const _collection = this.DB.collection(collection);
+        const returnObj = {
+            prev: undefined,
+            next: undefined
+        };
+        //prev
+        _collection.find({"_id" : {"$lt": new ObjectID(id)}}).sort({"_id": -1}).limit(1).toArray(function(err, docs){
+            if(err) {
+                throw new Error(JSON.stringify(err));
+            }
+            if(docs.length > 0) {
+                returnObj.prev = docs[0];
+            }
+            _collection.find({"_id" : {"$gt": new ObjectID(id)}}).sort({"_id" : 1}).limit(1).toArray(function(err, docs){
+                if(err) {
+                    throw new Error(JSON.stringify(err));
+                }
+                if(docs.length > 0) {
+                    returnObj.next = docs[0];
+                }
+
+                callback(returnObj);
+            })
+        })
+
     }
 
     /*GetAllByKeyValue(collection: string, key: string, value: string, callback: Function) {

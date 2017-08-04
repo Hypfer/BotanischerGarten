@@ -26,6 +26,19 @@ export class UserService extends Service{
         });
 
     }
+    FindUserById(id : string, callback : UserCallback) : any {
+        const self = this;
+
+        super.GetById(id, function(result){
+            if(result) {
+                callback(new User(result.ID, result.FirstName, result.Roles, result.Username));
+            } else {
+                callback(undefined);
+            }
+        });
+
+    }
+
     SaveUser(user: User, callback : UserCallback) : any {
         super.Save(user.ID, user, callback);
     }

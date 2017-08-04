@@ -44,16 +44,23 @@ import {InlineQueryResultVenue} from "../lib/DataObjects/InlineQueryResults/Inli
 import {InlineQueryResultContact} from "../lib/DataObjects/InlineQueryResults/InlineQueryResultContact";
 import {InlineQueryResult} from "../lib/DataObjects/InlineQueryResults/InlineQueryResult";
 import {User} from "../lib/DataObjects/User";
-import uuid = require("uuid");
+import * as uuid from "uuid";
+import {BinaryDataHash} from "../lib/DataObjects/Hashes/BinaryDataHash";
+import {UserService} from "../lib/Services/UserService";
+import {LoginTokenService} from "../lib/Services/LoginTokenService";
 /**
  * Created by hypfer on 08.06.17.
  */
 type DownloadedFileCallback = (err : any, data? : BinaryData) => any;
 export class Hashes extends Module {
     private HashService : HashService;
+    private UserService : UserService;
+    private LoginTokenService : LoginTokenService;
     constructor(config : any, bot : Bot, app: any) {
         super(config, bot, app);
         this.HashService = new HashService(this.Bot.Repository);
+        this.UserService = new UserService(this.Bot.Repository);
+        this.LoginTokenService = new LoginTokenService(this.Bot.Repository);
     }
 
     //TODO: Remove redundant code (not gonna happen)
@@ -142,6 +149,16 @@ export class Hashes extends Module {
                         }
                     });
 
+                });
+            } else {
+                next();
+            }
+        });
+
+        MessageChain.add(function getLoginToken(msg: IncomingMessage, next){
+            if(msg.From.hasRole("user") && msg.Message.text === "/token") {
+                self.LoginTokenService.createToken(function(token){
+                    self.Bot.sendReply(new OutgoingTextMessage(token), msg.Message.chat.id);
                 });
             } else {
                 next();
@@ -305,7 +322,11 @@ export class Hashes extends Module {
                 hash.FileId, hash.DataStreamInternalID), chatID,
                 function(msg) {
                     if(msg) {
-                        hash.FileId = msg.document.file_id;
+                        if(hash.DataStreamMime === "audio/mpeg") {
+                            hash.FileId = msg.audio.file_id;
+                        } else {
+                            hash.FileId = msg.document.file_id;
+                        }
                         self.HashService.SaveHash(hash, function(){
                             console.info("Updated fileID with valid one.")
                         });
@@ -371,7 +392,7 @@ export class Hashes extends Module {
             //TextHash
             if(msg.Message.reply_to_message.text) {
                 return this.HashService.SaveHash(
-                    new TextHash(command, msg.From.ID, msg.Message.reply_to_message.text),
+                    new TextHash(command, msg.From.ID, "", msg.Message.reply_to_message.text),
                     function(){
                         self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as TextHash"), msg.Message.chat.id);
                     });
@@ -398,6 +419,7 @@ export class Hashes extends Module {
                                 new VideoMessageHash(
                                     command,
                                     msg.From.ID,
+                                    "",
                                     data.DataStreamHex,
                                     data.DataStreamSize,
                                     data.DataStreamMime,
@@ -422,6 +444,7 @@ export class Hashes extends Module {
                                 hash = new AudioHash(
                                     command,
                                     msg.From.ID,
+                                    "",
                                     data.DataStreamHex,
                                     data.DataStreamSize,
                                     data.DataStreamMime,
@@ -435,6 +458,7 @@ export class Hashes extends Module {
                                 hash = new DocumentHash(
                                     command,
                                     msg.From.ID,
+                                    "",
                                     data.DataStreamHex,
                                     data.DataStreamSize,
                                     data.DataStreamMime,
@@ -459,6 +483,7 @@ export class Hashes extends Module {
                                 hashToSave = new VoiceHash(
                                     command,
                                     msg.From.ID,
+                                    "",
                                     data.DataStreamHex,
                                     data.DataStreamSize,
                                     data.DataStreamMime,
@@ -471,6 +496,7 @@ export class Hashes extends Module {
                                 hashToSave = new DocumentHash(
                                     command,
                                     msg.From.ID,
+                                    "",
                                     data.DataStreamHex,
                                     data.DataStreamSize,
                                     data.DataStreamMime,
@@ -493,6 +519,7 @@ export class Hashes extends Module {
                                 new StickerHash(
                                     command,
                                     msg.From.ID,
+                                    "",
                                     data.DataStreamHex,
                                     data.DataStreamSize,
                                     data.DataStreamMime,
@@ -516,6 +543,7 @@ export class Hashes extends Module {
                                 new VoiceHash(
                                     command,
                                     msg.From.ID,
+                                    "",
                                     data.DataStreamHex,
                                     data.DataStreamSize,
                                     data.DataStreamMime,
@@ -530,7 +558,7 @@ export class Hashes extends Module {
             } else if (msg.Message.reply_to_message.location) {
                 if(msg.Message.reply_to_message.venue) {
                     return this.HashService.SaveHash(
-                        new VenueHash(command, msg.From.ID,
+                        new VenueHash(command, msg.From.ID, "",
                             msg.Message.reply_to_message.location.latitude,
                             msg.Message.reply_to_message.location.longitude,
                             msg.Message.reply_to_message.venue.title,
@@ -541,7 +569,7 @@ export class Hashes extends Module {
                         });
                 } else {
                     return this.HashService.SaveHash(
-                        new LocationHash(command, msg.From.ID,
+                        new LocationHash(command, msg.From.ID, "",
                             msg.Message.reply_to_message.location.latitude,
                             msg.Message.reply_to_message.location.longitude),
                         function(){
@@ -583,7 +611,7 @@ export class Hashes extends Module {
                             return self.HashService.SaveHash(
                                 new DocumentHash(
                                     command,
-                                    msg.From.ID,
+                                    msg.From.ID, "",
                                     data.DataStreamHex,
                                     data.DataStreamSize,
                                     data.DataStreamMime,
@@ -739,7 +767,7 @@ export class Hashes extends Module {
     }
 
     protected defineCommands(): Array<string> {
-        return ["define", "undefine", "hashes"];
+        return ["define", "undefine", "hashes", "tsbanner", "/tsbanner", "/tsbanner/", "/tsbanner/current", "/login", "/token"];
     }
 
     protected loadAssets(): void {
@@ -748,6 +776,7 @@ export class Hashes extends Module {
     protected registerRoutes() {
         const self = this;
 
+        //TSBANNER
         const currentTSBannerStorage = {
             date : undefined,
             hash : undefined
@@ -770,6 +799,150 @@ export class Hashes extends Module {
                         res.end(Buffer.from(data, "hex"), 'binary');
                     });
                 });
+            }
+        });
+
+        this.App.get('/tsbanner/current', function(req,res,next){
+            if(currentTSBannerStorage.hash) {
+                res.redirect("/"+ currentTSBannerStorage.hash.ID);
+            } else {
+                next();
+            }
+        });
+
+
+        this.App.get('/', function(req,res,next){
+            if(!req.session.authenticated) {
+                res.render('login');
+            } else {
+                //random
+                self.HashService.GetRandomIds(1, function(ids){
+                    if(ids.length > 0) {
+                        self.HashService.GetHashById(ids[0], function(hash:Hash){
+                            res.redirect("/"+ hash.ID);
+                        });
+                    } else {
+                        next();
+                    }
+                });
+            }
+        });
+
+        this.App.post('/login', function(req,res,next){
+            if(req.body && req.body.token) {
+                self.LoginTokenService.consumeToken(req.body.token, function(result){
+                    if(result === true) {
+                        req.session.authenticated = true;
+                    }
+                    res.redirect("/");
+                })
+            } else {
+                res.redirect("/");
+            }
+        });
+
+        this.App.get('/b/:id', function(req, res, next) {
+            if (!req.session.authenticated) {
+                res.redirect("/");
+            } else {
+                self.HashService.GetHashByDbId(req.params.id, function (hash: Hash) {
+                    if (hash) {
+                        if (hash instanceof BinaryDataHash) {
+                            self.Bot.Repository.GetData(hash.DataStreamInternalID, function (data) {
+                                res.type(hash.DataStreamMime);
+                                res.sendSeekable(Buffer.from(data, "hex"));
+                            })
+                        } else {
+                            //venue und so n scheiss
+                        }
+                    } else {
+                        next();
+                    }
+                });
+            }
+        });
+
+        this.App.get(/^\/(.+)/, function (req, res, next) {
+            if(!req.session.authenticated) {
+                res.redirect("/");
+            } else {
+                let templateContent = {
+                    hash_name: req.params[0],
+                    bot_friendly_name: self.Config.bot.friendly_name
+                };
+                self.HashService.GetHashById(req.params[0], function (hash: Hash) {
+                    if (hash) {
+                        templateContent["hash_db_id"] = hash.DbId;
+                        templateContent["timestamp"] = Helpers.dateFromObjectId(hash.DbId.toString()).toString();
+
+                        if (hash instanceof BinaryDataHash) {
+                            templateContent["mime"] = hash.DataStreamMime;
+                            templateContent["size"] = hash.DataStreamSize;
+
+                            if (hash instanceof PhotoHash || hash instanceof StickerHash) {
+                                templateContent["image"] = true;
+                            } else if (hash instanceof DocumentHash && hash.DataStreamMime === "video/mp4") {
+                                templateContent["gif"] = true;
+                            } else if ((hash instanceof DocumentHash && hash.DataStreamMime === "audio/mpeg") ||
+                                hash instanceof AudioHash ||
+                                hash instanceof VoiceHash) {
+                                //TODO: Dokumente die auch audio sind
+                                templateContent["audio"] = true;
+                            } else if (hash instanceof VideoHash) {
+                                templateContent["video"] = true;
+                            }
+                        } else if(hash instanceof TextHash) {
+                            templateContent["text"] = hash.Text;
+                        } else {
+                            //TODO
+                            templateContent["text"] = "Unsupported Hash :-)";
+                        }
+
+
+                        self.UserService.FindUserById(hash.OwnerID, function (user) {
+                            if (user) {
+                                if (user.Username) {
+                                    templateContent["user_nickname"] = user.Username;
+                                } else {
+                                    templateContent["user_name"] = user.FirstName;
+                                }
+                            } else {
+                                templateContent["user_name"] = "Anonymous";
+                            }
+
+                            self.HashService.GetPreviousAndNextByDbId(hash.DbId, function (obj) {
+                                if (obj.prev) {
+                                    templateContent["prev_id"] = obj.prev.ID;
+                                }
+                                if (obj.next) {
+                                    templateContent["next_id"] = obj.next.ID;
+                                }
+
+                                res.render('hash', templateContent);
+                            });
+                        });
+                    } else {
+                        //gibt keinen Hash
+                        next();
+                    }
+                });
+
+                const x = {
+                    hash_name: null,
+                    bot_friedly_name: self.Config.bot.friendly_name,
+                    next_id: null,
+                    prev_id: null,
+                    user_name: null,
+                    user_nickname: null,
+                    mime: null,
+                    size: null,
+                    timestamp: null,
+                    hash_db_id: null,
+                    image: null,
+                    video: null,
+                    gif: null,
+                    audio: null
+                };
             }
         });
     }
@@ -807,6 +980,7 @@ export class Hashes extends Module {
                         new VideoHash(
                             command,
                             msg.From.ID,
+                            "",
                             data.DataStreamHex,
                             data.DataStreamSize,
                             data.DataStreamMime,
@@ -835,6 +1009,7 @@ export class Hashes extends Module {
                         new PhotoHash(
                             command,
                             msg.From.ID,
+                            "",
                             data.DataStreamHex,
                             data.DataStreamSize,
                             data.DataStreamMime,

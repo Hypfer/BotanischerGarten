@@ -1,0 +1,304 @@
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html, body {
+  max-height: 100%;
+  width: 100%;
+}
+body {
+  margin: 0em auto 3em auto;
+  background-color: #262626;
+  color: #fff;
+  font-family: Monospace;
+  font-size: 12px;
+  line-height: 1.42857143;
+}
+
+.contact {
+    margin: 20px;
+}
+
+input, select, textarea {
+	border: 1px double #99ff00;
+	background: #282A2E;
+	color: #f1e3ce;
+	font-family: 'Hack', monospace, sans-serif;
+	font-size: 80%;
+}
+
+ul#posts {
+  width: calc(100% - 210px);
+  margin: 0;
+  margin-left: 100px;
+  padding: 0;
+  list-style: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  -webkit-justify-content: flex-start;
+  padding-top: 2.2em;
+}
+li.post {
+  padding: 5px;
+  width: 128px;
+  height: 128px;
+  margin-top: 5px;
+  line-height: 128px;
+  -webkit-flex: 1 1 auto;
+  ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+.thumb {
+  border: 2px solid #4c4a4a;
+}
+.thumb:hover {
+	opacity: 0.7;
+}
+.clear {
+  clear: both;
+  padding: 1em 0;
+}
+a {
+  color: #9f0;
+  text-decoration: none;
+}
+a:hover {
+  color: #74c100;
+  text-decoration: underline;
+}
+
+.medium, .thumbnail {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+    background: #484747;
+    border: 0px solid #99ff00;
+    padding: 5px;
+}
+
+.info {
+  padding-top: 5px;
+}
+.id {
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.controls {
+    text-align: center;
+    font-weight: bold;
+    width: 888px;
+    margin: 0 auto;
+    padding-top: 0;
+    margin-top: 35px;
+    border: 0px solid #99ff00;
+    color: #99ff00;
+    background: #484747;
+}
+
+.navbar {
+    margin: 0 auto;
+    width: 100%;
+    border: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-weight: bold;
+    position: fixed;
+    overflow: visible;
+    z-index: 999;
+    background-color: #484747;
+    border-bottom: 2px solid #99ff00;
+    text-align: center;
+}
+
+.return {
+    text-align: center;
+    border: 0;
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: 5px;
+    margin-top: -35px;
+    position: fixed;
+    overflow: visible;
+    z-index: 999;
+    border-bottom: 1px solid #99ff00;
+    padding: 5px;
+    background: #484747;
+    font-weight: bold;
+}
+
+.irc {
+  margin: 20px;
+}
+code {
+  color: #9df943;
+}
+
+.panel {
+    margin-bottom: 0;
+    background-color: #484747;
+    border: 0px solid #99ff00;
+    border-radius: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 25%;
+    float: left;
+    position: relative;
+    min-height: 1px;
+    color: #ffffff;
+    padding-bottom: 5px;
+}
+
+.panel.info {
+    margin: 0 auto;
+    margin-top: 5px;
+    float: none;
+    width: 888px;
+    margin-bottom: 5px;
+}
+
+
+img {
+    vertical-align: middle;
+    max-height: 770px;
+    border: 1px solid black;
+    box-shadow: 0 0 5px #000;
+}
+
+.wrapper {
+    margin: 0 auto;
+    width: 888px;
+}
+
+video#player {
+ 	max-width: 100%;
+    height: 50%;
+}
+
+/* Plyr */
+.plyr--audio .plyr__controls {
+    padding: 0;
+    border-radius: inherit;
+    background: #262626;
+    border: 0;
+    color: #99ff00;
+    width: 300px;
+    padding-right: 5;
+    height: 32px;
+}
+
+.plyr audio, .plyr video {
+    width: 100%;
+    height: auto!important;
+    vertical-align: middle;
+    border-radius: inherit;
+}
+
+/* Video Player Style */
+.plyr--audio .plyr__controls button.tab-focus:focus, .plyr--audio .plyr__controls button:hover, .plyr__play-large {
+    background: #484747;
+    color: #9f0;
+    border-radius: 0;
+}
+
+.plyr--video .plyr__controls {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: 0px 0px 0px;
+    background: rgba(38, 38, 38, 0.97);
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
+    color: #91ee06;
+    transition: opacity .3s cubic-bezier(0.12, 0.63, 0.25, 1);
+}
+
+.plyr {
+    position: relative;
+    max-width: 100%;
+    min-width: 200px;
+    font-family: Avenir,'Avenir Next','Helvetica Neue','Segoe UI',Helvetica,Arial,sans-serif;
+    direction: ltr;
+    border: 1px solid #0c0d0c;
+    box-shadow: 0 0 15px #000;
+}
+
+.plyr--video .plyr__controls button.tab-focus:focus, .plyr--video .plyr__controls button:hover {
+    background: #484747;
+    color: #9f0;
+    border-radius: 0;
+}
+.plyr__progress--played, .plyr__volume--display {
+    z-index: 1;
+    color: #99ff00;
+    background: 0 0;
+    transition: none;
+}
+
+.plyr input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    margin-top: -4px;
+    position: relative;
+    height: 16px;
+    width: 16px;
+    background: #262626;
+    border: 1px solid #99ff00;
+    border-radius: 100%;
+    transition: background .2s ease,border .2s ease,transform .2s ease;
+    box-shadow: 0 1px 1px rgba(0,0,0,.15), 0 0 0 1px rgba(0,0,0,.15);
+    box-sizing: border-box;
+}
+
+.plyr input[type=range]:active::-webkit-slider-thumb {
+    background: #262626;
+    border-color: #99ff00;
+    transform: scale(1.25)
+}
+
+.plyr--fullscreen-active video {
+    height: 100%!important;
+    max-width: 100%!important;
+}
+
+.plyr--fullscreen-active {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 10000000;
+    background: #000;
+    border-radius: 0!important;
+    border: 0!important;
+}
+
+/* Feuerfick */
+.plyr input[type="range"]::-moz-range-thumb {
+    position: relative;
+    height: 16px;
+    width: 16px;
+    background: #9f0;
+    border: 2px solid #262626;
+    border-radius: 100%;
+    transition: background .2s ease, border .2s ease, transform .2s ease;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .15), 0 0 0 1px rgba(0, 0, 0, .15);
+    box-sizing: border-box;
+}
+
+.plyr input[type=range]:active::-moz-range-thumb {
+    background: #9f0;
+    border-color: #262626;
+    transform: scale(1.25)
+}

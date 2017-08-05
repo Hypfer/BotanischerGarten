@@ -918,7 +918,7 @@ export class Hashes extends Module {
                     bot_friendly_name: self.Config.bot.friendly_name
                 };
                 self.HashService.GetHashById(req.params[0], function (hash: Hash) {
-                    if (hash) {
+                    if (hash && hash.Public === true) {
                         templateContent["hash_db_id"] = hash.DbId;
                         templateContent["timestamp"] = Helpers.dateFromObjectId(hash.DbId.toString()).toString();
 

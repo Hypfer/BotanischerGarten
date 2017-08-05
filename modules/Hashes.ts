@@ -141,7 +141,7 @@ export class Hashes extends Module {
                             const migrationMessage = Hashes.migrationMessageBuilder(oldHashes[hashKey], msg.From.ID);
                             if(migrationMessage) {
                                 setTimeout(function() {
-                                    self.saveNewHash(hashKey, migrationMessage);
+                                    self.saveNewHash(hashKey, migrationMessage, true);
                                 }, timeout);
 
                                 timeout = timeout+5000;
@@ -209,12 +209,46 @@ export class Hashes extends Module {
                             if(exists) {
                                 self.Bot.sendReply(new OutgoingTextMessage("Hash "+ newCommand + " already exists."), msg.Message.chat.id);
                             } else {
-                                self.saveNewHash(newCommand, msg);
+                                self.saveNewHash(newCommand, msg, true);
                             }
                         });
                     } else {
                         self.Bot.sendReply(new OutgoingTextMessage("Define command must either be in a reply or in a caption."),
                                            msg.Message.chat.id);
+                    }
+                }
+            } else {
+                next();
+            }
+        });
+
+        //TODO: Refactor.
+        MessageChain.add(function defineHash(msg : IncomingMessage, next){
+            //TODO: Save Hash As Type
+            //TODO: If hash is url of image try to get and save image
+            let commandContainingString;
+            if(msg.Message.text) {
+                commandContainingString = msg.Message.text;
+            } else if (msg.Message.caption) {
+                commandContainingString = msg.Message.caption;
+            }
+
+            const command = Helpers.checkForCommand("priv", commandContainingString, true);
+            if(command) {
+                if(command.Args[0] && command.Args[0] !== "") {
+                    const newCommand = command.Args[0].toLowerCase();
+
+                    if(msg.Message.reply_to_message || msg.Message.caption) {
+                        self.checkCommandExists(newCommand, function(exists){
+                            if(exists) {
+                                self.Bot.sendReply(new OutgoingTextMessage("Hash "+ newCommand + " already exists."), msg.Message.chat.id);
+                            } else {
+                                self.saveNewHash(newCommand, msg, false);
+                            }
+                        });
+                    } else {
+                        self.Bot.sendReply(new OutgoingTextMessage("Define command must either be in a reply or in a caption."),
+                            msg.Message.chat.id);
                     }
                 }
             } else {
@@ -259,7 +293,9 @@ export class Hashes extends Module {
 
         this.HashService.GetHashById(command, function(hash){
             if(hash) {
-                self.sendHash(hash, chatID);
+                if((hash.Public === true) || (hash.Source === chatID)) {
+                    self.sendHash(hash, chatID);
+                }
             }
         });
     }
@@ -378,7 +414,7 @@ export class Hashes extends Module {
             });
         }
     }
-    private saveNewHash(command : string, msg : IncomingMessage) {
+    private saveNewHash(command : string, msg : IncomingMessage, Public : Boolean) {
         const self = this;
 
         if(command.indexOf("#") === 0) {
@@ -392,7 +428,7 @@ export class Hashes extends Module {
             //TextHash
             if(msg.Message.reply_to_message.text) {
                 return this.HashService.SaveHash(
-                    new TextHash(command, msg.From.ID, "", msg.Message.reply_to_message.text),
+                    new TextHash(command, msg.From.ID, "", msg.Message.chat.id, Public, msg.Message.reply_to_message.text),
                     function(){
                         self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as TextHash"), msg.Message.chat.id);
                     });
@@ -401,14 +437,14 @@ export class Hashes extends Module {
                     msg.Message.reply_to_message.photo[msg.Message.reply_to_message.photo.length-1].file_id,
                     msg.Message.reply_to_message.photo[msg.Message.reply_to_message.photo.length-1].height,
                     msg.Message.reply_to_message.photo[msg.Message.reply_to_message.photo.length-1].width,
-                    msg);
+                    msg, Public);
             } else if(msg.Message.reply_to_message.video) {
                 return this.saveVideoByFileId(command,
                     msg.Message.reply_to_message.video.file_id,
                     msg.Message.reply_to_message.video.height,
                     msg.Message.reply_to_message.video.width,
                     msg.Message.reply_to_message.video.duration,
-                    msg);
+                    msg, Public);
             } else if(msg.Message.reply_to_message.video_note) {
                 return this.downloadFile(msg.Message.reply_to_message.video_note.file_id,
                     function(err : any, data : BinaryData) {
@@ -420,6 +456,7 @@ export class Hashes extends Module {
                                     command,
                                     msg.From.ID,
                                     "",
+                                    msg.Message.chat.id, Public,
                                     data.DataStreamHex,
                                     data.DataStreamSize,
                                     data.DataStreamMime,
@@ -445,6 +482,7 @@ export class Hashes extends Module {
                                     command,
                                     msg.From.ID,
                                     "",
+                                    msg.Message.chat.id, Public,
                                     data.DataStreamHex,
                                     data.DataStreamSize,
                                     data.DataStreamMime,
@@ -459,6 +497,7 @@ export class Hashes extends Module {
                                     command,
                                     msg.From.ID,
                                     "",
+                                    msg.Message.chat.id, Public,
                                     data.DataStreamHex,
                                     data.DataStreamSize,
                                     data.DataStreamMime,
@@ -484,6 +523,7 @@ export class Hashes extends Module {
                                     command,
                                     msg.From.ID,
                                     "",
+                                    msg.Message.chat.id, Public,
                                     data.DataStreamHex,
                                     data.DataStreamSize,
                                     data.DataStreamMime,
@@ -497,6 +537,7 @@ export class Hashes extends Module {
                                     command,
                                     msg.From.ID,
                                     "",
+                                    msg.Message.chat.id, Public,
                                     data.DataStreamHex,
                                     data.DataStreamSize,
                                     data.DataStreamMime,
@@ -520,6 +561,7 @@ export class Hashes extends Module {
                                     command,
                                     msg.From.ID,
                                     "",
+                                    msg.Message.chat.id, Public,
                                     data.DataStreamHex,
                                     data.DataStreamSize,
                                     data.DataStreamMime,
@@ -544,6 +586,7 @@ export class Hashes extends Module {
                                     command,
                                     msg.From.ID,
                                     "",
+                                    msg.Message.chat.id, Public,
                                     data.DataStreamHex,
                                     data.DataStreamSize,
                                     data.DataStreamMime,
@@ -558,7 +601,7 @@ export class Hashes extends Module {
             } else if (msg.Message.reply_to_message.location) {
                 if(msg.Message.reply_to_message.venue) {
                     return this.HashService.SaveHash(
-                        new VenueHash(command, msg.From.ID, "",
+                        new VenueHash(command, msg.From.ID, "", msg.Message.chat.id, Public,
                             msg.Message.reply_to_message.location.latitude,
                             msg.Message.reply_to_message.location.longitude,
                             msg.Message.reply_to_message.venue.title,
@@ -569,7 +612,7 @@ export class Hashes extends Module {
                         });
                 } else {
                     return this.HashService.SaveHash(
-                        new LocationHash(command, msg.From.ID, "",
+                        new LocationHash(command, msg.From.ID, "", msg.Message.chat.id, Public,
                             msg.Message.reply_to_message.location.latitude,
                             msg.Message.reply_to_message.location.longitude),
                         function(){
@@ -578,7 +621,7 @@ export class Hashes extends Module {
                 }
             } else if (msg.Message.reply_to_message.contact) {
                 return this.HashService.SaveHash(
-                    new ContactHash(command, msg.From.ID,
+                    new ContactHash(command, msg.From.ID, "", msg.Message.chat.id, Public,
                         msg.Message.reply_to_message.contact.phone_number,
                         msg.Message.reply_to_message.contact.first_name,
                         msg.Message.reply_to_message.contact.last_name),
@@ -594,14 +637,14 @@ export class Hashes extends Module {
                     msg.Message.photo[msg.Message.photo.length-1].file_id,
                     msg.Message.photo[msg.Message.photo.length-1].height,
                     msg.Message.photo[msg.Message.photo.length-1].width,
-                    msg);
+                    msg, Public);
             } else if(msg.Message.video) {
                 return this.saveVideoByFileId(command,
                     msg.Message.video.file_id,
                     msg.Message.video.height,
                     msg.Message.video.width,
                     msg.Message.video.duration,
-                    msg);
+                    msg, Public);
             } else if(msg.Message.document) {
                 return this.downloadFile(msg.Message.document.file_id,
                     function (err: any, data: BinaryData) {
@@ -611,7 +654,7 @@ export class Hashes extends Module {
                             return self.HashService.SaveHash(
                                 new DocumentHash(
                                     command,
-                                    msg.From.ID, "",
+                                    msg.From.ID, "", msg.Message.chat.id, Public,
                                     data.DataStreamHex,
                                     data.DataStreamSize,
                                     data.DataStreamMime,
@@ -636,7 +679,7 @@ export class Hashes extends Module {
             let query = msg.Message.query.toLowerCase();
 
             if(query === "") {
-                self.HashService.GetRandomIds(50, function(IDs){
+                self.HashService.GetRandomIds(50, {"Public" : true}, function(IDs){
                     const fetchFunctions = [];
                     const fetchedHashes = [];
                     IDs.forEach(function(id){
@@ -683,91 +726,95 @@ export class Hashes extends Module {
         const results = [];
 
         hashes.forEach(function(hash){
-            if(hash instanceof PhotoHash) {
-                results.push(new InlineQueryResultCachedPhoto(
-                    random ? uuid.v4() : hash.ID,
-                    hash.FileId,
-                    hash.ID
-                ));
-            } else if(hash instanceof DocumentHash) {
-                if(hash.DataStreamMime === "video/mp4") {
-                    results.push(new InlineQueryResultCachedMpeg4Gif(
+            if(hash.Public === true) {
+                if(hash instanceof PhotoHash) {
+                    results.push(new InlineQueryResultCachedPhoto(
                         random ? uuid.v4() : hash.ID,
                         hash.FileId,
                         hash.ID
                     ));
-                } else {
-                    results.push(new InlineQueryResultCachedDocument(
+                } else if(hash instanceof DocumentHash) {
+                    if(hash.DataStreamMime === "video/mp4") {
+                        results.push(new InlineQueryResultCachedMpeg4Gif(
+                            random ? uuid.v4() : hash.ID,
+                            hash.FileId,
+                            hash.ID
+                        ));
+                    } else {
+                        results.push(new InlineQueryResultCachedDocument(
+                            random ? uuid.v4() : hash.ID,
+                            hash.FileId,
+                            hash.ID
+                        ));
+                    }
+                } else if(hash instanceof StickerHash) {
+                    results.push(new InlineQueryResultCachedSticker(
+                        random ? uuid.v4() : hash.ID,
+                        hash.FileId
+                    ));
+                } else if(hash instanceof VideoHash) {
+                    results.push(new InlineQueryResultCachedVideo(
                         random ? uuid.v4() : hash.ID,
                         hash.FileId,
                         hash.ID
                     ));
-                }
-            } else if(hash instanceof StickerHash) {
-                results.push(new InlineQueryResultCachedSticker(
-                    random ? uuid.v4() : hash.ID,
-                    hash.FileId
-                ));
-            } else if(hash instanceof VideoHash) {
-                results.push(new InlineQueryResultCachedVideo(
-                    random ? uuid.v4() : hash.ID,
-                    hash.FileId,
-                    hash.ID
-                ));
-            } else if(hash instanceof VoiceHash) {
-                results.push(new InlineQueryResultCachedVoice(
-                    random ? uuid.v4() : hash.ID,
-                    hash.FileId,
-                    hash.ID
-                ));
-            } else if(hash instanceof AudioHash) {
-                results.push(new InlineQueryResultCachedAudio(
-                    random ? uuid.v4() : hash.ID,
-                    hash.FileId,
-                    hash.ID
-                ));
-            } else if(hash instanceof TextHash) {
-                results.push(new InlineQueryResultArticle(
-                    random ? uuid.v4() : hash.ID,
-                    hash.ID,
-                    new InputTextMessageContent(hash.Text),
-                    undefined,
-                    undefined,
-                    undefined,
-                    hash.Text
-                ))
-            } else if(hash instanceof LocationHash) {
-                if(hash instanceof VenueHash) {
-                    results.push(new InlineQueryResultVenue(
+                } else if(hash instanceof VoiceHash) {
+                    results.push(new InlineQueryResultCachedVoice(
                         random ? uuid.v4() : hash.ID,
-                        hash.Latitude,
-                        hash.Longitude,
-                        hash.Title || hash.ID,
-                        hash.Address || "Somewhere"
+                        hash.FileId,
+                        hash.ID
+                    ));
+                } else if(hash instanceof AudioHash) {
+                    results.push(new InlineQueryResultCachedAudio(
+                        random ? uuid.v4() : hash.ID,
+                        hash.FileId,
+                        hash.ID
+                    ));
+                } else if(hash instanceof TextHash) {
+                    results.push(new InlineQueryResultArticle(
+                        random ? uuid.v4() : hash.ID,
+                        hash.ID,
+                        new InputTextMessageContent(hash.Text),
+                        undefined,
+                        undefined,
+                        undefined,
+                        hash.Text
                     ))
-                } else {
-                    results.push(new InlineQueryResultLocation(
+                } else if(hash instanceof LocationHash) {
+                    if(hash instanceof VenueHash) {
+                        results.push(new InlineQueryResultVenue(
+                            random ? uuid.v4() : hash.ID,
+                            hash.Latitude,
+                            hash.Longitude,
+                            hash.Title || hash.ID,
+                            hash.Address || "Somewhere"
+                        ))
+                    } else {
+                        results.push(new InlineQueryResultLocation(
+                            random ? uuid.v4() : hash.ID,
+                            hash.Latitude,
+                            hash.Longitude,
+                            hash.ID
+                        ));
+                    }
+                } else if(hash instanceof ContactHash) {
+                    results.push(new InlineQueryResultContact(
                         random ? uuid.v4() : hash.ID,
-                        hash.Latitude,
-                        hash.Longitude,
-                        hash.ID
+                        hash.Phone_number,
+                        hash.First_name,
+                        hash.Last_name || undefined
                     ));
                 }
-            } else if(hash instanceof ContactHash) {
-                results.push(new InlineQueryResultContact(
-                    random ? uuid.v4() : hash.ID,
-                    hash.Phone_number,
-                    hash.First_name,
-                    hash.Last_name || undefined
-                ));
             }
+
         });
 
         return results;
     }
 
     protected defineCommands(): Array<string> {
-        return ["define", "undefine", "hashes", "tsbanner", "/tsbanner", "/tsbanner/", "/tsbanner/current", "/login", "/token"];
+        return ["define", "undefine", "hashes", "priv","tsbanner",
+                "/tsbanner", "/tsbanner/", "/tsbanner/current", "/login", "/token"];
     }
 
     protected loadAssets(): void {
@@ -816,7 +863,7 @@ export class Hashes extends Module {
                 res.render('login');
             } else {
                 //random
-                self.HashService.GetRandomIds(1, function(ids){
+                self.HashService.GetRandomIds(1, {"Public" : true},  function(ids){
                     if(ids.length > 0) {
                         self.HashService.GetHashById(ids[0], function(hash:Hash){
                             res.redirect("/"+ hash.ID);
@@ -913,7 +960,7 @@ export class Hashes extends Module {
                                 templateContent["user_name"] = "Anonymous";
                             }
 
-                            self.HashService.GetPreviousAndNextByDbId(hash.DbId, function (obj) {
+                            self.HashService.GetPreviousAndNextByDbId(hash.DbId, {"Public" : true}, function (obj) {
                                 if (obj.prev) {
                                     templateContent["prev_id"] = obj.prev.ID;
                                 }
@@ -958,7 +1005,7 @@ export class Hashes extends Module {
         if(counter >= 10) {
             callback()
         } else {
-            this.HashService.GetRandomIds(1, function(IDs){
+            this.HashService.GetRandomIds(1, {"Public" : true}, function(IDs){
                 self.HashService.GetHashById(IDs[0], function(hash: Hash) {
                     if(hash instanceof PhotoHash) {
                         callback(hash);
@@ -971,7 +1018,7 @@ export class Hashes extends Module {
     }
 
     private saveVideoByFileId(command : string, file_id : string, height : number,
-                              width: number, duration: number, msg : any) {
+                              width: number, duration: number, msg : any, Public : Boolean) {
         const self = this;
 
         this.downloadFile(file_id,
@@ -984,6 +1031,7 @@ export class Hashes extends Module {
                             command,
                             msg.From.ID,
                             "",
+                            msg.Message.chat.id, Public,
                             data.DataStreamHex,
                             data.DataStreamSize,
                             data.DataStreamMime,
@@ -1000,7 +1048,7 @@ export class Hashes extends Module {
     }
 
     private savePhotoByFileId(command : string, file_id : string, height : number,
-                              width: number, msg : any) {
+                              width: number, msg : any, Public : Boolean) {
         const self = this;
 
         this.downloadFile(file_id,
@@ -1013,6 +1061,7 @@ export class Hashes extends Module {
                             command,
                             msg.From.ID,
                             "",
+                            msg.Message.chat.id, Public,
                             data.DataStreamHex,
                             data.DataStreamSize,
                             data.DataStreamMime,

@@ -28,15 +28,15 @@ export class HashService extends Service {
            callback(HashService.deserializeHash(hash));
         });
     }
-    //TODO: remove duplicate code
+
     GetHashByDbId(id: string, callback : HashCallback) {
         super.GetByDbId(id, function(hash) {
             callback(HashService.deserializeHash(hash));
         });
     }
 
-    GetPreviousAndNextByDbId(id: string, callback : Function) {
-        super.GetPreviousAndNextByDbId(id, function(obj){
+    GetPreviousAndNextByDbId(id: string, condition: any, callback : Function) {
+        super.GetPreviousAndNextByDbId(id, condition, function(obj){
             if(obj.prev) {
                 obj.prev = HashService.deserializeHash(obj.prev);
             }
@@ -56,47 +56,56 @@ export class HashService extends Service {
             //"deserialize"
             switch(hash.HashType) {
                 case "TextHash":
-                    return new TextHash(hash.ID, hash.OwnerID, hash._id, hash.Text);
+                    return new TextHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public, hash.Text);
                 case "PhotoHash":
-                    return new PhotoHash(hash.ID, hash.OwnerID, hash._id, hash.DataStreamHex,
+                    return new PhotoHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                        hash.DataStreamHex,
                         hash.DataStreamSize, hash.DataStreamMime,
                         hash.FileId, hash.DataStreamInternalID,
                         hash.Height, hash.Width);
                 case "VideoHash":
-                    return new VideoHash(hash.ID, hash.OwnerID, hash._id, hash.DataStreamHex,
+                    return new VideoHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                        hash.DataStreamHex,
                         hash.DataStreamSize, hash.DataStreamMime,
                         hash.FileId, hash.DataStreamInternalID,
                         hash.Height, hash.Width, hash.Duration);
                 case "VideoMessageHash":
-                    return new VideoMessageHash(hash.ID, hash.OwnerID, hash._id, hash.DataStreamHex,
+                    return new VideoMessageHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                        hash.DataStreamHex,
                         hash.DataStreamSize, hash.DataStreamMime,
                         hash.FileId, hash.DataStreamInternalID,
                         hash.Height, hash.Width, hash.Duration);
                 case "AudioHash":
-                    return new AudioHash(hash.ID, hash.OwnerID, hash._id, hash.DataStreamHex,
+                    return new AudioHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                        hash.DataStreamHex,
                         hash.DataStreamSize, hash.DataStreamMime,
                         hash.FileId, hash.DataStreamInternalID,
                         hash.Performer, hash.Title, hash.Duration);
                 case "DocumentHash":
-                    return new DocumentHash(hash.ID, hash.OwnerID, hash._id, hash.DataStreamHex,
+                    return new DocumentHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                        hash.DataStreamHex,
                         hash.DataStreamSize, hash.DataStreamMime, hash.FileId,
                         hash.DataStreamInternalID);
                 case "StickerHash":
-                    return new StickerHash(hash.ID, hash.OwnerID, hash._id, hash.DataStreamHex,
+                    return new StickerHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                        hash.DataStreamHex,
                         hash.DataStreamSize, hash.DataStreamMime, hash.FileId,
                         hash.DataStreamInternalID, hash.Width, hash.Height, hash.Emoji);
                 case "VoiceHash":
-                    return new VoiceHash(hash.ID, hash.OwnerID, hash._id, hash.DataStreamHex,
+                    return new VoiceHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                        hash.DataStreamHex,
                         hash.DataStreamSize, hash.DataStreamMime,
                         hash.FileId, hash.DataStreamInternalID, hash.Duration);
                 case "LocationHash":
-                    return new LocationHash(hash.ID, hash.OwnerID, hash._id, hash.Latitude, hash.Longitude);
+                    return new LocationHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                        hash.Latitude, hash.Longitude);
                 case "VenueHash":
-                    return new VenueHash(hash.ID, hash.OwnerID, hash._id, hash.Latitude, hash.Longitude,
+                    return new VenueHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                        hash.Latitude, hash.Longitude,
                         hash.Title, hash.Address, hash.Foursquare_id);
                 case "ContactHash":
-                    return new ContactHash(hash.ID, hash.OwnerID, hash._id, hash.Phone_number,
-                        hash.First_name, hash.Last_name);
+                    return new ContactHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                        hash.Phone_number, hash.First_name, hash.Last_name);
             }
         } else {
             return;

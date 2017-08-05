@@ -17,8 +17,8 @@ export abstract class Service {
     protected GetByDbId(id : string, callback : Function) {
         this.Repository.GetByDbId(this.Collection, id, callback);
     };
-    protected GetPreviousAndNextByDbId(id: string, callback: Function) {
-        this.Repository.GetPreviousAndNextByDbId(this.Collection, id, callback);
+    protected GetPreviousAndNextByDbId(id: string, condition : any, callback: Function) {
+        this.Repository.GetPreviousAndNextByDbId(this.Collection, id, condition, callback);
     }
     /*protected GetAllByKeyValue( key: string, value: string, callback : Function) {
         this.Repository.GetAllByKeyValue(this.Collection, key, value, callback);
@@ -35,8 +35,8 @@ export abstract class Service {
     GetAllIds(callback : Function) {
         this.Repository.GetAllIds(this.Collection, callback);
     }
-    GetRandomIds(limit : number, callback : Function) {
-        this.Repository.GetRandomIds(this.Collection, limit, callback);
+    GetRandomIds(limit : number, condition : any, callback : Function) {
+        this.Repository.GetRandomIds(this.Collection, limit, condition, callback);
     }
     GetIdsLikeSearchWithLimitAndSkip(search: string, limit : number, skip : number, callback : Function) {
         this.Repository.GetIdsLikeSearchWithLimitAndSkip(this.Collection, search, limit, skip, callback);

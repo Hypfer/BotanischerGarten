@@ -87,22 +87,23 @@ export class MongoRepository implements IRepository {
         });
     }
 
-    GetPreviousAndNextByDbId(collection: string, id: string, callback: Function) {
+    GetPreviousAndNextByDbId(collection: string, id: string, condition : any, callback: Function) {
         const self = this;
         const _collection = this.DB.collection(collection);
         const returnObj = {
             prev: undefined,
             next: undefined
         };
+        condition = condition ? condition : {};
         //prev
-        _collection.find({"_id" : {"$lt": new ObjectID(id)}}).sort({"_id": -1}).limit(1).toArray(function(err, docs){
+        _collection.find(Object.assign({"_id" : {"$lt": new ObjectID(id)}}, condition)).sort({"_id": -1}).limit(1).toArray(function(err, docs){
             if(err) {
                 throw new Error(JSON.stringify(err));
             }
             if(docs.length > 0) {
                 returnObj.prev = docs[0];
             }
-            _collection.find({"_id" : {"$gt": new ObjectID(id)}}).sort({"_id" : 1}).limit(1).toArray(function(err, docs){
+            _collection.find(Object.assign({"_id" : {"$gt": new ObjectID(id)}}, condition)).sort({"_id" : 1}).limit(1).toArray(function(err, docs){
                 if(err) {
                     throw new Error(JSON.stringify(err));
                 }
@@ -205,10 +206,13 @@ export class MongoRepository implements IRepository {
         });
     }
 
-    GetRandomIds(collection: string, limit: number, callback: Function) {
+    GetRandomIds(collection: string, limit: number, condition : any, callback: Function) {
         const _collection = this.DB.collection(collection);
 
+        condition = condition ? condition : {};
+
         _collection.aggregate([
+            { $match: condition },
             { $sample: { size: limit } },
             { $project: {id : 1, _id : 0}}
             ]).toArray(function(err,docs){

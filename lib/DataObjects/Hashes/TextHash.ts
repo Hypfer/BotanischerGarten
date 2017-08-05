@@ -9,8 +9,8 @@ export class TextHash extends Hash {
 
     Text : string;
 
-    constructor(id : string, ownerID : string, DbId: string, text : string) {
-        super(id, ownerID, DbId);
+    constructor(id : string, ownerID : string, DbId: string, Source : number, Public : Boolean, text : string) {
+        super(id, ownerID, DbId, Source, Public);
         this.Text = text;
     }
 }

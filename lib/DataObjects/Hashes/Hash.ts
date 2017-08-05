@@ -6,12 +6,16 @@ export abstract class Hash {
     ID : string;
     OwnerID : string;
     DbId : string;
+    Source : number;
+    Public : Boolean;
 
-    constructor(id : string, ownerID : string, DbId : string) {
+    constructor(id : string, ownerID : string, DbId : string, Source : number, Public : Boolean) {
         this.HashType = this.getHashType();
         this.ID = id;
         this.OwnerID = ownerID;
         this.DbId = DbId;
+        this.Source = Source;
+        this.Public = Public;
     }
 
     protected abstract getHashType() : string;

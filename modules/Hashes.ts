@@ -866,7 +866,7 @@ export class Hashes extends Module {
                 self.HashService.GetRandomIds(1, {"Public" : true},  function(ids){
                     if(ids.length > 0) {
                         self.HashService.GetHashById(ids[0], function(hash:Hash){
-                            res.redirect("/"+ hash.ID);
+                            res.redirect("/hash/"+ hash.ID);
                         });
                     } else {
                         next();
@@ -909,34 +909,55 @@ export class Hashes extends Module {
             }
         });
 
-        this.App.get(/^\/(.+)/, function (req, res, next) {
+        this.App.get('/hash/:hash(*)', function (req, res, next) {
             if(!req.session.authenticated) {
                 res.redirect("/");
             } else {
+                //this hack allows hashes with questionmarks
+                const hash_name = decodeURIComponent(req.url.replace("/hash/", ""));
                 let templateContent = {
-                    hash_name: req.params[0],
+                    hash_name: hash_name,
                     bot_friendly_name: self.Config.bot.friendly_name
                 };
-                self.HashService.GetHashById(req.params[0], function (hash: Hash) {
+                self.HashService.GetHashById(hash_name, function (hash: Hash) {
                     if (hash && hash.Public === true) {
                         templateContent["hash_db_id"] = hash.DbId;
                         templateContent["timestamp"] = Helpers.dateFromObjectId(hash.DbId.toString()).toString();
+
 
                         if (hash instanceof BinaryDataHash) {
                             templateContent["mime"] = hash.DataStreamMime;
                             templateContent["size"] = hash.DataStreamSize;
 
-                            if (hash instanceof PhotoHash || hash instanceof StickerHash) {
+                            if (hash instanceof PhotoHash || hash instanceof StickerHash ||
+                                (hash instanceof DocumentHash && hash.DataStreamMime === "image/gif")) {
+                                if(hash instanceof PhotoHash) {
+                                    if(hash.Height) {
+                                        templateContent["height"] = hash.Height;
+                                    }
+                                    if(hash.Width) {
+                                        templateContent["width"] = hash.Width;
+                                    }
+                                }
                                 templateContent["image"] = true;
                             } else if (hash instanceof DocumentHash && hash.DataStreamMime === "video/mp4") {
                                 templateContent["gif"] = true;
                             } else if ((hash instanceof DocumentHash && hash.DataStreamMime === "audio/mpeg") ||
+                                (hash instanceof DocumentHash && hash.DataStreamMime === "audio/ogg") ||
                                 hash instanceof AudioHash ||
                                 hash instanceof VoiceHash) {
-                                //TODO: Dokumente die auch audio sind
                                 templateContent["audio"] = true;
                             } else if (hash instanceof VideoHash) {
+                                if(hash.Height) {
+                                    templateContent["height"] = hash.Height;
+                                }
+                                if(hash.Width) {
+                                    templateContent["width"] = hash.Width;
+                                }
                                 templateContent["video"] = true;
+                            } else if(hash instanceof DocumentHash){
+                                templateContent["file"] = true;
+
                             } else {
                                 //TODO
                                 templateContent["text"] = "Unsupported Hash :-)";
@@ -997,24 +1018,23 @@ export class Hashes extends Module {
         });
     }
 
-    private getRandomPhotoHash(callback, counter? : number) {
+    private getRandomPhotoHash(callback) {
         const self = this;
-        const thecounter : number = counter ? counter : 0;
 
-        //TODO: This is ugly
-        if(counter >= 10) {
-            callback()
-        } else {
-            this.HashService.GetRandomIds(1, {"Public" : true}, function(IDs){
+        this.HashService.GetRandomIds(1, {"Public" : true, "HashType": PhotoHash}, function(IDs){
+            if(IDs.length > 0) {
                 self.HashService.GetHashById(IDs[0], function(hash: Hash) {
-                    if(hash instanceof PhotoHash) {
+                    if(hash) {
                         callback(hash);
                     } else {
-                        self.getRandomPhotoHash(callback, thecounter + 1);
+                        callback()
                     }
                 });
-            })
-        }
+            } else {
+                callback();
+            }
+
+        });
     }
 
     private saveVideoByFileId(command : string, file_id : string, height : number,

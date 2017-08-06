@@ -21,6 +21,7 @@ export class HashService extends Service {
         return "Hashes";
     }
     SaveHash(hash:Hash, callback : HashCallback) {
+        delete hash["DbId"]; //Wow.
         super.Save(hash.ID, hash, callback);
     }
     GetHashById(id: string, callback : HashCallback) {

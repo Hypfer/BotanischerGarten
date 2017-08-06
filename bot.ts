@@ -4,7 +4,6 @@ import {User} from "./lib/DataObjects/User";
 import {UserService} from "./lib/Services/UserService";
 import {IncomingMessage} from "./lib/DataObjects/Messages/IncomingMessage";
 import {CommandManager} from "./lib/CommandManager";
-import {IRepository} from "./lib/Repositories/IRepository";
 import * as Chain from "chaining-tool";
 import {InlineQueryResult} from "./lib/DataObjects/InlineQueryResults/InlineQueryResult";
 import {OutgoingTextMessage} from "./lib/DataObjects/Messages/OutgoingMessages/OutgoingTextMessage";
@@ -18,6 +17,7 @@ import {OutgoingVoiceMessage} from "./lib/DataObjects/Messages/OutgoingMessages/
 import {OutgoingLocationMessage} from "./lib/DataObjects/Messages/OutgoingMessages/OutgoingLocationMessage";
 import {OutgoingVenueMessage} from "./lib/DataObjects/Messages/OutgoingMessages/OutgoingVenueMessage";
 import {OutgoingContactMessage} from "./lib/DataObjects/Messages/OutgoingMessages/OutgoingContactMessage";
+import {MongoRepository} from "./lib/Repositories/MongoRepository";
 /**
  * Created by hypfer on 06.06.17.
  */
@@ -25,7 +25,7 @@ export class Bot {
     //Ein Singleton!
     private static instance : Bot;
     TgBot : TelegramBot;
-    Repository : IRepository;
+    Repository : MongoRepository;
     UserService : UserService;
     CommandManager : CommandManager;
     MessageChain : any;
@@ -33,7 +33,7 @@ export class Bot {
     private Config : any;
 
 
-    constructor(config : any, repository : IRepository) {
+    constructor(config : any, repository : MongoRepository) {
         const self = this;
 
         if(Bot.instance) {

@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>{{hash_name}} - {{bot_friedly_name}}</title>
+    <title>{{hash_name}} - {{bot_friendly_name}}</title>
     <link rel="stylesheet" type="text/css" href="/s/plyr.css" />
     <link rel="stylesheet" type="text/css" href="/s/style.css" />
     <link rel="icon" type="image/gif" href="/s/favicon.gif" />
@@ -12,21 +12,23 @@
 <div class="return"><a href="/" title="random">{{bot_friendly_name}}</a></div>
 <div class="controls">
 
-    {{#if next_id}}<a id="next" href="/{{next_id}}"><<-</a>&nbsp;|&nbsp;{{/if}}
+    {{#if next_id}}<a id="next" href="/hash/{{next_id}}"><<-</a>&nbsp;|&nbsp;{{/if}}
 
     <a id="random" href="/">random</a>&nbsp;
 
-    {{#if prev_id}}&nbsp;| <a id="prev" href="/{{prev_id}}">->></a>{{/if}}
+    {{#if prev_id}}&nbsp;| <a id="prev" href="/hash/{{prev_id}}">->></a>{{/if}}
 
 </div>
 <div class="wrapper">
     <div class="medium">
 
         {{#if image}}
-            <a href="/b/{{hash_db_id}}" target="_blank"><img src="/b/{{hash_db_id}}" style="max-width: 640px;height:auto;" /></a>
+            <a href="/b/{{hash_db_id}}" target="_blank">
+                <img src="/b/{{hash_db_id}}" style="max-width: 640px;height:auto;" />
+            </a>
         {{/if}}
         {{#if video}}
-            <video id="player" src="/b/{{hash_db_id}}" preload="auto" controls loop></video>
+            <video id="player" src="/b/{{hash_db_id}}" preload="auto" controls loop style="max-width: 640px;height:auto;"></video>
         {{/if}}
         {{#if gif}}
             <video id="player" src="/b/{{hash_db_id}}" preload="auto" loop></video>
@@ -36,6 +38,12 @@
         {{/if}}
         {{#if text}}
             <span style="margin: 20px; font-size: 1.3em">{{text}}</span>
+        {{/if}}
+        {{#if file}}
+            <a style="text-decoration: none;" href="/b/{{hash_db_id}}" target="_blank">
+                <div style="font-size:10em;">💾</div>
+                <div style="text-align: center; font-size: 2em; margin-top:-20px;">Download</div>
+            </a>
         {{/if}}
     </div>
 </div>

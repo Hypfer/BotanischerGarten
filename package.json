@@ -1,9 +1,13 @@
 {
+  "name": "botanischergarten",
+  "version": "1.0.0",
+  "description": "Telegram Bot Framework",
+  "main": "app.js",
   "dependencies": {
     "async": "^2.4.1",
     "body-parser": "^1.17.2",
     "chaining-tool": "0.0.4",
-    "connect-mongodb-session": "^1.3.0",
+    "connect-mongo": "^1.3.2",
     "deepmerge": "^1.3.2",
     "express": "^4.15.3",
     "express-session": "^1.15.5",
@@ -23,5 +27,9 @@
     "@types/mongodb": "^2.2.4",
     "@types/node": "^7.0.27",
     "@types/uuid": "^3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hypfer/BotanischerGarten.git"
   }
 }

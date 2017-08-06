@@ -3,6 +3,12 @@
  */
 //external dependencies
 import TelegramBot = require("node-telegram-bot-api");
+import * as express from "express";
+import * as path from "path";
+import * as session from "express-session";
+import * as mongoSessionStore from "connect-mongo";
+import * as sendSeekable from "send-seekable";
+import * as bodyParser from "body-parser";
 //Own stuff
 import {Bot} from "./bot";
 import {Emo} from "./modules/Emo";
@@ -14,24 +20,20 @@ import {Bullshit} from "./modules/Bullshit";
 import {Dawa} from "./modules/Dawa";
 import {Stoll} from "./modules/Stoll";
 import {Unicode} from "./modules/Unicode";
-import * as express from "express";
-import * as path from "path";
-import * as session from "express-session";
-import * as mongoSessionStore from "connect-mongodb-session";
-import * as sendSeekable from "send-seekable";
-import * as bodyParser from "body-parser";
 
 //This makes IRepository useless
-const MongoDBStore = mongoSessionStore(session);
+const MongoStore = mongoSessionStore(session);
 
 const config = require("./config.json");
-const sessionStore = new MongoDBStore({
-    uri: config.mongodb.url,
-    collection: 'sessions'
-});
+
 const _Repository = new MongoRepository(config, function(){
     const _Bot = new Bot(config, _Repository);
     const _App = express();
+
+    const sessionStore = new MongoStore({
+        db: _Repository.DB,
+        collection: 'sessions'
+    });
 
     _App.use(require('express-session')({
         secret: config.sessionSecret,

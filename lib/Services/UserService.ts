@@ -1,4 +1,3 @@
-import {IRepository} from "../Repositories/IRepository";
 import {Service} from "./Service";
 import {User} from "../DataObjects/User";
 /**

@@ -1,11 +1,10 @@
-import {IRepository} from "./IRepository";
 import * as mongo from "mongodb";
 import {Db, MongoClient, ObjectID} from "mongodb";
 import * as Grid from "gridfs";
 /**
  * Created by hypfer on 08.06.17.
  */
-export class MongoRepository implements IRepository {
+export class MongoRepository {
     Config : any;
     DB : Db;
     GFS : Grid;

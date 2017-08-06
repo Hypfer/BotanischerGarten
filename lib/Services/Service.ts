@@ -1,11 +1,11 @@
-import {IRepository} from "../Repositories/IRepository";
+import {MongoRepository} from "../Repositories/MongoRepository";
 /**
  * Created by hypfer on 06.06.17.
  */
 export abstract class Service {
-    Repository : IRepository;
+    Repository : MongoRepository;
     Collection : string;
-    constructor(repository : IRepository) {
+    constructor(repository : MongoRepository) {
         this.Repository = repository;
         this.Collection = this.getCollection();
     }

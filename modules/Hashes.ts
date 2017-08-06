@@ -1030,7 +1030,7 @@ export class Hashes extends Module {
     private getRandomPhotoHash(callback) {
         const self = this;
 
-        this.HashService.GetRandomIds(1, {"Public" : true, "HashType": PhotoHash}, function(IDs){
+        this.HashService.GetRandomIds(1, {"Public" : true, "HashType": "PhotoHash"}, function(IDs){
             if(IDs.length > 0) {
                 self.HashService.GetHashById(IDs[0], function(hash: Hash) {
                     if(hash) {

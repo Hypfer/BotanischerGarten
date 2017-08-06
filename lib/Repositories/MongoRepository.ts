@@ -86,6 +86,34 @@ export class MongoRepository {
         });
     }
 
+    GetFirstAndLastId(collection: string, condition: any, callback: Function) {
+        const self = this;
+        const _collection = this.DB.collection(collection);
+        const returnObj = {
+            first: undefined,
+            last: undefined
+        };
+        condition = condition ? condition : {};
+        _collection.find(condition).sort({"_id": -1}).limit(1).toArray(function(err, docs){
+            if(err) {
+                throw new Error(JSON.stringify(err));
+            }
+            if(docs.length > 0) {
+                returnObj.first = docs[0];
+            }
+            _collection.find(condition).sort({"_id" : 1}).limit(1).toArray(function(err, docs){
+                if(err) {
+                    throw new Error(JSON.stringify(err));
+                }
+                if(docs.length > 0) {
+                    returnObj.last = docs[0];
+                }
+
+                callback(returnObj);
+            })
+        })
+    }
+
     GetPreviousAndNextByDbId(collection: string, id: string, condition : any, callback: Function) {
         const self = this;
         const _collection = this.DB.collection(collection);

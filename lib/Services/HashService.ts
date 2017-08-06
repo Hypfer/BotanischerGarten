@@ -48,6 +48,19 @@ export class HashService extends Service {
         })
     }
 
+    //TODO: Refactor
+    GetFirstAndLastId(condition: any, callback : Function) {
+        super.GetFirstAndLastId(condition, function(obj){
+            if(obj.first) {
+                obj.first = HashService.deserializeHash(obj.first);
+            }
+            if(obj.last) {
+                obj.last = HashService.deserializeHash(obj.last);
+            }
+            callback(obj);
+        })
+    }
+
     DeleteHash(hash:Hash, callback : Function) {
         super.DeleteById(hash.ID, callback);
     }

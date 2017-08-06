@@ -11,12 +11,11 @@
 <body>
 <div class="return"><a href="/" title="random">{{bot_friendly_name}}</a></div>
 <div class="controls">
-
-    {{#if next_id}}<a id="next" href="/hash/{{next_id}}"><<-</a>&nbsp;|&nbsp;{{/if}}
-
-    <a id="random" href="/">random</a>&nbsp;
-
-    {{#if prev_id}}&nbsp;| <a id="prev" href="/hash/{{prev_id}}">->></a>{{/if}}
+    {{#if first_id}}<a id="first" href="/hash/{{first_id}}">α</a>&nbsp;|&nbsp;{{else}}&nbsp;&nbsp;&nbsp;&nbsp;{{/if}}
+    {{#if next_id}}<a id="next" href="/hash/{{next_id}}"><<-</a>&nbsp;|&nbsp;{{else}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{/if}}
+    &nbsp;<a id="random" href="/">random</a>&nbsp;
+    {{#if prev_id}}&nbsp;| <a id="prev" href="/hash/{{prev_id}}">->></a>{{else}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{/if}}
+    {{#if last_id}}&nbsp;| <a id="prev" href="/hash/{{last_id}}">ω</a>{{else}}&nbsp;&nbsp;&nbsp;&nbsp;{{/if}}
 
 </div>
 <div class="wrapper">

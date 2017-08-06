@@ -989,7 +989,16 @@ export class Hashes extends Module {
                                     templateContent["next_id"] = obj.next.ID;
                                 }
 
-                                res.render('hash', templateContent);
+                                self.HashService.GetFirstAndLastId({}, function(obj){
+                                    if(obj.first) {
+                                        templateContent["first_id"] = obj.first.ID;
+                                    }
+                                    if(obj.last) {
+                                        templateContent["last_id"] = obj.last.ID;
+                                    }
+
+                                    res.render('hash', templateContent);
+                                })
                             });
                         });
                     } else {

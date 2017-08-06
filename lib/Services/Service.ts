@@ -20,6 +20,9 @@ export abstract class Service {
     protected GetPreviousAndNextByDbId(id: string, condition : any, callback: Function) {
         this.Repository.GetPreviousAndNextByDbId(this.Collection, id, condition, callback);
     }
+    protected GetFirstAndLastId(condition: any, callback : Function) {
+        this.Repository.GetFirstAndLastId(this.Collection, condition, callback);
+    }
     /*protected GetAllByKeyValue( key: string, value: string, callback : Function) {
         this.Repository.GetAllByKeyValue(this.Collection, key, value, callback);
     };

@@ -15,6 +15,13 @@ export class UserService extends Service{
 
         super.GetById(user.ID, function(result){
             if(result) {
+                if(result.FirstName !== user.FirstName ||
+                   result.Username !== user.Username) {
+                    user.Roles = result.Roles;
+                    self.SaveUser(user, function(){
+                        callback(user);
+                    })
+                }
                 callback(new User(result.ID, result.FirstName, result.Roles, result.Username));
             } else {
                 const newUser = new User(user.ID, user.FirstName, [], user.Username);

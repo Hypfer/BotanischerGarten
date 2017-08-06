@@ -851,7 +851,7 @@ export class Hashes extends Module {
 
         this.App.get('/tsbanner/current', function(req,res,next){
             if(currentTSBannerStorage.hash) {
-                res.redirect("/"+ currentTSBannerStorage.hash.ID);
+                res.redirect("/hash/"+ currentTSBannerStorage.hash.ID);
             } else {
                 next();
             }

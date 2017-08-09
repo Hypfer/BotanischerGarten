@@ -24,7 +24,7 @@ export class GroupService extends Service {
         })
     }
 
-    FindGroupById(id: string, callback : GroupCallback) {
+    FindGroupById(id: number, callback : GroupCallback) {
         const self = this;
 
         super.GetById(id, function(result){

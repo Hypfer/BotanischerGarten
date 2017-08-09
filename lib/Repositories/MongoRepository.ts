@@ -4,6 +4,8 @@ import * as Grid from "gridfs";
 /**
  * Created by hypfer on 08.06.17.
  */
+
+//TODO: Some sort of caching?
 export class MongoRepository {
     Config : any;
     DB : Db;
@@ -25,7 +27,7 @@ export class MongoRepository {
         })
     }
 
-    GetById(collection: string, id: string, callback: Function) {
+    GetById(collection: string, id: any, callback: Function) {
         const self = this;
         const _collection = this.DB.collection(collection);
 
@@ -169,7 +171,7 @@ export class MongoRepository {
         });
     }*/
 
-    Save(collection: string, id: string, entity: any, callback: Function) {
+    Save(collection: string, id: any, entity: any, callback: Function) {
         const _collection = this.DB.collection(collection);
 
         entity["id"] = id;

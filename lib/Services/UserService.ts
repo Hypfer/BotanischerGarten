@@ -32,7 +32,7 @@ export class UserService extends Service{
         });
 
     }
-    FindUserById(id : string, callback : UserCallback) : any {
+    FindUserById(id : number, callback : UserCallback) : any {
         const self = this;
 
         super.GetById(id, function(result){

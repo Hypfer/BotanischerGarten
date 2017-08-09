@@ -9,7 +9,7 @@ export class VenueHash extends LocationHash {
     Title : string;
     Address : string;
     Foursquare_id : string;
-    constructor(id : string, ownerID : string, DbId: string, Source : number, Public : Boolean,
+    constructor(id : string, ownerID : number, DbId: string, Source : number, Public : Boolean,
                 latitude : number, longitude : number,
                 title : string, address : string, foursquare_id : string) {
         super(id, ownerID, DbId, Source, Public, latitude, longitude);

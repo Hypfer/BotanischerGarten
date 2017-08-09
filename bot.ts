@@ -234,7 +234,7 @@ export class Bot {
         if(msg.from) {
             user = new User(msg.from.id, msg.from.first_name, [], msg.from.username);
         } else {
-            user = new User("Unknown", "Unknown", []);
+            user = new User(-1, "Unknown", []);
         }
 
         this.UserService.FindUser(user, function(user){
@@ -242,23 +242,35 @@ export class Bot {
                 group = new Group(msg.chat.id, msg.chat.type, msg.chat.title);
 
                 self.GroupService.FindGroup(group, function(group){
-                    group.addMember(user.ID);
+                    let changed = false;
+
+                    if(!group.isMember(user.ID)) {
+                        group.addMember(user.ID);
+                        changed = true;
+                    }
 
                     if(msg.new_chat_members && msg.new_chat_members.length > 0) {
                         msg.new_chat_members.forEach(function(member){
                             group.addMember(member.id);
                         });
+                        changed = true;
                     }
                     if(msg.new_chat_member) {
                         group.addMember(msg.new_chat_member.id);
+                        changed = true;
                     }
                     if(msg.left_chat_member) {
                         group.removeMember(msg.left_chat_member.id);
+                        changed = true;
                     }
 
-                    self.GroupService.SaveGroup(group, function() {
+                    if(changed === true) {
+                        self.GroupService.SaveGroup(group, function() {
+                            callback(new IncomingMessage(user, msg, group));
+                        })
+                    } else {
                         callback(new IncomingMessage(user, msg, group));
-                    })
+                    }
                 });
             } else {
                 callback(new IncomingMessage(user, msg));

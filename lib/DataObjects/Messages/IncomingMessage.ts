@@ -11,6 +11,6 @@ export class IncomingMessage {
     constructor(from : User, message: any, group? : Group) {
         this.From = from;
         this.Message = message;
-        this.Group = group ? group : new Group("Unknown", "group", "Unknown");
+        this.Group = group ? group : new Group(-1, "group", "Unknown");
     }
 }

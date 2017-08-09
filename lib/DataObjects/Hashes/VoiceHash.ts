@@ -7,7 +7,7 @@ export class VoiceHash extends BinaryDataHash {
         return "VoiceHash";
     }
     Duration : number;
-    constructor(id : string, ownerID : string, DbId: string, Source : number, Public : Boolean, dataStreamHex : string,
+    constructor(id : string, ownerID : number, DbId: string, Source : number, Public : Boolean, dataStreamHex : string,
                 dataStreamSize : number, dataStreamMime : string, fileId : string,
                 dataStreamInternalID : string, duration : number) {
         super(id, ownerID, DbId, Source, Public,

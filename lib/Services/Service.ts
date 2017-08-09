@@ -11,7 +11,7 @@ export abstract class Service {
     }
     protected abstract getCollection() : string;
 
-    protected GetById(id : string, callback : Function) {
+    protected GetById(id : any, callback : Function) {
         this.Repository.GetById(this.Collection, id, callback);
     };
     protected GetByDbId(id : string, callback : Function) {
@@ -29,7 +29,7 @@ export abstract class Service {
     protected GetAll(callback : Function) {
         this.Repository.GetAll(this.Collection, callback);
     }; */
-    protected Save(id: string, entity : any, callback : Function) {
+    protected Save(id: any, entity : any, callback : Function) {
         this.Repository.Save(this.Collection, id, entity, callback);
     }; //upsert
     protected DeleteById(id : string, callback : Function) {

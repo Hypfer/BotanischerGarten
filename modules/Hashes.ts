@@ -48,6 +48,7 @@ import * as uuid from "uuid";
 import {BinaryDataHash} from "../lib/DataObjects/Hashes/BinaryDataHash";
 import {UserService} from "../lib/Services/UserService";
 import {LoginTokenService} from "../lib/Services/LoginTokenService";
+import {GroupService} from "../lib/Services/GroupService";
 /**
  * Created by hypfer on 08.06.17.
  */
@@ -55,17 +56,19 @@ type DownloadedFileCallback = (err : any, data? : BinaryData) => any;
 export class Hashes extends Module {
     private HashService : HashService;
     private UserService : UserService;
+    private GroupService : GroupService;
     private LoginTokenService : LoginTokenService;
     constructor(config : any, bot : Bot, app: any) {
         super(config, bot, app);
-        this.HashService = new HashService(this.Bot.Repository);
+        this.HashService = new HashService(this.Bot.Repository); //TODO: No new Services here
         this.UserService = new UserService(this.Bot.Repository);
+        this.GroupService = new GroupService(this.Bot.Repository);
         this.LoginTokenService = new LoginTokenService(this.Bot.Repository);
     }
 
     //TODO: Remove redundant code (not gonna happen)
 
-    private static migrationMessageBuilder(oldhash : any, migratorChat : string) : IncomingMessage {
+    private static migrationMessageBuilder(oldhash : any, migratorChat : number) : IncomingMessage {
         let replyToMessage;
 
         switch(oldhash.type) {
@@ -116,7 +119,7 @@ export class Hashes extends Module {
         }
 
         return new IncomingMessage(
-            new User("-1", "System", ["system"]),
+            new User(-1, "System", ["system"]),
             {
                 "chat" : {
                     "id" : migratorChat
@@ -283,18 +286,27 @@ export class Hashes extends Module {
             const command = /#([\S]+)/.exec(commandContainingString);
 
             if(command && command.length >= 2) {
-                self.handleHash(command[1].toLowerCase(), msg.Message.chat.id);
+                self.handleHash(command[1].toLowerCase(), msg.Message.chat.id, msg.From);
             }
         });
     }
 
-    private handleHash(command : string, chatID : number) {
+    private handleHash(command : string, chatID : number, user : User) {
         const self = this;
 
         this.HashService.GetHashById(command, function(hash){
             if(hash) {
                 if((hash.Public === true) || (hash.Source === chatID)) {
                     self.sendHash(hash, chatID);
+                } else {
+                    if(hash.Source) {
+                        self.GroupService.FindGroupById(hash.Source, function(group){
+                            if(group && group.isMember(user.ID)) {
+                                self.sendHash(hash, chatID);
+                            }
+                        })
+                    }
+
                 }
             }
         });
@@ -724,6 +736,9 @@ export class Hashes extends Module {
 
     private createInlineQueryResultsFromHashes(hashes : Array<Hash>, random : boolean) : Array<InlineQueryResult> {
         const results = [];
+
+        /*TODO: Some kind of magic to avoid the callback hell while also checking if the user is member of the group
+                of the private hash */
 
         hashes.forEach(function(hash){
             if(hash.Public === true) {

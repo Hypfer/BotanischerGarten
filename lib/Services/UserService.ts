@@ -3,7 +3,7 @@ import {User} from "../DataObjects/User";
 /**
  * Created by hypfer on 06.06.17.
  */
-type UserCallback = (hash : User) => any;
+type UserCallback = (user : User) => any;
 export class UserService extends Service{
 
     protected getCollection(): string {

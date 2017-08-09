@@ -18,6 +18,8 @@ import {OutgoingLocationMessage} from "./lib/DataObjects/Messages/OutgoingMessag
 import {OutgoingVenueMessage} from "./lib/DataObjects/Messages/OutgoingMessages/OutgoingVenueMessage";
 import {OutgoingContactMessage} from "./lib/DataObjects/Messages/OutgoingMessages/OutgoingContactMessage";
 import {MongoRepository} from "./lib/Repositories/MongoRepository";
+import {Group} from "./lib/DataObjects/Group";
+import {GroupService} from "./lib/Services/GroupService";
 /**
  * Created by hypfer on 06.06.17.
  */
@@ -27,6 +29,7 @@ export class Bot {
     TgBot : TelegramBot;
     Repository : MongoRepository;
     UserService : UserService;
+    GroupService : GroupService;
     CommandManager : CommandManager;
     MessageChain : any;
     InlineChain : any;
@@ -43,6 +46,7 @@ export class Bot {
         this.TgBot = new TelegramBot(config.token, {polling: true});
         this.Repository = repository;
         this.UserService = new UserService(this.Repository);
+        this.GroupService = new GroupService(this.Repository);
         this.CommandManager = new CommandManager();
         this.MessageChain = new Chain();
         this.InlineChain = new Chain();
@@ -224,15 +228,42 @@ export class Bot {
     }
 
     private buildIncomingMessage(msg : any, callback : Function) {
-        let user;
+        const self = this;
+        let user, group;
 
         if(msg.from) {
             user = new User(msg.from.id, msg.from.first_name, [], msg.from.username);
         } else {
             user = new User("Unknown", "Unknown", []);
         }
+
         this.UserService.FindUser(user, function(user){
-            callback(new IncomingMessage(user, msg));
+            if(msg.chat) {
+                group = new Group(msg.chat.id, msg.chat.type, msg.chat.title);
+
+                self.GroupService.FindGroup(group, function(group){
+                    group.addMember(user.ID);
+
+                    if(msg.new_chat_members && msg.new_chat_members.length > 0) {
+                        msg.new_chat_members.forEach(function(member){
+                            group.addMember(member.id);
+                        });
+                    }
+                    if(msg.new_chat_member) {
+                        group.addMember(msg.new_chat_member.id);
+                    }
+                    if(msg.left_chat_member) {
+                        group.removeMember(msg.left_chat_member.id);
+                    }
+
+                    self.GroupService.SaveGroup(group, function() {
+                        callback(new IncomingMessage(user, msg, group));
+                    })
+                });
+            } else {
+                callback(new IncomingMessage(user, msg));
+            }
+
         });
     }
 

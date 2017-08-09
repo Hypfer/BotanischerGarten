@@ -697,17 +697,31 @@ export class Hashes extends Module {
                     IDs.forEach(function(id){
                         fetchFunctions.push(function(callback){
                             self.HashService.GetHashById(id, function(hash :Hash){
-                                fetchedHashes.push(hash);
-                                callback();
-                            })
+                                if(hash.Source) {
+                                    self.GroupService.FindGroupById(hash.Source, function(group){
+                                        if(group) {
+                                            fetchedHashes.push({hash: hash, source : group});
+                                        } else {
+                                            fetchedHashes.push({hash: hash});
+                                            callback();
+                                        }
+                                    })
+                                } else {
+                                    fetchedHashes.push({hash: hash});
+                                    callback();
+                                }
+                            });
                         });
                     });
 
                     async.waterfall(fetchFunctions, function(){
-                        self.Bot.answerInlineQuery(msg.Message.id, self.createInlineQueryResultsFromHashes(fetchedHashes, true), {
-                            cache_time: 5, //Damit neue results zeitnah auftauchen
-                            next_offset: offset+50
-                        });
+                        self.Bot.answerInlineQuery(msg.Message.id,
+                            self.createInlineQueryResultsFromHashes(fetchedHashes, true, msg.From),
+                            {
+                                cache_time: 5, //Damit neue results zeitnah auftauchen
+                                next_offset: offset+50
+                            }
+                        );
                     })
                 });
             } else {
@@ -717,31 +731,44 @@ export class Hashes extends Module {
                     IDs.forEach(function(id){
                         fetchFunctions.push(function(callback){
                             self.HashService.GetHashById(id, function(hash :Hash){
-                                fetchedHashes.push(hash);
-                                callback();
-                            })
+                                if(hash.Source) {
+                                    self.GroupService.FindGroupById(hash.Source, function(group){
+                                        if(group) {
+                                            fetchedHashes.push({hash: hash, source : group});
+                                            callback();
+                                        } else {
+                                            fetchedHashes.push({hash: hash});
+                                            callback();
+                                        }
+                                    })
+                                } else {
+                                    fetchedHashes.push({hash: hash});
+                                    callback();
+                                }
+                            });
                         });
                     });
 
                     async.waterfall(fetchFunctions, function(){
-                        self.Bot.answerInlineQuery(msg.Message.id, self.createInlineQueryResultsFromHashes(fetchedHashes, false), {
-                            cache_time: 5, //Damit neue results zeitnah auftauchen
-                            next_offset: offset+50
-                        });
+                        self.Bot.answerInlineQuery(msg.Message.id,
+                            self.createInlineQueryResultsFromHashes(fetchedHashes, false, msg.From),
+                            {
+                                cache_time: 5, //Damit neue results zeitnah auftauchen
+                                next_offset: offset+50
+                            }
+                        );
                     })
                 });
             }
         });
     }
 
-    private createInlineQueryResultsFromHashes(hashes : Array<Hash>, random : boolean) : Array<InlineQueryResult> {
+    private createInlineQueryResultsFromHashes(hashes : Array<any>, random : boolean, user: User) : Array<InlineQueryResult> {
         const results = [];
 
-        /*TODO: Some kind of magic to avoid the callback hell while also checking if the user is member of the group
-                of the private hash */
-
-        hashes.forEach(function(hash){
-            if(hash.Public === true) {
+        hashes.forEach(function(tuple){
+            const hash : Hash = tuple.hash;
+            if(hash.Public === true || (tuple.source && tuple.source.isMember(user.ID))) {
                 if(hash instanceof PhotoHash) {
                     results.push(new InlineQueryResultCachedPhoto(
                         random ? uuid.v4() : hash.ID,

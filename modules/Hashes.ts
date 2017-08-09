@@ -701,6 +701,7 @@ export class Hashes extends Module {
                                     self.GroupService.FindGroupById(hash.Source, function(group){
                                         if(group) {
                                             fetchedHashes.push({hash: hash, source : group});
+                                            callback();
                                         } else {
                                             fetchedHashes.push({hash: hash});
                                             callback();

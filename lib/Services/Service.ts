@@ -32,7 +32,7 @@ export abstract class Service {
     protected Save(id: any, entity : any, callback : Function) {
         this.Repository.Save(this.Collection, id, entity, callback);
     }; //upsert
-    protected DeleteById(id : string, callback : Function) {
+    protected DeleteById(id : any, callback : Function) {
         this.Repository.DeleteById(this.Collection, id, callback);
     }
     GetAllIds(callback : Function) {

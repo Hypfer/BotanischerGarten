@@ -59,14 +59,35 @@ export class Bot {
                 console.dir(msg);
             }
             self.buildIncomingMessage(msg, function(Message : IncomingMessage){
-                if(Message.From.hasRole("user")) {
-                    self.MessageChain.start(Message,
-                        function(context) {
-                            //success
-                        },
-                        function(context) {
-                            //interrupted
-                        });
+                if(Message.From.ID === -1 && msg.chat.type === "private") {
+                    if (msg.text === "/start") {
+                        self.UserService.SaveUser(
+                            new User(msg.from.id, msg.from.first_name, [], msg.from.username),
+                            function () {
+                                self.sendReply(new OutgoingTextMessage("You are now opted in!"), msg.chat.id);
+                            }
+                        )
+                    }
+                } else if(Message.From.ID !== -1 && msg.chat.type === "private" && msg.text === "/stop") {
+                    self.UserService.DeleteUser(
+                        Message.From,
+                        function() {
+                            self.sendReply(
+                                new OutgoingTextMessage("Your Account has been deleted."),
+                                msg.chat.id
+                            );
+                        }
+                    )
+                } else {
+                    if(Message.From.hasRole("user")) {
+                        self.MessageChain.start(Message,
+                            function(context) {
+                                //success
+                            },
+                            function(context) {
+                                //interrupted
+                            });
+                    }
                 }
             });
         });
@@ -238,42 +259,53 @@ export class Bot {
         }
 
         this.UserService.FindUser(user, function(user){
-            if(msg.chat) {
-                group = new Group(msg.chat.id, msg.chat.type, msg.chat.title);
+            if(user) {
+                if(msg.chat) {
+                    group = new Group(msg.chat.id, msg.chat.type, msg.chat.title);
 
-                self.GroupService.FindGroup(group, function(group){
-                    let changed = false;
+                    self.GroupService.FindGroup(group, function(group){
+                        let changed = false;
 
-                    if(!group.isMember(user.ID)) {
-                        group.addMember(user.ID);
-                        changed = true;
-                    }
+                        if(!group.isMember(user.ID)) {
+                            group.addMember(user.ID);
+                            changed = true;
+                        }
 
-                    if(msg.new_chat_members && msg.new_chat_members.length > 0) {
-                        msg.new_chat_members.forEach(function(member){
-                            group.addMember(member.id);
-                        });
-                        changed = true;
-                    }
-                    if(msg.new_chat_member) {
-                        group.addMember(msg.new_chat_member.id);
-                        changed = true;
-                    }
-                    if(msg.left_chat_member) {
-                        group.removeMember(msg.left_chat_member.id);
-                        changed = true;
-                    }
+                        //Since I'm only allowed to save people who opt-in to this bot
+                        //i cannot just push every ID that joins the group
+                        //
+                        //To avoid the callback hell it will be required for new members which are opted-in
+                        //to send a message to the group they want to be part of
+                        //This way the user object is already in memory :-)
+                        /*
+                        if(msg.new_chat_members && msg.new_chat_members.length > 0) {
+                            msg.new_chat_members.forEach(function(member){
+                                group.addMember(member.id);
+                            });
+                            changed = true;
+                        }
+                        if(msg.new_chat_member) {
+                            group.addMember(msg.new_chat_member.id);
+                            changed = true;
+                        } */
+                        if(msg.left_chat_member) {
+                            group.removeMember(msg.left_chat_member.id);
+                            changed = true;
+                        }
 
-                    if(changed === true) {
-                        self.GroupService.SaveGroup(group, function() {
+                        if(changed === true) {
+                            self.GroupService.SaveGroup(group, function() {
+                                callback(new IncomingMessage(user, msg, group));
+                            })
+                        } else {
                             callback(new IncomingMessage(user, msg, group));
-                        })
-                    } else {
-                        callback(new IncomingMessage(user, msg, group));
-                    }
-                });
+                        }
+                    });
+                } else {
+                    callback(new IncomingMessage(user, msg));
+                }
             } else {
-                callback(new IncomingMessage(user, msg));
+                callback(new IncomingMessage(new User(-1, "Unknown", []), msg));
             }
 
         });

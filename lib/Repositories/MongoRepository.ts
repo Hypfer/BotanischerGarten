@@ -199,7 +199,7 @@ export class MongoRepository {
         }
     }
 
-    DeleteById(collection: string, id: string, callback: Function) {
+    DeleteById(collection: string, id: any, callback: Function) {
         const self = this;
         const _collection = this.DB.collection(collection);
 

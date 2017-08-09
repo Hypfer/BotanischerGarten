@@ -24,10 +24,7 @@ export class UserService extends Service{
                 }
                 callback(new User(result.ID, result.FirstName, result.Roles, result.Username));
             } else {
-                const newUser = new User(user.ID, user.FirstName, [], user.Username);
-                self.SaveUser(newUser, function(){
-                    callback(newUser);
-                });
+                callback(undefined);
             }
         });
 
@@ -47,5 +44,9 @@ export class UserService extends Service{
 
     SaveUser(user: User, callback : UserCallback) : any {
         super.Save(user.ID, user, callback);
+    }
+
+    DeleteUser(user: User, callback : Function) : any {
+        super.DeleteById(user.ID, callback);
     }
 }

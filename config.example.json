@@ -11,7 +11,7 @@
   },
   "bot": {
     "friendly_name": "Klaus",
-    "username": "@KlausKlausKlaus"
+    "username": "KlausKlausKlaus"
   },
   "sessionSecret": "foo"
 }

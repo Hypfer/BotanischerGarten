@@ -899,7 +899,9 @@ export class Hashes extends Module {
 
         this.App.get('/', function (req, res, next) {
             if (!req.session.authenticated) {
-                res.render('login');
+                res.render('login', {
+                    bot_username: self.Config.bot.username
+                });
             } else {
                 //random
                 self.HashService.GetRandomIds(1, {"Public": true}, function (ids) {
@@ -956,7 +958,8 @@ export class Hashes extends Module {
                 const hash_name = decodeURIComponent(req.url.replace("/hash/", ""));
                 let templateContent = {
                     hash_name: hash_name,
-                    bot_friendly_name: self.Config.bot.friendly_name
+                    bot_friendly_name: self.Config.bot.friendly_name,
+                    bot_username: self.Config.bot.username
                 };
                 self.HashService.GetHashById(hash_name, function (hash: Hash) {
                     if (hash && hash.Public === true) {
@@ -972,7 +975,7 @@ export class Hashes extends Module {
                                 (hash instanceof DocumentHash && hash.DataStreamMime === "image/gif")) {
                                 if (hash instanceof PhotoHash) {
                                     if (hash.Height && hash.Width) {
-                                        const dimensions = self.calculateDimensionsForHash(hash.Height, hash.Width);
+                                        const dimensions = Hashes.calculateDimensionsForHash(hash.Height, hash.Width);
                                         templateContent["height"] = dimensions.height;
                                         templateContent["width"] = dimensions.width;
                                     } else {
@@ -989,7 +992,7 @@ export class Hashes extends Module {
                                 templateContent["audio"] = true;
                             } else if (hash instanceof VideoHash) {
                                 if (hash.Height && hash.Width) {
-                                    const dimensions = self.calculateDimensionsForHash(hash.Height, hash.Width);
+                                    const dimensions = Hashes.calculateDimensionsForHash(hash.Height, hash.Width);
                                     templateContent["height"] = dimensions.height;
                                     templateContent["width"] = dimensions.width;
                                 } else {
@@ -1069,7 +1072,7 @@ export class Hashes extends Module {
         });
     }
 
-    private calculateDimensionsForHash(height : number, width : number) : any {
+    private static calculateDimensionsForHash(height : number, width : number) : any {
         //maximum 640px width
         if(width <= 640) {
             return {height: height, width: width}

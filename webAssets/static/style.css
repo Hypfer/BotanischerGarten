@@ -191,6 +191,12 @@ video#player {
     height: 50%;
 }
 
+.command {
+    font-family: monospace;
+    color: #9f0;
+    font-size: 90%;
+}
+
 /* Plyr */
 .plyr--audio .plyr__controls {
     padding: 0;

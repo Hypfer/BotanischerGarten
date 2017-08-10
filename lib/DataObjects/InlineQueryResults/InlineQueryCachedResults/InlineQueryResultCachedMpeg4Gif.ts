@@ -1,4 +1,3 @@
-import {InlineQueryResultCachedGif} from "./InlineQueryResultCachedGif";
 import {InlineQueryResult} from "../InlineQueryResult";
 import {InputMessageContent} from "../InputMessageContents/InputMessageContent";
 /**

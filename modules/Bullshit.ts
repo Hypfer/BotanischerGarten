@@ -2,9 +2,9 @@ import {Module} from "./Module";
 import {IncomingMessage} from "../lib/DataObjects/Messages/IncomingMessage";
 import {Helpers} from "../lib/Helpers";
 import {OutgoingTextMessage} from "../lib/DataObjects/Messages/OutgoingMessages/OutgoingTextMessage";
-import uuid = require("uuid");
 import {InputTextMessageContent} from "../lib/DataObjects/InlineQueryResults/InputMessageContents/InputTextMessageContent";
 import {InlineQueryResultArticle} from "../lib/DataObjects/InlineQueryResults/InlineQueryResultArticle";
+import * as uuid from "uuid";
 /**
  * Created by hypfer on 09.06.17.
  */

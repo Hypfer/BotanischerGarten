@@ -46,23 +46,17 @@ import {InlineQueryResult} from "../lib/DataObjects/InlineQueryResults/InlineQue
 import {User} from "../lib/DataObjects/User";
 import * as uuid from "uuid";
 import {BinaryDataHash} from "../lib/DataObjects/Hashes/BinaryDataHash";
-import {UserService} from "../lib/Services/UserService";
 import {LoginTokenService} from "../lib/Services/LoginTokenService";
-import {GroupService} from "../lib/Services/GroupService";
 /**
  * Created by hypfer on 08.06.17.
  */
 type DownloadedFileCallback = (err : any, data? : BinaryData) => any;
 export class Hashes extends Module {
     private HashService : HashService;
-    private UserService : UserService;
-    private GroupService : GroupService;
     private LoginTokenService : LoginTokenService;
     constructor(config : any, bot : Bot, app: any) {
         super(config, bot, app);
-        this.HashService = new HashService(this.Bot.Repository); //TODO: No new Services here
-        this.UserService = new UserService(this.Bot.Repository);
-        this.GroupService = new GroupService(this.Bot.Repository);
+        this.HashService = new HashService(this.Bot.Repository);
         this.LoginTokenService = new LoginTokenService(this.Bot.Repository);
     }
 
@@ -300,7 +294,7 @@ export class Hashes extends Module {
                     self.sendHash(hash, chatID);
                 } else {
                     if(hash.Source) {
-                        self.GroupService.FindGroupById(hash.Source, function(group){
+                        self.Bot.GroupService.FindGroupById(hash.Source, function(group){
                             if(group && group.isMember(user.ID)) {
                                 self.sendHash(hash, chatID);
                             }
@@ -698,7 +692,7 @@ export class Hashes extends Module {
                         fetchFunctions.push(function(callback){
                             self.HashService.GetHashById(id, function(hash :Hash){
                                 if(hash.Source) {
-                                    self.GroupService.FindGroupById(hash.Source, function(group){
+                                    self.Bot.GroupService.FindGroupById(hash.Source, function(group){
                                         if(group) {
                                             fetchedHashes.push({hash: hash, source : group});
                                             callback();
@@ -733,7 +727,7 @@ export class Hashes extends Module {
                         fetchFunctions.push(function(callback){
                             self.HashService.GetHashById(id, function(hash :Hash){
                                 if(hash.Source) {
-                                    self.GroupService.FindGroupById(hash.Source, function(group){
+                                    self.Bot.GroupService.FindGroupById(hash.Source, function(group){
                                         if(group) {
                                             fetchedHashes.push({hash: hash, source : group});
                                             callback();
@@ -1013,7 +1007,7 @@ export class Hashes extends Module {
                         }
 
 
-                        self.UserService.FindUserById(hash.OwnerID, function (user) {
+                        self.Bot.UserService.FindUserById(hash.OwnerID, function (user) {
                             if (user) {
                                 if (user.Username) {
                                     templateContent["user_nickname"] = user.Username;

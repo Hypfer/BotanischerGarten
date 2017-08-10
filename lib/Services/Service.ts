@@ -11,6 +11,10 @@ export abstract class Service {
     }
     protected abstract getCollection() : string;
 
+    protected Find(condition : any, callback: Function) {
+        this.Repository.Find(this.Collection, condition, callback);
+    }
+
     protected GetById(id : any, callback : Function) {
         this.Repository.GetById(this.Collection, id, callback);
     };

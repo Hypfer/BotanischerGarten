@@ -3,8 +3,8 @@ import {Helpers} from "../lib/Helpers";
 import {IncomingMessage} from "../lib/DataObjects/Messages/IncomingMessage";
 import {OutgoingTextMessage} from "../lib/DataObjects/Messages/OutgoingMessages/OutgoingTextMessage";
 import {InlineQueryResultArticle} from "../lib/DataObjects/InlineQueryResults/InlineQueryResultArticle";
-import uuid = require("uuid");
 import {InputTextMessageContent} from "../lib/DataObjects/InlineQueryResults/InputMessageContents/InputTextMessageContent";
+import * as uuid from "uuid";
 /**
  * Created by hypfer on 09.06.17.
  */

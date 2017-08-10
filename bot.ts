@@ -5,6 +5,7 @@ import {UserService} from "./lib/Services/UserService";
 import {IncomingMessage} from "./lib/DataObjects/Messages/IncomingMessage";
 import {CommandManager} from "./lib/CommandManager";
 import * as Chain from "chaining-tool";
+import * as async from "async";
 import {InlineQueryResult} from "./lib/DataObjects/InlineQueryResults/InlineQueryResult";
 import {OutgoingTextMessage} from "./lib/DataObjects/Messages/OutgoingMessages/OutgoingTextMessage";
 import {OutgoingPhotoMessage} from "./lib/DataObjects/Messages/OutgoingMessages/OutgoingPhotoMessage";
@@ -72,10 +73,26 @@ export class Bot {
                     self.UserService.DeleteUser(
                         Message.From,
                         function() {
-                            self.sendReply(
-                                new OutgoingTextMessage("Your Account has been deleted."),
-                                msg.chat.id
-                            );
+                            self.GroupService.GetGroupsWithUser(Message.From.ID, function(groups){
+                                const deleteFunctions = [];
+                                groups.forEach(function(group : Group){
+                                    deleteFunctions.push(function(callback){
+                                        group.removeMember(Message.From.ID);
+                                        self.GroupService.SaveGroup(group, function() {
+                                            callback();
+                                        })
+                                    })
+                                });
+
+
+                                async.waterfall(deleteFunctions, function() {
+                                    self.sendReply(
+                                        new OutgoingTextMessage("Your Account has been deleted."),
+                                        msg.chat.id
+                                    );
+                                });
+                            });
+
                         }
                     )
                 } else {
@@ -111,7 +128,6 @@ export class Bot {
                 }
             });
         });
-
 
         Bot.instance = this;
     }

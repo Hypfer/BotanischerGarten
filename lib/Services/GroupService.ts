@@ -39,4 +39,17 @@ export class GroupService extends Service {
     SaveGroup(group : Group, callback : GroupCallback) {
         super.Save(group.ID, group, callback);
     }
+
+    GetGroupsWithUser(userID : number, callback : Function) {
+        const self = this;
+
+        const groups = [];
+        super.Find({"MemberIDs": userID}, function(docs) {
+            docs.forEach(function(doc){
+                groups.push(new Group(doc.ID, doc.Type, doc.Name, doc.MemberIDs));
+            });
+
+            callback(groups);
+        })
+    }
 }

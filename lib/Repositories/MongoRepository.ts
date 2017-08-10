@@ -116,6 +116,18 @@ export class MongoRepository {
         })
     }
 
+    Find(collection: string, condition : any, callback: Function) {
+        const self = this;
+        const _collection = this.DB.collection(collection);
+        condition = condition ? condition : {};
+        _collection.find(condition).toArray(function(err,docs){
+            if(err) {
+                throw new Error(JSON.stringify(err));
+            }
+            callback(docs);
+        })
+    }
+
     GetPreviousAndNextByDbId(collection: string, id: string, condition : any, callback: Function) {
         const self = this;
         const _collection = this.DB.collection(collection);

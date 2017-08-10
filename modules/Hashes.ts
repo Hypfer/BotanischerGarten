@@ -900,7 +900,8 @@ export class Hashes extends Module {
         this.App.get('/', function (req, res, next) {
             if (!req.session.authenticated) {
                 res.render('login', {
-                    bot_username: self.Config.bot.username
+                    bot_username: self.Config.bot.username,
+                    bot_friendly_name: self.Config.bot.friendly_name
                 });
             } else {
                 //random

@@ -25,15 +25,19 @@
 
         {{#if image}}
             <a href="/b/{{hash_db_id}}" target="_blank">
-                <img src="/b/{{hash_db_id}}" style="max-width: 640px;height:auto;"/>
+                <img src="/b/{{hash_db_id}}" style="{{#if autoSize}}max-width: 640px;height:auto;{{/if}}"
+                    {{#if height}} height="{{height}}"{{/if}}{{#if width}} width="{{width}}"{{/if}} />
             </a>
         {{/if}}
         {{#if video}}
             <video id="player" src="/b/{{hash_db_id}}" preload="auto" controls loop
-                   style="max-width: 640px;height:auto;"></video>
+                   style="{{#if autoSize}}max-width: 640px;height:auto;{{/if}}"{{#if height}}
+                   height="{{height}}"{{/if}}{{#if width}} width="{{width}}"{{/if}} ></video>
         {{/if}}
         {{#if gif}}
-            <video id="player" src="/b/{{hash_db_id}}" preload="auto" loop></video>
+            <video id="player" src="/b/{{hash_db_id}}" preload="auto" loop
+                   style="{{#if autoSize}}max-width: 640px;height:auto;{{/if}}"{{#if height}}
+                   height="{{height}}"{{/if}}{{#if width}} width="{{width}}"{{/if}} ></video>
         {{/if}}
         {{#if audio}}
             <audio id="player" controls="" loop="" src="/b/{{hash_db_id}}"></audio>

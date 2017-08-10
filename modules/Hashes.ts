@@ -971,11 +971,12 @@ export class Hashes extends Module {
                             if (hash instanceof PhotoHash || hash instanceof StickerHash ||
                                 (hash instanceof DocumentHash && hash.DataStreamMime === "image/gif")) {
                                 if (hash instanceof PhotoHash) {
-                                    if (hash.Height) {
-                                        templateContent["height"] = hash.Height;
-                                    }
-                                    if (hash.Width) {
-                                        templateContent["width"] = hash.Width;
+                                    if (hash.Height && hash.Width) {
+                                        const dimensions = self.calculateDimensionsForHash(hash.Height, hash.Width);
+                                        templateContent["height"] = dimensions.height;
+                                        templateContent["width"] = dimensions.width;
+                                    } else {
+                                        templateContent["autoSize"] = true;
                                     }
                                 }
                                 templateContent["image"] = true;
@@ -987,12 +988,14 @@ export class Hashes extends Module {
                                 hash instanceof VoiceHash) {
                                 templateContent["audio"] = true;
                             } else if (hash instanceof VideoHash) {
-                                if (hash.Height) {
-                                    templateContent["height"] = hash.Height;
+                                if (hash.Height && hash.Width) {
+                                    const dimensions = self.calculateDimensionsForHash(hash.Height, hash.Width);
+                                    templateContent["height"] = dimensions.height;
+                                    templateContent["width"] = dimensions.width;
+                                } else {
+                                    templateContent["autoSize"] = true;
                                 }
-                                if (hash.Width) {
-                                    templateContent["width"] = hash.Width;
-                                }
+
                                 templateContent["video"] = true;
                             } else if (hash instanceof DocumentHash) {
                                 templateContent["file"] = true;
@@ -1064,6 +1067,16 @@ export class Hashes extends Module {
                 };
             }
         });
+    }
+
+    private calculateDimensionsForHash(height : number, width : number) : any {
+        //maximum 640px width
+        if(width <= 640) {
+            return {height: height, width: width}
+        } else {
+            const factor = height/width;
+            return {height: factor*640, width: 640}
+        }
     }
 
     private getRandomPhotoHash(callback) {

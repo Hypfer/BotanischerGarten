@@ -7,21 +7,20 @@ export class InlineQueryResultCachedDocument extends InlineQueryResult {
     protected getType(): string {
         return "document";
     }
-    document_file_id : string;
-    title : string;
-    description : string;
+
+    document_file_id: string;
+    title: string;
+    description: string;
     caption: string;
-    input_message_content : InputMessageContent;
-    reply_markup : any; //TODO
-    constructor(
-        id: string,
-        document_file_id : string,
-        title : string,
-        description? : string,
-        caption?: string,
-        input_message_content? : InputMessageContent,
-        reply_markup? : any
-    ) {
+    input_message_content: InputMessageContent;
+    reply_markup: any; //TODO
+    constructor(id: string,
+                document_file_id: string,
+                title: string,
+                description?: string,
+                caption?: string,
+                input_message_content?: InputMessageContent,
+                reply_markup?: any) {
         super(id);
         this.document_file_id = document_file_id;
         this.title = title;

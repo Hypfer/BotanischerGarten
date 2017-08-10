@@ -3,32 +3,32 @@ import {Group} from "../DataObjects/Group";
 /**
  * Created by Hypfer on 09/08/2017.
  */
-type GroupCallback = (group : Group) => any;
+type GroupCallback = (group: Group) => any;
 export class GroupService extends Service {
     protected getCollection(): string {
         return "Groups";
     }
 
-    FindGroup(group : Group, callback: GroupCallback) {
+    FindGroup(group: Group, callback: GroupCallback) {
         const self = this;
 
-        super.GetById(group.ID, function(result){
-            if(result) {
+        super.GetById(group.ID, function (result) {
+            if (result) {
                 callback(new Group(result.ID, result.Type, result.Name, result.MemberIDs));
             } else {
                 const newGroup = new Group(group.ID, group.Type, group.Name, group.MemberIDs);
-                self.SaveGroup(newGroup, function() {
+                self.SaveGroup(newGroup, function () {
                     callback(newGroup);
                 })
             }
         })
     }
 
-    FindGroupById(id: number, callback : GroupCallback) {
+    FindGroupById(id: number, callback: GroupCallback) {
         const self = this;
 
-        super.GetById(id, function(result){
-            if(result) {
+        super.GetById(id, function (result) {
+            if (result) {
                 callback(new Group(result.ID, result.Type, result.Name, result.MemberIDs))
             } else {
                 callback(undefined);
@@ -36,16 +36,16 @@ export class GroupService extends Service {
         })
     }
 
-    SaveGroup(group : Group, callback : GroupCallback) {
+    SaveGroup(group: Group, callback: GroupCallback) {
         super.Save(group.ID, group, callback);
     }
 
-    GetGroupsWithUser(userID : number, callback : Function) {
+    GetGroupsWithUser(userID: number, callback: Function) {
         const self = this;
 
         const groups = [];
-        super.Find({"MemberIDs": userID}, function(docs) {
-            docs.forEach(function(doc){
+        super.Find({"MemberIDs": userID}, function (docs) {
+            docs.forEach(function (doc) {
                 groups.push(new Group(doc.ID, doc.Type, doc.Name, doc.MemberIDs));
             });
 

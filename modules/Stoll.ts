@@ -9,12 +9,13 @@ import * as uuid from "uuid";
  * Created by hypfer on 09.06.17.
  */
 export class Stoll extends Module {
-    private StollAssets : any;
+    private StollAssets: any;
+
     protected registerMessageHandlers(MessageChain: any): void {
         const self = this;
 
-        MessageChain.add(function stoll(msg: IncomingMessage, next : Function){
-            if(!msg.Message.text || msg.Message.text.length === 0) {
+        MessageChain.add(function stoll(msg: IncomingMessage, next: Function) {
+            if (!msg.Message.text || msg.Message.text.length === 0) {
                 return next();
             }
 
@@ -30,7 +31,7 @@ export class Stoll extends Module {
     protected registerInlineHandlers(InlineChain: any): void {
         const self = this;
 
-        InlineChain.add(function stoll(msg: IncomingMessage, next : Function){
+        InlineChain.add(function stoll(msg: IncomingMessage, next: Function) {
             const query = msg.Message.query.toLowerCase();
 
             const command = Helpers.checkForCommand("stoll", query, false);
@@ -54,7 +55,7 @@ export class Stoll extends Module {
                 }
                 self.Bot.answerInlineQuery(msg.Message.id, results, {
                     cache_time: 5, //Damit neue results zeitnah auftauchen
-                    next_offset: offset+10
+                    next_offset: offset + 10
                 });
             } else {
                 next();
@@ -72,8 +73,8 @@ export class Stoll extends Module {
 
     private getStoll(): string {
         return Helpers.arrayRandom(this.StollAssets.teil1, false) + " " +
-               Helpers.arrayRandom(this.StollAssets.teil2, false) + " " +
-               Helpers.arrayRandom(this.StollAssets.teil3, false);
+            Helpers.arrayRandom(this.StollAssets.teil2, false) + " " +
+            Helpers.arrayRandom(this.StollAssets.teil3, false);
     }
 
 }

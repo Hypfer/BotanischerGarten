@@ -7,19 +7,18 @@ export class InlineQueryResultCachedMpeg4Gif extends InlineQueryResult {
     protected getType(): string {
         return "mpeg4_gif";
     }
-    mpeg4_file_id : string;
-    title : string;
+
+    mpeg4_file_id: string;
+    title: string;
     caption: string;
-    input_message_content : InputMessageContent;
-    reply_markup : any; //TODO
-    constructor(
-        id: string,
-        mpeg4_file_id : string,
-        title? : string,
-        caption?: string,
-        input_message_content? : InputMessageContent,
-        reply_markup? : any
-    ) {
+    input_message_content: InputMessageContent;
+    reply_markup: any; //TODO
+    constructor(id: string,
+                mpeg4_file_id: string,
+                title?: string,
+                caption?: string,
+                input_message_content?: InputMessageContent,
+                reply_markup?: any) {
         super(id);
         this.mpeg4_file_id = mpeg4_file_id;
         this.title = title;

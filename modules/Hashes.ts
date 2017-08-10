@@ -50,11 +50,12 @@ import {LoginTokenService} from "../lib/Services/LoginTokenService";
 /**
  * Created by hypfer on 08.06.17.
  */
-type DownloadedFileCallback = (err : any, data? : BinaryData) => any;
+type DownloadedFileCallback = (err: any, data?: BinaryData) => any;
 export class Hashes extends Module {
-    private HashService : HashService;
-    private LoginTokenService : LoginTokenService;
-    constructor(config : any, bot : Bot, app: any) {
+    private HashService: HashService;
+    private LoginTokenService: LoginTokenService;
+
+    constructor(config: any, bot: Bot, app: any) {
         super(config, bot, app);
         this.HashService = new HashService(this.Bot.Repository);
         this.LoginTokenService = new LoginTokenService(this.Bot.Repository);
@@ -62,51 +63,51 @@ export class Hashes extends Module {
 
     //TODO: Remove redundant code (not gonna happen)
 
-    private static migrationMessageBuilder(oldhash : any, migratorChat : number) : IncomingMessage {
+    private static migrationMessageBuilder(oldhash: any, migratorChat: number): IncomingMessage {
         let replyToMessage;
 
-        switch(oldhash.type) {
+        switch (oldhash.type) {
             case "text":
                 replyToMessage = {
-                                    "text" : oldhash.text
-                                 };
+                    "text": oldhash.text
+                };
                 break;
             case "photo":
                 replyToMessage = {
-                    "photo" : [{file_id : oldhash.file_id}]
+                    "photo": [{file_id: oldhash.file_id}]
                 };
                 break;
             case "voice":
                 replyToMessage = {
-                    "voice" : {file_id : oldhash.file_id}
+                    "voice": {file_id: oldhash.file_id}
                 };
                 break;
             case "document":
                 replyToMessage = {
-                    "document" : {
-                        file_id : oldhash.file_id,
-                        mime_type : oldhash.mime_type
+                    "document": {
+                        file_id: oldhash.file_id,
+                        mime_type: oldhash.mime_type
                     }
                 };
                 break;
             case "audio":
                 replyToMessage = {
-                    "audio" : {
-                        file_id : oldhash.file_id
+                    "audio": {
+                        file_id: oldhash.file_id
                     }
                 };
                 break;
             case "video":
                 replyToMessage = {
-                    "video" : {
-                        file_id : oldhash.file_id
+                    "video": {
+                        file_id: oldhash.file_id
                     }
                 };
                 break;
             case "sticker":
                 replyToMessage = {
-                    "sticker" : {
-                        file_id : oldhash.file_id
+                    "sticker": {
+                        file_id: oldhash.file_id
                     }
                 };
                 break;
@@ -115,10 +116,10 @@ export class Hashes extends Module {
         return new IncomingMessage(
             new User(-1, "System", ["system"]),
             {
-                "chat" : {
-                    "id" : migratorChat
+                "chat": {
+                    "id": migratorChat
                 },
-                reply_to_message : replyToMessage
+                reply_to_message: replyToMessage
             }
         )
     }
@@ -126,22 +127,22 @@ export class Hashes extends Module {
     protected registerMessageHandlers(MessageChain: any): void {
         const self = this;
 
-        MessageChain.add(function migrateOldHashes(msg : IncomingMessage, next) {
-            if(msg.From.hasRole("admin") && msg.Message.text &&
+        MessageChain.add(function migrateOldHashes(msg: IncomingMessage, next) {
+            if (msg.From.hasRole("admin") && msg.Message.text &&
                 msg.Message.chat.type === "private" && msg.Message.text === "migrateHashes") {
                 const oldHashes = require("../commands.json");
                 const oldHashKeys = Object.keys(oldHashes);
                 let timeout = 0;
-                oldHashKeys.forEach(function(hashKey){
-                    self.checkCommandExists(hashKey, function(exists){
-                        if(exists === false) {
+                oldHashKeys.forEach(function (hashKey) {
+                    self.checkCommandExists(hashKey, function (exists) {
+                        if (exists === false) {
                             const migrationMessage = Hashes.migrationMessageBuilder(oldHashes[hashKey], msg.From.ID);
-                            if(migrationMessage) {
-                                setTimeout(function() {
+                            if (migrationMessage) {
+                                setTimeout(function () {
                                     self.saveNewHash(hashKey, migrationMessage, true);
                                 }, timeout);
 
-                                timeout = timeout+5000;
+                                timeout = timeout + 5000;
                             }
                         }
                     });
@@ -152,9 +153,9 @@ export class Hashes extends Module {
             }
         });
 
-        MessageChain.add(function getLoginToken(msg: IncomingMessage, next){
-            if(msg.From.hasRole("user") && msg.Message.text === "/token") {
-                self.LoginTokenService.createToken(function(token){
+        MessageChain.add(function getLoginToken(msg: IncomingMessage, next) {
+            if (msg.From.hasRole("user") && msg.Message.text === "/token") {
+                self.LoginTokenService.createToken(function (token) {
                     self.Bot.sendReply(new OutgoingTextMessage(token), msg.Message.chat.id);
                 });
             } else {
@@ -162,16 +163,16 @@ export class Hashes extends Module {
             }
         });
 
-        MessageChain.add(function undefineHash(msg : IncomingMessage, next){
-            if(msg.Message.text) {
+        MessageChain.add(function undefineHash(msg: IncomingMessage, next) {
+            if (msg.Message.text) {
                 const command = Helpers.checkForCommand("undefine", msg.Message.text, true);
-                if(command) {
-                    if(command.Args[0] && command.Args[0] !== "") {
-                        self.HashService.GetHashById(command.Args[0], function(hash) {
-                            if(hash) {
-                                if(hash.OwnerID === msg.From.ID || msg.From.hasRole("admin")) {
-                                    self.HashService.DeleteHash(hash, function(){
-                                        self.Bot.sendReply(new OutgoingTextMessage("Undefined "+ hash.ID), msg.Message.chat.id);
+                if (command) {
+                    if (command.Args[0] && command.Args[0] !== "") {
+                        self.HashService.GetHashById(command.Args[0], function (hash) {
+                            if (hash) {
+                                if (hash.OwnerID === msg.From.ID || msg.From.hasRole("admin")) {
+                                    self.HashService.DeleteHash(hash, function () {
+                                        self.Bot.sendReply(new OutgoingTextMessage("Undefined " + hash.ID), msg.Message.chat.id);
                                     });
                                 }
                             }
@@ -186,32 +187,32 @@ export class Hashes extends Module {
 
         });
 
-        MessageChain.add(function defineHash(msg : IncomingMessage, next){
+        MessageChain.add(function defineHash(msg: IncomingMessage, next) {
             //TODO: Save Hash As Type
             //TODO: If hash is url of image try to get and save image
             let commandContainingString;
-            if(msg.Message.text) {
+            if (msg.Message.text) {
                 commandContainingString = msg.Message.text;
             } else if (msg.Message.caption) {
                 commandContainingString = msg.Message.caption;
             }
 
             const command = Helpers.checkForCommand("define", commandContainingString, true);
-            if(command) {
-                if(command.Args[0] && command.Args[0] !== "") {
+            if (command) {
+                if (command.Args[0] && command.Args[0] !== "") {
                     const newCommand = command.Args[0].toLowerCase();
 
-                    if(msg.Message.reply_to_message || msg.Message.caption) {
-                        self.checkCommandExists(newCommand, function(exists){
-                            if(exists) {
-                                self.Bot.sendReply(new OutgoingTextMessage("Hash "+ newCommand + " already exists."), msg.Message.chat.id);
+                    if (msg.Message.reply_to_message || msg.Message.caption) {
+                        self.checkCommandExists(newCommand, function (exists) {
+                            if (exists) {
+                                self.Bot.sendReply(new OutgoingTextMessage("Hash " + newCommand + " already exists."), msg.Message.chat.id);
                             } else {
                                 self.saveNewHash(newCommand, msg, true);
                             }
                         });
                     } else {
                         self.Bot.sendReply(new OutgoingTextMessage("Define command must either be in a reply or in a caption."),
-                                           msg.Message.chat.id);
+                            msg.Message.chat.id);
                     }
                 }
             } else {
@@ -220,25 +221,25 @@ export class Hashes extends Module {
         });
 
         //TODO: Refactor.
-        MessageChain.add(function defineHash(msg : IncomingMessage, next){
+        MessageChain.add(function defineHash(msg: IncomingMessage, next) {
             //TODO: Save Hash As Type
             //TODO: If hash is url of image try to get and save image
             let commandContainingString;
-            if(msg.Message.text) {
+            if (msg.Message.text) {
                 commandContainingString = msg.Message.text;
             } else if (msg.Message.caption) {
                 commandContainingString = msg.Message.caption;
             }
 
             const command = Helpers.checkForCommand("priv", commandContainingString, true);
-            if(command) {
-                if(command.Args[0] && command.Args[0] !== "") {
+            if (command) {
+                if (command.Args[0] && command.Args[0] !== "") {
                     const newCommand = command.Args[0].toLowerCase();
 
-                    if(msg.Message.reply_to_message || msg.Message.caption) {
-                        self.checkCommandExists(newCommand, function(exists){
-                            if(exists) {
-                                self.Bot.sendReply(new OutgoingTextMessage("Hash "+ newCommand + " already exists."), msg.Message.chat.id);
+                    if (msg.Message.reply_to_message || msg.Message.caption) {
+                        self.checkCommandExists(newCommand, function (exists) {
+                            if (exists) {
+                                self.Bot.sendReply(new OutgoingTextMessage("Hash " + newCommand + " already exists."), msg.Message.chat.id);
                             } else {
                                 self.saveNewHash(newCommand, msg, false);
                             }
@@ -253,11 +254,11 @@ export class Hashes extends Module {
             }
         });
 
-        MessageChain.add(function getHashes(msg : IncomingMessage, next){
-            if(msg.Message.text) {
+        MessageChain.add(function getHashes(msg: IncomingMessage, next) {
+            if (msg.Message.text) {
                 const command = Helpers.checkForCommand("hashes", msg.Message.text, true);
-                if(command) {
-                    self.HashService.GetAllIds(function(ids) {
+                if (command) {
+                    self.HashService.GetAllIds(function (ids) {
                         self.Bot.sendReply(new OutgoingTextMessage(JSON.stringify(ids, null, 2)), msg.Message.chat.id);
                     });
                 } else {
@@ -269,9 +270,9 @@ export class Hashes extends Module {
 
         });
 
-        MessageChain.add(function getHash(msg : IncomingMessage, next){
+        MessageChain.add(function getHash(msg: IncomingMessage, next) {
             let commandContainingString;
-            if(msg.Message.text) {
+            if (msg.Message.text) {
                 commandContainingString = msg.Message.text;
             } else if (msg.Message.caption) {
                 commandContainingString = msg.Message.caption;
@@ -279,23 +280,23 @@ export class Hashes extends Module {
 
             const command = /#([\S]+)/.exec(commandContainingString);
 
-            if(command && command.length >= 2) {
+            if (command && command.length >= 2) {
                 self.handleHash(command[1].toLowerCase(), msg.Message.chat.id, msg.From);
             }
         });
     }
 
-    private handleHash(command : string, chatID : number, user : User) {
+    private handleHash(command: string, chatID: number, user: User) {
         const self = this;
 
-        this.HashService.GetHashById(command, function(hash){
-            if(hash) {
-                if((hash.Public === true) || (hash.Source === chatID)) {
+        this.HashService.GetHashById(command, function (hash) {
+            if (hash) {
+                if ((hash.Public === true) || (hash.Source === chatID)) {
                     self.sendHash(hash, chatID);
                 } else {
-                    if(hash.Source) {
-                        self.Bot.GroupService.FindGroupById(hash.Source, function(group){
-                            if(group && group.isMember(user.ID)) {
+                    if (hash.Source) {
+                        self.Bot.GroupService.FindGroupById(hash.Source, function (group) {
+                            if (group && group.isMember(user.ID)) {
                                 self.sendHash(hash, chatID);
                             }
                         })
@@ -306,156 +307,157 @@ export class Hashes extends Module {
         });
     }
 
-    private sendHash(hash : Hash, chatID : number) {
+    private sendHash(hash: Hash, chatID: number) {
         const self = this;
 
-        if(hash instanceof TextHash) {
-            this.Bot.sendReply(new OutgoingTextMessage(hash.Text), chatID, function(err){
-                if(err) {
+        if (hash instanceof TextHash) {
+            this.Bot.sendReply(new OutgoingTextMessage(hash.Text), chatID, function (err) {
+                if (err) {
                     console.error(err);
                 }
             });
-        } else if(hash instanceof PhotoHash) {
+        } else if (hash instanceof PhotoHash) {
             this.Bot.sendReply(new OutgoingPhotoMessage(hash.DataStreamHex, hash.FileId,
                 hash.Height, hash.Width, hash.DataStreamInternalID), chatID,
-                function(msg){
-                    if(msg) {
-                        hash.FileId = msg.photo[msg.photo.length-1].file_id;
-                        self.HashService.SaveHash(hash, function(){
+                function (msg) {
+                    if (msg) {
+                        hash.FileId = msg.photo[msg.photo.length - 1].file_id;
+                        self.HashService.SaveHash(hash, function () {
                             console.info("Updated fileID with valid one.")
                         });
-                }
-            });
-        } else if(hash instanceof VideoHash) {
+                    }
+                });
+        } else if (hash instanceof VideoHash) {
             this.Bot.sendReply(new OutgoingVideoMessage(hash.DataStreamHex, hash.FileId,
                 hash.Height, hash.Width, hash.Duration, hash.DataStreamInternalID), chatID,
-                function(msg){
-                    if(msg) {
+                function (msg) {
+                    if (msg) {
                         hash.FileId = msg.video.file_id;
-                        self.HashService.SaveHash(hash, function(){
+                        self.HashService.SaveHash(hash, function () {
                             console.info("Updated fileID with valid one.")
                         });
                     }
                 });
-        } else if(hash instanceof VideoMessageHash) {
+        } else if (hash instanceof VideoMessageHash) {
             this.Bot.sendReply(new OutgoingVideoMessageMessage(hash.DataStreamHex, hash.FileId,
                 hash.Height, hash.Width, hash.Duration, hash.DataStreamInternalID), chatID,
-                function(msg){
-                    if(msg) {
+                function (msg) {
+                    if (msg) {
                         hash.FileId = msg.video_note.file_id;
-                        self.HashService.SaveHash(hash, function(){
+                        self.HashService.SaveHash(hash, function () {
                             console.info("Updated fileID with valid one.")
                         });
                     }
                 });
-        } else if(hash instanceof AudioHash) {
+        } else if (hash instanceof AudioHash) {
             this.Bot.sendReply(new OutgoingAudioMessage(hash.DataStreamHex, hash.FileId,
                 hash.Performer, hash.Title, hash.Duration, hash.DataStreamInternalID), chatID,
-                function(msg){
-                    if(msg) {
+                function (msg) {
+                    if (msg) {
                         hash.FileId = msg.audio.file_id;
-                        self.HashService.SaveHash(hash, function(){
+                        self.HashService.SaveHash(hash, function () {
                             console.info("Updated fileID with valid one.")
                         });
                     }
                 });
-        } else if(hash instanceof DocumentHash) {
+        } else if (hash instanceof DocumentHash) {
             this.Bot.sendReply(new OutgoingDocumentMessage(hash.DataStreamHex,
                 hash.FileId, hash.DataStreamInternalID), chatID,
-                function(msg) {
-                    if(msg) {
-                        if(hash.DataStreamMime === "audio/mpeg") {
+                function (msg) {
+                    if (msg) {
+                        if (hash.DataStreamMime === "audio/mpeg") {
                             hash.FileId = msg.audio.file_id;
                         } else {
                             hash.FileId = msg.document.file_id;
                         }
-                        self.HashService.SaveHash(hash, function(){
+                        self.HashService.SaveHash(hash, function () {
                             console.info("Updated fileID with valid one.")
                         });
                     }
-            });
-        } else if(hash instanceof StickerHash) {
+                });
+        } else if (hash instanceof StickerHash) {
             this.Bot.sendReply(new OutgoingStickerMessage(hash.DataStreamHex, hash.FileId,
                 hash.Height, hash.Width, hash.Emoji, hash.DataStreamInternalID), chatID,
-                function(msg) {
-                    if(msg) {
+                function (msg) {
+                    if (msg) {
                         hash.FileId = msg.sticker.file_id;
-                        self.HashService.SaveHash(hash, function(){
+                        self.HashService.SaveHash(hash, function () {
                             console.info("Updated fileID with valid one.")
                         });
                     }
                 });
-        } else if(hash instanceof VoiceHash) {
+        } else if (hash instanceof VoiceHash) {
             this.Bot.sendReply(new OutgoingVoiceMessage(hash.DataStreamHex, hash.FileId,
                 hash.Duration, hash.DataStreamInternalID), chatID,
-                function(msg) {
-                    if(msg) {
+                function (msg) {
+                    if (msg) {
                         hash.FileId = msg.voice.file_id;
-                        self.HashService.SaveHash(hash, function(){
+                        self.HashService.SaveHash(hash, function () {
                             console.info("Updated fileID with valid one.")
                         });
                     }
                 });
-        } else if(hash instanceof LocationHash) {
-            if(hash instanceof VenueHash) {
+        } else if (hash instanceof LocationHash) {
+            if (hash instanceof VenueHash) {
                 this.Bot.sendReply(new OutgoingVenueMessage(hash.Latitude, hash.Longitude,
-                    hash.Title, hash.Address, hash.Foursquare_id), chatID, function(err){
-                    if(err) {
+                    hash.Title, hash.Address, hash.Foursquare_id), chatID, function (err) {
+                    if (err) {
                         console.error(err);
                     }
                 });
             } else {
-                this.Bot.sendReply(new OutgoingLocationMessage(hash.Latitude, hash.Longitude), chatID, function(err){
-                    if(err) {
+                this.Bot.sendReply(new OutgoingLocationMessage(hash.Latitude, hash.Longitude), chatID, function (err) {
+                    if (err) {
                         console.error(err);
                     }
                 });
             }
-        } else if(hash instanceof ContactHash) {
+        } else if (hash instanceof ContactHash) {
             this.Bot.sendReply(new OutgoingContactMessage(hash.Phone_number,
-                hash.First_name, hash.Last_name), chatID, function(err){
-                if(err) {
+                hash.First_name, hash.Last_name), chatID, function (err) {
+                if (err) {
                     console.error(err);
                 }
             });
         }
     }
-    private saveNewHash(command : string, msg : IncomingMessage, Public : Boolean) {
+
+    private saveNewHash(command: string, msg: IncomingMessage, Public: Boolean) {
         const self = this;
 
-        if(command.indexOf("#") === 0) {
+        if (command.indexOf("#") === 0) {
             command = command.substring(1); //Handle DAU
         }
-        if(command.indexOf("type:") !== -1) {
+        if (command.indexOf("type:") !== -1) {
             return this.Bot.sendReply(new OutgoingTextMessage("Command must not contain 'type:'"), msg.Message.chat.id);
         }
 
-        if(msg.Message.reply_to_message) {
+        if (msg.Message.reply_to_message) {
             //TextHash
-            if(msg.Message.reply_to_message.text) {
+            if (msg.Message.reply_to_message.text) {
                 return this.HashService.SaveHash(
                     new TextHash(command, msg.From.ID, "", msg.Message.chat.id, Public, msg.Message.reply_to_message.text),
-                    function(){
+                    function () {
                         self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as TextHash"), msg.Message.chat.id);
                     });
-            } else if(msg.Message.reply_to_message.photo) {
+            } else if (msg.Message.reply_to_message.photo) {
                 return this.savePhotoByFileId(command,
-                    msg.Message.reply_to_message.photo[msg.Message.reply_to_message.photo.length-1].file_id,
-                    msg.Message.reply_to_message.photo[msg.Message.reply_to_message.photo.length-1].height,
-                    msg.Message.reply_to_message.photo[msg.Message.reply_to_message.photo.length-1].width,
+                    msg.Message.reply_to_message.photo[msg.Message.reply_to_message.photo.length - 1].file_id,
+                    msg.Message.reply_to_message.photo[msg.Message.reply_to_message.photo.length - 1].height,
+                    msg.Message.reply_to_message.photo[msg.Message.reply_to_message.photo.length - 1].width,
                     msg, Public);
-            } else if(msg.Message.reply_to_message.video) {
+            } else if (msg.Message.reply_to_message.video) {
                 return this.saveVideoByFileId(command,
                     msg.Message.reply_to_message.video.file_id,
                     msg.Message.reply_to_message.video.height,
                     msg.Message.reply_to_message.video.width,
                     msg.Message.reply_to_message.video.duration,
                     msg, Public);
-            } else if(msg.Message.reply_to_message.video_note) {
+            } else if (msg.Message.reply_to_message.video_note) {
                 return this.downloadFile(msg.Message.reply_to_message.video_note.file_id,
-                    function(err : any, data : BinaryData) {
-                        if(err) {
-                            self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: "+ JSON.stringify(err)), msg.Message.chat.id);
+                    function (err: any, data: BinaryData) {
+                        if (err) {
+                            self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: " + JSON.stringify(err)), msg.Message.chat.id);
                         } else {
                             return self.HashService.SaveHash(
                                 new VideoMessageHash(
@@ -471,19 +473,19 @@ export class Hashes extends Module {
                                     msg.Message.reply_to_message.video_note.length,
                                     msg.Message.reply_to_message.video_note.length,
                                     msg.Message.reply_to_message.video_note.duration
-                                ), function() {
+                                ), function () {
                                     self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as VideoMessageHash"), msg.Message.chat.id);
                                 });
                         }
                     });
-            } else if(msg.Message.reply_to_message.audio) {
+            } else if (msg.Message.reply_to_message.audio) {
                 return this.downloadFile(msg.Message.reply_to_message.audio.file_id,
-                    function(err : any, data : BinaryData) {
-                        if(err) {
-                            self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: "+ JSON.stringify(err)), msg.Message.chat.id);
+                    function (err: any, data: BinaryData) {
+                        if (err) {
+                            self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: " + JSON.stringify(err)), msg.Message.chat.id);
                         } else {
-                            let hash : Hash;
-                            if(msg.Message.reply_to_message.audio.title && msg.Message.reply_to_message.audio.mime_type === "audio/mpeg") {
+                            let hash: Hash;
+                            if (msg.Message.reply_to_message.audio.title && msg.Message.reply_to_message.audio.mime_type === "audio/mpeg") {
                                 hash = new AudioHash(
                                     command,
                                     msg.From.ID,
@@ -511,20 +513,20 @@ export class Hashes extends Module {
                                     "UNKNOWN"
                                 )
                             }
-                            return self.HashService.SaveHash(hash, function() {
-                                    self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as "+ hash.HashType), msg.Message.chat.id);
-                                });
+                            return self.HashService.SaveHash(hash, function () {
+                                self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as " + hash.HashType), msg.Message.chat.id);
+                            });
                         }
                     });
-            } else if(msg.Message.reply_to_message.document) {
+            } else if (msg.Message.reply_to_message.document) {
                 return this.downloadFile(msg.Message.reply_to_message.document.file_id,
-                    function(err : any, data : BinaryData) {
-                        if(err) {
-                            self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: "+ JSON.stringify(err)), msg.Message.chat.id);
+                    function (err: any, data: BinaryData) {
+                        if (err) {
+                            self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: " + JSON.stringify(err)), msg.Message.chat.id);
                         } else {
-                            let hashToSave : Hash;
+                            let hashToSave: Hash;
 
-                            if(msg.Message.reply_to_message.document.mime_type === "audio/x-opus+ogg") {
+                            if (msg.Message.reply_to_message.document.mime_type === "audio/x-opus+ogg") {
                                 hashToSave = new VoiceHash(
                                     command,
                                     msg.From.ID,
@@ -551,16 +553,16 @@ export class Hashes extends Module {
                                     "UNKNOWN"
                                 );
                             }
-                            return self.HashService.SaveHash(hashToSave, function() {
-                                    self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as "+ hashToSave.HashType), msg.Message.chat.id);
-                                });
+                            return self.HashService.SaveHash(hashToSave, function () {
+                                self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as " + hashToSave.HashType), msg.Message.chat.id);
+                            });
                         }
                     });
-            } else if(msg.Message.reply_to_message.sticker) {
+            } else if (msg.Message.reply_to_message.sticker) {
                 return this.downloadFile(msg.Message.reply_to_message.sticker.file_id,
-                    function(err : any, data : BinaryData) {
-                        if(err) {
-                            self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: "+ JSON.stringify(err)), msg.Message.chat.id);
+                    function (err: any, data: BinaryData) {
+                        if (err) {
+                            self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: " + JSON.stringify(err)), msg.Message.chat.id);
                         } else {
                             return self.HashService.SaveHash(
                                 new StickerHash(
@@ -576,16 +578,16 @@ export class Hashes extends Module {
                                     msg.Message.reply_to_message.sticker.width,
                                     msg.Message.reply_to_message.sticker.height,
                                     msg.Message.reply_to_message.sticker.emoji
-                                ), function() {
+                                ), function () {
                                     self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as StickerHash"), msg.Message.chat.id);
                                 });
                         }
                     });
-            } else if(msg.Message.reply_to_message.voice) {
+            } else if (msg.Message.reply_to_message.voice) {
                 return this.downloadFile(msg.Message.reply_to_message.voice.file_id,
-                    function(err : any, data : BinaryData) {
-                        if(err) {
-                            self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: "+ JSON.stringify(err)), msg.Message.chat.id);
+                    function (err: any, data: BinaryData) {
+                        if (err) {
+                            self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: " + JSON.stringify(err)), msg.Message.chat.id);
                         } else {
                             return self.HashService.SaveHash(
                                 new VoiceHash(
@@ -599,13 +601,13 @@ export class Hashes extends Module {
                                     msg.Message.reply_to_message.voice.file_id,
                                     "UNKNOWN",
                                     msg.Message.reply_to_message.voice.duration
-                                ), function() {
+                                ), function () {
                                     self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as VoiceHash"), msg.Message.chat.id);
                                 });
                         }
                     });
             } else if (msg.Message.reply_to_message.location) {
-                if(msg.Message.reply_to_message.venue) {
+                if (msg.Message.reply_to_message.venue) {
                     return this.HashService.SaveHash(
                         new VenueHash(command, msg.From.ID, "", msg.Message.chat.id, Public,
                             msg.Message.reply_to_message.location.latitude,
@@ -613,7 +615,7 @@ export class Hashes extends Module {
                             msg.Message.reply_to_message.venue.title,
                             msg.Message.reply_to_message.venue.address,
                             msg.Message.reply_to_message.venue.foursquare_id),
-                        function(){
+                        function () {
                             self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as VenueHash"), msg.Message.chat.id);
                         });
                 } else {
@@ -621,7 +623,7 @@ export class Hashes extends Module {
                         new LocationHash(command, msg.From.ID, "", msg.Message.chat.id, Public,
                             msg.Message.reply_to_message.location.latitude,
                             msg.Message.reply_to_message.location.longitude),
-                        function(){
+                        function () {
                             self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as LocationHash"), msg.Message.chat.id);
                         });
                 }
@@ -638,20 +640,20 @@ export class Hashes extends Module {
         } else {
             //These things can have captions
 
-            if(msg.Message.photo) {
+            if (msg.Message.photo) {
                 return this.savePhotoByFileId(command,
-                    msg.Message.photo[msg.Message.photo.length-1].file_id,
-                    msg.Message.photo[msg.Message.photo.length-1].height,
-                    msg.Message.photo[msg.Message.photo.length-1].width,
+                    msg.Message.photo[msg.Message.photo.length - 1].file_id,
+                    msg.Message.photo[msg.Message.photo.length - 1].height,
+                    msg.Message.photo[msg.Message.photo.length - 1].width,
                     msg, Public);
-            } else if(msg.Message.video) {
+            } else if (msg.Message.video) {
                 return this.saveVideoByFileId(command,
                     msg.Message.video.file_id,
                     msg.Message.video.height,
                     msg.Message.video.width,
                     msg.Message.video.duration,
                     msg, Public);
-            } else if(msg.Message.document) {
+            } else if (msg.Message.document) {
                 return this.downloadFile(msg.Message.document.file_id,
                     function (err: any, data: BinaryData) {
                         if (err) {
@@ -680,21 +682,21 @@ export class Hashes extends Module {
     protected registerInlineHandlers(InlineChain: any): void {
         const self = this;
 
-        InlineChain.add(function hashesInlineHandler(msg : IncomingMessage, next : Function) {
+        InlineChain.add(function hashesInlineHandler(msg: IncomingMessage, next: Function) {
             const offset = msg.Message.offset === "" ? 0 : parseInt(msg.Message.offset);
             let query = msg.Message.query.toLowerCase();
 
-            if(query === "") {
-                self.HashService.GetRandomIds(50, {"Public" : true}, function(IDs){
+            if (query === "") {
+                self.HashService.GetRandomIds(50, {"Public": true}, function (IDs) {
                     const fetchFunctions = [];
                     const fetchedHashes = [];
-                    IDs.forEach(function(id){
-                        fetchFunctions.push(function(callback){
-                            self.HashService.GetHashById(id, function(hash :Hash){
-                                if(hash.Source) {
-                                    self.Bot.GroupService.FindGroupById(hash.Source, function(group){
-                                        if(group) {
-                                            fetchedHashes.push({hash: hash, source : group});
+                    IDs.forEach(function (id) {
+                        fetchFunctions.push(function (callback) {
+                            self.HashService.GetHashById(id, function (hash: Hash) {
+                                if (hash.Source) {
+                                    self.Bot.GroupService.FindGroupById(hash.Source, function (group) {
+                                        if (group) {
+                                            fetchedHashes.push({hash: hash, source: group});
                                             callback();
                                         } else {
                                             fetchedHashes.push({hash: hash});
@@ -709,27 +711,27 @@ export class Hashes extends Module {
                         });
                     });
 
-                    async.waterfall(fetchFunctions, function(){
+                    async.waterfall(fetchFunctions, function () {
                         self.Bot.answerInlineQuery(msg.Message.id,
                             self.createInlineQueryResultsFromHashes(fetchedHashes, true, msg.From),
                             {
                                 cache_time: 5, //Damit neue results zeitnah auftauchen
-                                next_offset: offset+50
+                                next_offset: offset + 50
                             }
                         );
                     })
                 });
             } else {
-                self.HashService.GetIdsLikeSearchWithLimitAndSkip(query, 50, offset, function(IDs){
+                self.HashService.GetIdsLikeSearchWithLimitAndSkip(query, 50, offset, function (IDs) {
                     const fetchFunctions = [];
                     const fetchedHashes = [];
-                    IDs.forEach(function(id){
-                        fetchFunctions.push(function(callback){
-                            self.HashService.GetHashById(id, function(hash :Hash){
-                                if(hash.Source) {
-                                    self.Bot.GroupService.FindGroupById(hash.Source, function(group){
-                                        if(group) {
-                                            fetchedHashes.push({hash: hash, source : group});
+                    IDs.forEach(function (id) {
+                        fetchFunctions.push(function (callback) {
+                            self.HashService.GetHashById(id, function (hash: Hash) {
+                                if (hash.Source) {
+                                    self.Bot.GroupService.FindGroupById(hash.Source, function (group) {
+                                        if (group) {
+                                            fetchedHashes.push({hash: hash, source: group});
                                             callback();
                                         } else {
                                             fetchedHashes.push({hash: hash});
@@ -744,12 +746,12 @@ export class Hashes extends Module {
                         });
                     });
 
-                    async.waterfall(fetchFunctions, function(){
+                    async.waterfall(fetchFunctions, function () {
                         self.Bot.answerInlineQuery(msg.Message.id,
                             self.createInlineQueryResultsFromHashes(fetchedHashes, false, msg.From),
                             {
                                 cache_time: 5, //Damit neue results zeitnah auftauchen
-                                next_offset: offset+50
+                                next_offset: offset + 50
                             }
                         );
                     })
@@ -758,20 +760,20 @@ export class Hashes extends Module {
         });
     }
 
-    private createInlineQueryResultsFromHashes(hashes : Array<any>, random : boolean, user: User) : Array<InlineQueryResult> {
+    private createInlineQueryResultsFromHashes(hashes: Array<any>, random: boolean, user: User): Array<InlineQueryResult> {
         const results = [];
 
-        hashes.forEach(function(tuple){
-            const hash : Hash = tuple.hash;
-            if(hash.Public === true || (tuple.source && tuple.source.isMember(user.ID))) {
-                if(hash instanceof PhotoHash) {
+        hashes.forEach(function (tuple) {
+            const hash: Hash = tuple.hash;
+            if (hash.Public === true || (tuple.source && tuple.source.isMember(user.ID))) {
+                if (hash instanceof PhotoHash) {
                     results.push(new InlineQueryResultCachedPhoto(
                         random ? uuid.v4() : hash.ID,
                         hash.FileId,
                         hash.ID
                     ));
-                } else if(hash instanceof DocumentHash) {
-                    if(hash.DataStreamMime === "video/mp4") {
+                } else if (hash instanceof DocumentHash) {
+                    if (hash.DataStreamMime === "video/mp4") {
                         results.push(new InlineQueryResultCachedMpeg4Gif(
                             random ? uuid.v4() : hash.ID,
                             hash.FileId,
@@ -784,30 +786,30 @@ export class Hashes extends Module {
                             hash.ID
                         ));
                     }
-                } else if(hash instanceof StickerHash) {
+                } else if (hash instanceof StickerHash) {
                     results.push(new InlineQueryResultCachedSticker(
                         random ? uuid.v4() : hash.ID,
                         hash.FileId
                     ));
-                } else if(hash instanceof VideoHash) {
+                } else if (hash instanceof VideoHash) {
                     results.push(new InlineQueryResultCachedVideo(
                         random ? uuid.v4() : hash.ID,
                         hash.FileId,
                         hash.ID
                     ));
-                } else if(hash instanceof VoiceHash) {
+                } else if (hash instanceof VoiceHash) {
                     results.push(new InlineQueryResultCachedVoice(
                         random ? uuid.v4() : hash.ID,
                         hash.FileId,
                         hash.ID
                     ));
-                } else if(hash instanceof AudioHash) {
+                } else if (hash instanceof AudioHash) {
                     results.push(new InlineQueryResultCachedAudio(
                         random ? uuid.v4() : hash.ID,
                         hash.FileId,
                         hash.ID
                     ));
-                } else if(hash instanceof TextHash) {
+                } else if (hash instanceof TextHash) {
                     results.push(new InlineQueryResultArticle(
                         random ? uuid.v4() : hash.ID,
                         hash.ID,
@@ -817,8 +819,8 @@ export class Hashes extends Module {
                         undefined,
                         hash.Text
                     ))
-                } else if(hash instanceof LocationHash) {
-                    if(hash instanceof VenueHash) {
+                } else if (hash instanceof LocationHash) {
+                    if (hash instanceof VenueHash) {
                         results.push(new InlineQueryResultVenue(
                             random ? uuid.v4() : hash.ID,
                             hash.Latitude,
@@ -834,7 +836,7 @@ export class Hashes extends Module {
                             hash.ID
                         ));
                     }
-                } else if(hash instanceof ContactHash) {
+                } else if (hash instanceof ContactHash) {
                     results.push(new InlineQueryResultContact(
                         random ? uuid.v4() : hash.ID,
                         hash.Phone_number,
@@ -850,8 +852,8 @@ export class Hashes extends Module {
     }
 
     protected defineCommands(): Array<string> {
-        return ["define", "undefine", "hashes", "priv","tsbanner",
-                "/tsbanner", "/tsbanner/", "/tsbanner/current", "/login", "/token"];
+        return ["define", "undefine", "hashes", "priv", "tsbanner",
+            "/tsbanner", "/tsbanner/", "/tsbanner/current", "/login", "/token"];
     }
 
     protected loadAssets(): void {
@@ -862,20 +864,20 @@ export class Hashes extends Module {
 
         //TSBANNER
         const currentTSBannerStorage = {
-            date : undefined,
-            hash : undefined
+            date: undefined,
+            hash: undefined
         };
 
         this.App.get('/tsbanner/', function (req, res) { //cache for 60 seconds
-            if(currentTSBannerStorage.date && (new Date().getTime() - currentTSBannerStorage.date  <= 60000)) {
+            if (currentTSBannerStorage.date && (new Date().getTime() - currentTSBannerStorage.date <= 60000)) {
                 res.end(Buffer.from(currentTSBannerStorage.hash.DataStreamHex, "hex"), 'binary');
             } else {
-                self.getRandomPhotoHash(function(hash : PhotoHash) {
-                    if(!hash) {
+                self.getRandomPhotoHash(function (hash: PhotoHash) {
+                    if (!hash) {
                         return res.status(404).send('No Images.')
                     }
 
-                    self.Bot.Repository.GetData(hash.DataStreamInternalID, function(data){
+                    self.Bot.Repository.GetData(hash.DataStreamInternalID, function (data) {
                         hash.DataStreamHex = data;
                         currentTSBannerStorage.date = new Date();
                         currentTSBannerStorage.hash = hash;
@@ -886,24 +888,24 @@ export class Hashes extends Module {
             }
         });
 
-        this.App.get('/tsbanner/current', function(req,res,next){
-            if(currentTSBannerStorage.hash) {
-                res.redirect("/hash/"+ currentTSBannerStorage.hash.ID);
+        this.App.get('/tsbanner/current', function (req, res, next) {
+            if (currentTSBannerStorage.hash) {
+                res.redirect("/hash/" + currentTSBannerStorage.hash.ID);
             } else {
                 next();
             }
         });
 
 
-        this.App.get('/', function(req,res,next){
-            if(!req.session.authenticated) {
+        this.App.get('/', function (req, res, next) {
+            if (!req.session.authenticated) {
                 res.render('login');
             } else {
                 //random
-                self.HashService.GetRandomIds(1, {"Public" : true},  function(ids){
-                    if(ids.length > 0) {
-                        self.HashService.GetHashById(ids[0], function(hash:Hash){
-                            res.redirect("/hash/"+ hash.ID);
+                self.HashService.GetRandomIds(1, {"Public": true}, function (ids) {
+                    if (ids.length > 0) {
+                        self.HashService.GetHashById(ids[0], function (hash: Hash) {
+                            res.redirect("/hash/" + hash.ID);
                         });
                     } else {
                         next();
@@ -912,10 +914,10 @@ export class Hashes extends Module {
             }
         });
 
-        this.App.post('/login', function(req,res,next){
-            if(req.body && req.body.token) {
-                self.LoginTokenService.consumeToken(req.body.token, function(result){
-                    if(result === true) {
+        this.App.post('/login', function (req, res, next) {
+            if (req.body && req.body.token) {
+                self.LoginTokenService.consumeToken(req.body.token, function (result) {
+                    if (result === true) {
                         req.session.authenticated = true;
                     }
                     res.redirect("/");
@@ -925,7 +927,7 @@ export class Hashes extends Module {
             }
         });
 
-        this.App.get('/b/:id', function(req, res, next) {
+        this.App.get('/b/:id', function (req, res, next) {
             if (!req.session.authenticated) {
                 res.redirect("/");
             } else {
@@ -947,7 +949,7 @@ export class Hashes extends Module {
         });
 
         this.App.get('/hash/:hash(*)', function (req, res, next) {
-            if(!req.session.authenticated) {
+            if (!req.session.authenticated) {
                 res.redirect("/");
             } else {
                 //this hack allows hashes with questionmarks
@@ -968,11 +970,11 @@ export class Hashes extends Module {
 
                             if (hash instanceof PhotoHash || hash instanceof StickerHash ||
                                 (hash instanceof DocumentHash && hash.DataStreamMime === "image/gif")) {
-                                if(hash instanceof PhotoHash) {
-                                    if(hash.Height) {
+                                if (hash instanceof PhotoHash) {
+                                    if (hash.Height) {
                                         templateContent["height"] = hash.Height;
                                     }
-                                    if(hash.Width) {
+                                    if (hash.Width) {
                                         templateContent["width"] = hash.Width;
                                     }
                                 }
@@ -985,21 +987,21 @@ export class Hashes extends Module {
                                 hash instanceof VoiceHash) {
                                 templateContent["audio"] = true;
                             } else if (hash instanceof VideoHash) {
-                                if(hash.Height) {
+                                if (hash.Height) {
                                     templateContent["height"] = hash.Height;
                                 }
-                                if(hash.Width) {
+                                if (hash.Width) {
                                     templateContent["width"] = hash.Width;
                                 }
                                 templateContent["video"] = true;
-                            } else if(hash instanceof DocumentHash){
+                            } else if (hash instanceof DocumentHash) {
                                 templateContent["file"] = true;
 
                             } else {
                                 //TODO
                                 templateContent["text"] = "Unsupported Hash :-)";
                             }
-                        } else if(hash instanceof TextHash) {
+                        } else if (hash instanceof TextHash) {
                             templateContent["text"] = hash.Text;
                         } else {
                             //TODO
@@ -1018,7 +1020,7 @@ export class Hashes extends Module {
                                 templateContent["user_name"] = "Anonymous";
                             }
 
-                            self.HashService.GetPreviousAndNextByDbId(hash.DbId, {"Public" : true}, function (obj) {
+                            self.HashService.GetPreviousAndNextByDbId(hash.DbId, {"Public": true}, function (obj) {
                                 if (obj.prev) {
                                     templateContent["prev_id"] = obj.prev.ID;
                                 }
@@ -1026,11 +1028,11 @@ export class Hashes extends Module {
                                     templateContent["next_id"] = obj.next.ID;
                                 }
 
-                                self.HashService.GetFirstAndLastId({}, function(obj){
-                                    if(obj.first) {
+                                self.HashService.GetFirstAndLastId({}, function (obj) {
+                                    if (obj.first) {
                                         templateContent["first_id"] = obj.first.ID;
                                     }
-                                    if(obj.last) {
+                                    if (obj.last) {
                                         templateContent["last_id"] = obj.last.ID;
                                     }
 
@@ -1067,10 +1069,10 @@ export class Hashes extends Module {
     private getRandomPhotoHash(callback) {
         const self = this;
 
-        this.HashService.GetRandomIds(1, {"Public" : true, "HashType": "PhotoHash"}, function(IDs){
-            if(IDs.length > 0) {
-                self.HashService.GetHashById(IDs[0], function(hash: Hash) {
-                    if(hash) {
+        this.HashService.GetRandomIds(1, {"Public": true, "HashType": "PhotoHash"}, function (IDs) {
+            if (IDs.length > 0) {
+                self.HashService.GetHashById(IDs[0], function (hash: Hash) {
+                    if (hash) {
                         callback(hash);
                     } else {
                         callback()
@@ -1083,14 +1085,14 @@ export class Hashes extends Module {
         });
     }
 
-    private saveVideoByFileId(command : string, file_id : string, height : number,
-                              width: number, duration: number, msg : any, Public : Boolean) {
+    private saveVideoByFileId(command: string, file_id: string, height: number,
+                              width: number, duration: number, msg: any, Public: Boolean) {
         const self = this;
 
         this.downloadFile(file_id,
-            function(err : any, data : BinaryData) {
-                if(err) {
-                    self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: "+ JSON.stringify(err)), msg.Message.chat.id);
+            function (err: any, data: BinaryData) {
+                if (err) {
+                    self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: " + JSON.stringify(err)), msg.Message.chat.id);
                 } else {
                     return self.HashService.SaveHash(
                         new VideoHash(
@@ -1106,21 +1108,21 @@ export class Hashes extends Module {
                             height,
                             width,
                             duration
-                        ), function() {
+                        ), function () {
                             self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as VideoHash"), msg.Message.chat.id);
                         });
                 }
             });
     }
 
-    private savePhotoByFileId(command : string, file_id : string, height : number,
-                              width: number, msg : any, Public : Boolean) {
+    private savePhotoByFileId(command: string, file_id: string, height: number,
+                              width: number, msg: any, Public: Boolean) {
         const self = this;
 
         this.downloadFile(file_id,
-            function(err : any, data : BinaryData) {
-                if(err) {
-                    self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: "+ JSON.stringify(err)), msg.Message.chat.id);
+            function (err: any, data: BinaryData) {
+                if (err) {
+                    self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: " + JSON.stringify(err)), msg.Message.chat.id);
                 } else {
                     return self.HashService.SaveHash(
                         new PhotoHash(
@@ -1135,18 +1137,18 @@ export class Hashes extends Module {
                             "UNKNOWN",
                             height,
                             width
-                        ), function() {
+                        ), function () {
                             self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as PhotoHash"), msg.Message.chat.id);
                         });
                 }
             });
     }
 
-    private downloadFile(file_id : string, callback: DownloadedFileCallback) {
+    private downloadFile(file_id: string, callback: DownloadedFileCallback) {
         const self = this;
-        this.Bot.TgBot.getFileLink(file_id).then(function(url){
-            request({method: 'GET', url: url, encoding: null}, function(err, response, body) {
-                if(err) {
+        this.Bot.TgBot.getFileLink(file_id).then(function (url) {
+            request({method: 'GET', url: url, encoding: null}, function (err, response, body) {
+                if (err) {
                     callback(err, null);
                 } else {
                     const filetype = fileType(body);
@@ -1157,8 +1159,8 @@ export class Hashes extends Module {
                     ))
                 }
             })
-        }).catch(function(e){
-            if(e.code === "ETELEGRAM" && e.response && e.response.body && e.response.body.description) {
+        }).catch(function (e) {
+            if (e.code === "ETELEGRAM" && e.response && e.response.body && e.response.body.description) {
                 callback(e.response.body.description);
             } else {
                 callback(e);
@@ -1167,11 +1169,11 @@ export class Hashes extends Module {
         });
     }
 
-    private checkCommandExists(command : string, callback) {
+    private checkCommandExists(command: string, callback) {
         let result = this.Bot.CommandManager.isRegistered(command);
 
-        this.HashService.GetHashById(command,function(hash) {
-            if(hash) {
+        this.HashService.GetHashById(command, function (hash) {
+            if (hash) {
                 result = true;
             }
 

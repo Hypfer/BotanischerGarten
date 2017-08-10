@@ -7,21 +7,20 @@ export class InlineQueryResultCachedPhoto extends InlineQueryResult {
     protected getType(): string {
         return "photo";
     }
-    photo_file_id : string;
-    title : string;
-    description : string;
-    caption : string;
-    input_message_content : InputMessageContent;
-    reply_markup : any; //TODO
-    constructor(
-        id : string,
-        photo_file_id : string,
-        title? : string,
-        description? : string,
-        caption? : string,
-        reply_markup? :any,
-        input_message_content? : InputMessageContent
-    ) {
+
+    photo_file_id: string;
+    title: string;
+    description: string;
+    caption: string;
+    input_message_content: InputMessageContent;
+    reply_markup: any; //TODO
+    constructor(id: string,
+                photo_file_id: string,
+                title?: string,
+                description?: string,
+                caption?: string,
+                reply_markup?: any,
+                input_message_content?: InputMessageContent) {
         super(id);
         this.photo_file_id = photo_file_id;
         this.title = title;

@@ -1,5 +1,5 @@
 {
-  "edis" : [
+  "edis": [
     "Die Sonne ist kalt.",
     "1/1 = unendlich",
     "Wurstsalat ist kein Gericht, sondern ein Problem.",
@@ -36,7 +36,7 @@
     "Der MPEG Audio Frame Header enthält neben weiteren Daten wie der Bitrate o.ä. sowohl ein Bit mit der Bedeutung \"Audio is copyrighted\", als auch ein Bit, welches anzeigt ob die Datei die Orginaldatei ist oder nur eine Kopie des Originals. Ferner existiert auch ein\"privates\" Bit, mit dem man eigene Anwendungen umsetzen kann.",
     "Um mögliche lokale Empfangsprobleme beim Verkauf von DAB-Geräten in Deutschland zu kompensieren, wird von www.digitalradio.de auf die Möglichkeit zur Installation eines Repeaters in Verkaufsräumen angeboten."
   ],
-  "bauzeichnen" : [
+  "bauzeichnen": [
     "Durch seine die Begradigung hat der Rhein sich bis zu 7m (!) ins Flussbett eingegraben. Dadurch ist im Ufergebiet das Grundwasser deutlich abgesunken.",
     "Während Hochwasser auf der Elbe Magdeburg und Dresden große Probleme bereiten können, ist in Hamburg kaum etwas davon zu spüren. Die Elbe ist hier so breit, dass ein Binnenhochwasser den Pegelstand nicht bedrohlich erhöht.",
     "Den Rheinnebenkanal darf man sowohl als Fluss als auch als Kanal bezeichnen.",
@@ -50,7 +50,7 @@
     "Um ein Milligramm zweifach oxidiertes Eisen in dreifach oxidiertes Eisen zu wandeln, benötigt man 0,14 Milligramm Sauerstoff.",
     "Nach DIN 18065 besteht eine Treppe aus mindestens drei aufeinander folgenden Stufen."
   ],
-  "medizin" : [
+  "medizin": [
     "Im dunkeln auf den Bildschirm starren beeinträchtigt die Augen zwar kurzfristig, ist langfristig aber nicht schädlich.",
     "Es gibt keinen Musikantenknochen. Stattdessen handelt es sich um eine Ausstülpung im Oberarmknochen namens sulcus nervi ulnaris. Schläge, Stöße o.ä. gegen diese Ausstülpung treffen den sich dort befindenden nervus ulnaris. Dies ist sehr schmerzhaft.",
     "Alte Menschen bekommen keinen Bandscheibenvorfall, weil eh schon alles völlig verknöchert ist. Aus dem gleichen Grund können sie sich aber auch nicht mehr vernünftig bewegen.",
@@ -63,7 +63,7 @@
     "Mehrschichtig unverhorntes Plattenepithel findet sich an allen Stellen des Körpers, die mit Sperma in Kontakt kommen: Lippen, Mundschleimhaut, Speiseröhre, Augenlider, Vagina und Anus.",
     "Nicotin ist zu einem gewissen Grad krebserregend und besonders gefährlich, wenn man bereits Krebs hat. Gleichzeitig wirkt es aber neuroprotektiv und schützt somit u.a. vor Alzheimer und Parkinson, erhöht kurzzeitig Aufmerksamkeit und Gedächtnisleistung und erhöht die Ausdauer.\nGefährlich an Zigaretten sind also nicht das Nicotin, sondern die restlichen Inhaltsstoffe, die man inhaliert. Das blöde am Nicotin ist bloß, dass man davon abhängig wird und damit die anderen extrem gesundheitsschädigenden Stoffe häufiger aufnimmt."
   ],
-  "wissen" : [
+  "wissen": [
     "Es ist unmöglich, sich selbst zu erwürgen.",
     "Der Moldauhafen in Hamburg ist bis zum Jahre 2028 an die Tschechische Republik verpachtet.",
     "Es ist unter Microsoft Windows unmöglich, einen Ordner namens \"con\", \"aux\" oder \"prn\" anzulegen.",

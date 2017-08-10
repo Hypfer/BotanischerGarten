@@ -7,19 +7,18 @@ export class InlineQueryResultCachedGif extends InlineQueryResult {
     protected getType(): string {
         return "gif";
     }
-    gif_file_id : string;
-    title : string;
+
+    gif_file_id: string;
+    title: string;
     caption: string;
-    input_message_content : InputMessageContent;
-    reply_markup : any; //TODO
-    constructor(
-        id: string,
-        gif_file_id : string,
-        title? : string,
-        caption?: string,
-        input_message_content? : InputMessageContent,
-        reply_markup? : any
-    ) {
+    input_message_content: InputMessageContent;
+    reply_markup: any; //TODO
+    constructor(id: string,
+                gif_file_id: string,
+                title?: string,
+                caption?: string,
+                input_message_content?: InputMessageContent,
+                reply_markup?: any) {
         super(id);
         this.gif_file_id = gif_file_id;
         this.title = title;

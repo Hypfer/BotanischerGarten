@@ -1,20 +1,21 @@
 * {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html, body {
-  max-height: 100%;
-  width: 100%;
+    max-height: 100%;
+    width: 100%;
 }
+
 body {
-  margin: 0em auto 3em auto;
-  background-color: #262626;
-  color: #fff;
-  font-family: Monospace;
-  font-size: 12px;
-  line-height: 1.42857143;
+    margin: 0em auto 3em auto;
+    background-color: #262626;
+    color: #fff;
+    font-family: Monospace;
+    font-size: 12px;
+    line-height: 1.42857143;
 }
 
 .contact {
@@ -22,57 +23,63 @@ body {
 }
 
 input, select, textarea {
-	border: 1px double #99ff00;
-	background: #282A2E;
-	color: #f1e3ce;
-	font-family: 'Hack', monospace, sans-serif;
-	font-size: 80%;
+    border: 1px double #99ff00;
+    background: #282A2E;
+    color: #f1e3ce;
+    font-family: 'Hack', monospace, sans-serif;
+    font-size: 80%;
 }
 
 ul#posts {
-  width: calc(100% - 210px);
-  margin: 0;
-  margin-left: 100px;
-  padding: 0;
-  list-style: none;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-flow: row wrap;
-  flex-flow: row wrap;
-  justify-content: flex-start;
-  -webkit-justify-content: flex-start;
-  padding-top: 2.2em;
+    width: calc(100% - 210px);
+    margin: 0;
+    margin-left: 100px;
+    padding: 0;
+    list-style: none;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+    padding-top: 2.2em;
 }
+
 li.post {
-  padding: 5px;
-  width: 128px;
-  height: 128px;
-  margin-top: 5px;
-  line-height: 128px;
-  -webkit-flex: 1 1 auto;
-  ms-flex: 1 1 auto;
-  flex: 1 1 auto;
+    padding: 5px;
+    width: 128px;
+    height: 128px;
+    margin-top: 5px;
+    line-height: 128px;
+    -webkit-flex: 1 1 auto;
+    ms-flex: 1 1 auto;
+    flex: 1 1 auto;
 }
+
 .thumb {
-  border: 2px solid #4c4a4a;
+    border: 2px solid #4c4a4a;
 }
+
 .thumb:hover {
-	opacity: 0.7;
+    opacity: 0.7;
 }
+
 .clear {
-  clear: both;
-  padding: 1em 0;
+    clear: both;
+    padding: 1em 0;
 }
+
 a {
-  color: #9f0;
-  text-decoration: none;
+    color: #9f0;
+    text-decoration: none;
 }
+
 a:hover {
-  color: #74c100;
-  text-decoration: underline;
+    color: #74c100;
+    text-decoration: underline;
 }
 
 .medium, .thumbnail {
@@ -85,11 +92,12 @@ a:hover {
 }
 
 .info {
-  padding-top: 5px;
+    padding-top: 5px;
 }
+
 .id {
-  text-align: center;
-  padding-bottom: 10px;
+    text-align: center;
+    padding-bottom: 10px;
 }
 
 .controls {
@@ -136,10 +144,11 @@ a:hover {
 }
 
 .irc {
-  margin: 20px;
+    margin: 20px;
 }
+
 code {
-  color: #9df943;
+    color: #9df943;
 }
 
 .panel {
@@ -165,7 +174,6 @@ code {
     margin-bottom: 5px;
 }
 
-
 img {
     vertical-align: middle;
     max-height: 770px;
@@ -179,7 +187,7 @@ img {
 }
 
 video#player {
- 	max-width: 100%;
+    max-width: 100%;
     height: 50%;
 }
 
@@ -191,13 +199,13 @@ video#player {
     border: 0;
     color: #99ff00;
     width: 300px;
-    padding-right: 5;
+    padding-right: 5px;
     height: 32px;
 }
 
 .plyr audio, .plyr video {
     width: 100%;
-    height: auto!important;
+    height: auto !important;
     vertical-align: middle;
     border-radius: inherit;
 }
@@ -227,7 +235,7 @@ video#player {
     position: relative;
     max-width: 100%;
     min-width: 200px;
-    font-family: Avenir,'Avenir Next','Helvetica Neue','Segoe UI',Helvetica,Arial,sans-serif;
+    font-family: Avenir, 'Avenir Next', 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
     direction: ltr;
     border: 1px solid #0c0d0c;
     box-shadow: 0 0 15px #000;
@@ -238,6 +246,7 @@ video#player {
     color: #9f0;
     border-radius: 0;
 }
+
 .plyr__progress--played, .plyr__volume--display {
     z-index: 1;
     color: #99ff00;
@@ -254,8 +263,8 @@ video#player {
     background: #262626;
     border: 1px solid #99ff00;
     border-radius: 100%;
-    transition: background .2s ease,border .2s ease,transform .2s ease;
-    box-shadow: 0 1px 1px rgba(0,0,0,.15), 0 0 0 1px rgba(0,0,0,.15);
+    transition: background .2s ease, border .2s ease, transform .2s ease;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .15), 0 0 0 1px rgba(0, 0, 0, .15);
     box-sizing: border-box;
 }
 
@@ -266,8 +275,8 @@ video#player {
 }
 
 .plyr--fullscreen-active video {
-    height: 100%!important;
-    max-width: 100%!important;
+    height: 100% !important;
+    max-width: 100% !important;
 }
 
 .plyr--fullscreen-active {
@@ -280,8 +289,8 @@ video#player {
     width: 100%;
     z-index: 10000000;
     background: #000;
-    border-radius: 0!important;
-    border: 0!important;
+    border-radius: 0 !important;
+    border: 0 !important;
 }
 
 /* Feuerfick */

@@ -7,17 +7,16 @@ export class InlineQueryResultCachedAudio extends InlineQueryResult {
     protected getType(): string {
         return "audio";
     }
-    audio_file_id : string;
-    caption : string;
-    input_message_content : InputMessageContent;
-    reply_markup : any; //TODO
-    constructor(
-        id : string,
-        audio_file_id : string,
-        caption? : string,
-        reply_markup? :any,
-        input_message_content? : InputMessageContent
-    ) {
+
+    audio_file_id: string;
+    caption: string;
+    input_message_content: InputMessageContent;
+    reply_markup: any; //TODO
+    constructor(id: string,
+                audio_file_id: string,
+                caption?: string,
+                reply_markup?: any,
+                input_message_content?: InputMessageContent) {
         super(id);
         this.audio_file_id = audio_file_id;
         this.caption = caption;

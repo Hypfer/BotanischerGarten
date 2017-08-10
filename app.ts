@@ -26,7 +26,7 @@ const MongoStore = mongoSessionStore(session);
 
 const config = require("./config.json");
 
-const _Repository = new MongoRepository(config, function(){
+const _Repository = new MongoRepository(config, function () {
     const _Bot = new Bot(config, _Repository);
     const _App = express();
 
@@ -46,7 +46,7 @@ const _Repository = new MongoRepository(config, function(){
     }));
     _App.use(sendSeekable);
     _App.use(bodyParser.json());
-    _App.use(bodyParser.urlencoded({ extended: true }));
+    _App.use(bodyParser.urlencoded({extended: true}));
     _App.use('/s', express.static('webAssets/static'));
     _App.set('view engine', 'hbs');
     _App.set('views', path.join(__dirname + '/webAssets/templates'));

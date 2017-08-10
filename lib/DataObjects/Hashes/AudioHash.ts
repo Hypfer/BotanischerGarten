@@ -6,12 +6,14 @@ export class AudioHash extends BinaryDataHash {
     protected getHashType(): string {
         return "AudioHash";
     }
-    Performer : string;
-    Title : string;
-    Duration : number;
-    constructor(id : string, ownerID : number, DbId: string, Source : number, Public : Boolean, dataStreamHex : string,
-                dataStreamSize : number, dataStreamMime : string, fileId : string,
-                dataStreamInternalID : string, performer: string, title: string, duration : number) {
+
+    Performer: string;
+    Title: string;
+    Duration: number;
+
+    constructor(id: string, ownerID: number, DbId: string, Source: number, Public: Boolean, dataStreamHex: string,
+                dataStreamSize: number, dataStreamMime: string, fileId: string,
+                dataStreamInternalID: string, performer: string, title: string, duration: number) {
         super(id, ownerID, DbId, Source, Public, dataStreamHex, dataStreamSize, dataStreamMime, fileId, dataStreamInternalID);
         this.Performer = performer;
         this.Title = title;

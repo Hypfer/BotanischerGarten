@@ -14,34 +14,36 @@ import {ContactHash} from "../DataObjects/Hashes/ContactHash";
 /**
  * Created by hypfer on 08.06.17.
  */
-type HashCallback = (hash : Hash) => any;
+type HashCallback = (hash: Hash) => any;
 export class HashService extends Service {
 
     protected getCollection(): string {
         return "Hashes";
     }
-    SaveHash(hash:Hash, callback : HashCallback) {
+
+    SaveHash(hash: Hash, callback: HashCallback) {
         delete hash["DbId"]; //Wow.
         super.Save(hash.ID, hash, callback);
     }
-    GetHashById(id: string, callback : HashCallback) {
-        super.GetById(id, function(hash) {
-           callback(HashService.deserializeHash(hash));
-        });
-    }
 
-    GetHashByDbId(id: string, callback : HashCallback) {
-        super.GetByDbId(id, function(hash) {
+    GetHashById(id: string, callback: HashCallback) {
+        super.GetById(id, function (hash) {
             callback(HashService.deserializeHash(hash));
         });
     }
 
-    GetPreviousAndNextByDbId(id: string, condition: any, callback : Function) {
-        super.GetPreviousAndNextByDbId(id, condition, function(obj){
-            if(obj.prev) {
+    GetHashByDbId(id: string, callback: HashCallback) {
+        super.GetByDbId(id, function (hash) {
+            callback(HashService.deserializeHash(hash));
+        });
+    }
+
+    GetPreviousAndNextByDbId(id: string, condition: any, callback: Function) {
+        super.GetPreviousAndNextByDbId(id, condition, function (obj) {
+            if (obj.prev) {
                 obj.prev = HashService.deserializeHash(obj.prev);
             }
-            if(obj.next) {
+            if (obj.next) {
                 obj.next = HashService.deserializeHash(obj.next);
             }
             callback(obj);
@@ -49,26 +51,26 @@ export class HashService extends Service {
     }
 
     //TODO: Refactor
-    GetFirstAndLastId(condition: any, callback : Function) {
-        super.GetFirstAndLastId(condition, function(obj){
-            if(obj.first) {
+    GetFirstAndLastId(condition: any, callback: Function) {
+        super.GetFirstAndLastId(condition, function (obj) {
+            if (obj.first) {
                 obj.first = HashService.deserializeHash(obj.first);
             }
-            if(obj.last) {
+            if (obj.last) {
                 obj.last = HashService.deserializeHash(obj.last);
             }
             callback(obj);
         })
     }
 
-    DeleteHash(hash:Hash, callback : Function) {
+    DeleteHash(hash: Hash, callback: Function) {
         super.DeleteById(hash.ID, callback);
     }
 
     private static deserializeHash(hash) {
-        if(hash) {
+        if (hash) {
             //"deserialize"
-            switch(hash.HashType) {
+            switch (hash.HashType) {
                 case "TextHash":
                     return new TextHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public, hash.Text);
                 case "PhotoHash":

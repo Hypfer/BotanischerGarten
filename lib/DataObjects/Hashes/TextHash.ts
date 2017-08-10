@@ -7,9 +7,9 @@ export class TextHash extends Hash {
         return "TextHash";
     }
 
-    Text : string;
+    Text: string;
 
-    constructor(id : string, ownerID : number, DbId: string, Source : number, Public : Boolean, text : string) {
+    constructor(id: string, ownerID: number, DbId: string, Source: number, Public: Boolean, text: string) {
         super(id, ownerID, DbId, Source, Public);
         this.Text = text;
     }

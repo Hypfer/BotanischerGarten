@@ -305,7 +305,7 @@
     "zumeist",
     "zuvor"
   ],
-  "dann" : [
+  "dann": [
     "bedeutet dies",
     "bedeutet dies scheinbar",
     "bedingt dies",
@@ -363,51 +363,186 @@
     "zwingt das zu der Hypothese"
   ],
   "lokation": [
-    ["allgemein bekannt beim","allgemein bekannt bei der"],
-    ["als Ausgleich zum","als Ausgleich zur"],
-    ["als Gegenstück zum","als Gegenstück zur"],
-    ["als Kontrast zum","als Kontrast zur"],
-    ["als Metapher zum","als Metapher zur"],
-    ["als Parabel zum","als Parabel zur"],
-    ["am","an der"],
-    ["angedeutet vom","angedeutet von der"],
-    ["auf dem Weg zum","auf dem Weg zur"],
-    ["auf der Rückkehr zum","auf der Rückkehr zur"],
-    ["auf der Schwelle zum","auf der Schwelle zur"],
-    ["aus der Norm hervorgehoben vom","aus der Norm hervorgehoben von der"],
-    ["ausgelöst vom","ausgelöst von der"],
-    ["beim","bei der"],
-    ["betraglich über dem","betraglich über der"],
-    ["bisher unbekannt im","bisher unbekannt in der"],
-    ["eindeutig impliziert vom","eindeutig impliziert von der"],
-    ["hinter dem","hinter der"],
-    ["im","in der"],
-    ["im Ausgleich zum","im Ausgleich zur"],
-    ["im krassen Gegensatz zum","im krassen Gegensatz zur"],
-    ["im Vergleich zum","im Vergleich zur"],
-    ["im Verhältnis zum","im Verhältnis zur"],
-    ["in Abhängigkeit vom","in Abhängigkeit von der"],
-    ["in Analogie zum","in Analogie zur"],
-    ["in Anhang zum","in Anhang zur"],
-    ["in eindeutiger Überordnung zum","in eindeutiger Überordnung zur"],
-    ["in Einklang mit dem","in Einklang mit der"],
-    ["in Einklang mit dem","in Einklang mit der"],
-    ["in Gegensatz zum","in Gegensatz zur"],
-    ["in Relation zum","in Relation zur"],
-    ["in Übereinstimmung mit dem","in Übereinstimmung mit der"],
-    ["in Verbindung mit dem","in Verbindung mit der"],
-    ["in Wesenseinheit mit dem","in Wesenseinheit mit der"],
-    ["in Wohlklang mit dem","in Wohlklang mit der"],
-    ["knapp über dem","knapp über der"],
-    ["moralisch neben dem","moralisch neben der"],
-    ["nach dem","nach der"],
-    ["noch vor dem","noch vor der"],
-    ["stark abgesetzt vom","stark abgesetzt von der"],
-    ["trotz des Widerspruchs zum","trotz des Widerspruchs zur"],
-    ["unabhängig vom","unabhängig von der"],
-    ["unter dem","unter der"],
-    ["wertmäßig nahe dem","wertmäßig nahe der"],
-    ["wirtschaftlich basierend auf dem","wirtschaftlich basierend auf der"]
+    [
+      "allgemein bekannt beim",
+      "allgemein bekannt bei der"
+    ],
+    [
+      "als Ausgleich zum",
+      "als Ausgleich zur"
+    ],
+    [
+      "als Gegenstück zum",
+      "als Gegenstück zur"
+    ],
+    [
+      "als Kontrast zum",
+      "als Kontrast zur"
+    ],
+    [
+      "als Metapher zum",
+      "als Metapher zur"
+    ],
+    [
+      "als Parabel zum",
+      "als Parabel zur"
+    ],
+    [
+      "am",
+      "an der"
+    ],
+    [
+      "angedeutet vom",
+      "angedeutet von der"
+    ],
+    [
+      "auf dem Weg zum",
+      "auf dem Weg zur"
+    ],
+    [
+      "auf der Rückkehr zum",
+      "auf der Rückkehr zur"
+    ],
+    [
+      "auf der Schwelle zum",
+      "auf der Schwelle zur"
+    ],
+    [
+      "aus der Norm hervorgehoben vom",
+      "aus der Norm hervorgehoben von der"
+    ],
+    [
+      "ausgelöst vom",
+      "ausgelöst von der"
+    ],
+    [
+      "beim",
+      "bei der"
+    ],
+    [
+      "betraglich über dem",
+      "betraglich über der"
+    ],
+    [
+      "bisher unbekannt im",
+      "bisher unbekannt in der"
+    ],
+    [
+      "eindeutig impliziert vom",
+      "eindeutig impliziert von der"
+    ],
+    [
+      "hinter dem",
+      "hinter der"
+    ],
+    [
+      "im",
+      "in der"
+    ],
+    [
+      "im Ausgleich zum",
+      "im Ausgleich zur"
+    ],
+    [
+      "im krassen Gegensatz zum",
+      "im krassen Gegensatz zur"
+    ],
+    [
+      "im Vergleich zum",
+      "im Vergleich zur"
+    ],
+    [
+      "im Verhältnis zum",
+      "im Verhältnis zur"
+    ],
+    [
+      "in Abhängigkeit vom",
+      "in Abhängigkeit von der"
+    ],
+    [
+      "in Analogie zum",
+      "in Analogie zur"
+    ],
+    [
+      "in Anhang zum",
+      "in Anhang zur"
+    ],
+    [
+      "in eindeutiger Überordnung zum",
+      "in eindeutiger Überordnung zur"
+    ],
+    [
+      "in Einklang mit dem",
+      "in Einklang mit der"
+    ],
+    [
+      "in Einklang mit dem",
+      "in Einklang mit der"
+    ],
+    [
+      "in Gegensatz zum",
+      "in Gegensatz zur"
+    ],
+    [
+      "in Relation zum",
+      "in Relation zur"
+    ],
+    [
+      "in Übereinstimmung mit dem",
+      "in Übereinstimmung mit der"
+    ],
+    [
+      "in Verbindung mit dem",
+      "in Verbindung mit der"
+    ],
+    [
+      "in Wesenseinheit mit dem",
+      "in Wesenseinheit mit der"
+    ],
+    [
+      "in Wohlklang mit dem",
+      "in Wohlklang mit der"
+    ],
+    [
+      "knapp über dem",
+      "knapp über der"
+    ],
+    [
+      "moralisch neben dem",
+      "moralisch neben der"
+    ],
+    [
+      "nach dem",
+      "nach der"
+    ],
+    [
+      "noch vor dem",
+      "noch vor der"
+    ],
+    [
+      "stark abgesetzt vom",
+      "stark abgesetzt von der"
+    ],
+    [
+      "trotz des Widerspruchs zum",
+      "trotz des Widerspruchs zur"
+    ],
+    [
+      "unabhängig vom",
+      "unabhängig von der"
+    ],
+    [
+      "unter dem",
+      "unter der"
+    ],
+    [
+      "wertmäßig nahe dem",
+      "wertmäßig nahe der"
+    ],
+    [
+      "wirtschaftlich basierend auf dem",
+      "wirtschaftlich basierend auf der"
+    ]
   ],
   "predikat": [
     [
@@ -688,190 +823,1113 @@
     "Zahlreiche Studien belegen"
   ],
   "substantiv": [
-    ["Abstraktion","Abstraktion","Abstraktion","Abstraktion","f"],
-    ["Affinität","Affinität","Affinität","Affinität","f"],
-    ["Aktienkurs","Aktienkurses","Aktienkurs","Aktienkurs","m"],
-    ["Aktionspotential","Aktionspotentials","Aktionspotential","Aktionspotential","n"],
-    ["Akzeleration","Akzeleration","Akzeleration","Akzeleration","f"],
-    ["Analyse","Analyse","Analyse","Analyse","f"],
-    ["Anfangspotential","Anfangspotentials","Anfangspotential","Anfangspotential","n"],
-    ["Aufwandminimierung","Aufwandminimierung","Aufwandminimierung","Aufwandminimierung","f"],
-    ["Aussagekraft","Aussagekraft","Aussagekraft","Aussagekraft","f"],
-    ["Autonomie","Autonomie","Autonomie","Autonomie","f"],
-    ["Avisierung","Avisierung","Avisierung","Avisierung","f"],
-    ["Bargeldrücklage","Bargeldrücklage","Bargeldrücklage","Bargeldrücklage","f"],
-    ["Benutzerzufriedenheit","Benutzerzufriedenheit","Benutzerzufriedenheit","Benutzerzufriedenheit","f"],
-    ["Betriebsvermögen","Betriebsvermögens","Betriebsvermögen","Betriebsvermögen","n"],
-    ["Bildungsoffensive","Bildungsoffensive","Bildungsoffensive","Bildungsoffensive","f"],
-    ["Brand-Switch","Brand-Switch","Brand-Switch","Brand-Switch","n"],
-    ["Breakeven-Point","Breakeven-Points","Breakeven-Point","Breakeven-Point","m"],
-    ["Budgetkonsolidierung","Budgetkonsolidierung","Budgetkonsolidierung","Budgetkonsolidierung","f"],
-    ["Budgetsituation","Budgetsituation","Budgetsituation","Budgetsituation","f"],
-    ["Cashflow","Cashflows","Cashflow","Cashflow","m"],
-    ["Chance","Chance","Chance","Chance","f"],
-    ["Change-Management-Aktion","Change-Management-Aktion","Change-Management-Aktion","Change-Management-Aktion","f"],
-    ["Charakterisierung","Charakterisierung","Charakterisierung","Charakterisierung","f"],
-    ["Consumer-Markt","Consumer-Marktes","Consumer-Markt","Consumer-Markt","m"],
-    ["Datenfluktuation","Datenfluktuation","Datenfluktuation","Datenfluktuation","f"],
-    ["Datenschutz","Datenschutzes","Datenschutz","Datenschutz","m"],
-    ["Datenstruktur","Datenstruktur","Datenstruktur","Datenstruktur","f"],
-    ["Detailanalyse","Detailanalyse","Detailanalyse","Detailanalyse","f"],
-    ["Dezentralisierung","Dezentralisierung","Dezentralisierung","Dezentralisierung","f"],
-    ["Dollarschwäche","Dollarschwäche","Dollarschwäche","Dollarschwäche","f"],
-    ["Duchlaufparameter","Duchlaufparameters","Duchlaufparameter","Duchlaufparameter","m"],
-    ["Dysfunktion","Dysfunktion","Dysfunktion","Dysfunktion","f"],
-    ["Effizienz","Effizienz","Effizienz","Effizienz","f"],
-    ["Entwicklungsarbeit","Entwicklungsarbeit","Entwicklungsarbeit","Entwicklungsarbeit","f"],
-    ["Ergebnisoptimierung","Ergebnisoptimierung","Ergebnisoptimierung","Ergebnisoptimierung","f"],
-    ["Ertrag","Ertrags ","Ertrag","Ertrag","m"],
-    ["Ertragssteigerung","Ertragssteigerung","Ertragssteigerung","Ertragssteigerung","f"],
-    ["Extrapolierung","Extrapolierung","Extrapolierung","Extrapolierung","f"],
-    ["Extremfall-Vermeidung","Extremfall-Vermeidung","Extremfall-Vermeidung","Extremfall-Vermeidung","f"],
-    ["Falsifikation","Falsifikation","Falsifikation","Falsifikation","f"],
-    ["Fiktion","Fiktion","Fiktion","Fiktion","f"],
-    ["Finanzgebarung","Finanzgebarung","Finanzgebarung","Finanzgebarung","f"],
-    ["Finanzierung","Finanzierung","Finanzierung","Finanzierung","f"],
-    ["Fond-Rücklagen","Fond-Rücklagen","Fond-Rücklagen","Fond-Rücklagen","f"],
-    ["Fundamentalisierung","Fundamentalisierung","Fundamentalisierung","Fundamentalisierung","f"],
-    ["Funktionalität","Funktionalität","Funktionalität","Funktionalität","f"],
-    ["Gateway-Funktion","Gateway-Funktion","Gateway-Funktion","Gateway-Funktion","f"],
-    ["Generaloption","Generaloption","Generaloption","Generaloption","f"],
-    ["Gesamtsituation","Gesamtsituation","Gesamtsituation","Gesamtsituation","f"],
-    ["Gesamtstruktur","Gesamtstruktur","Gesamtstruktur","Gesamtstruktur","f"],
-    ["Gewinn","Gewinns","Gewinn","Gewinn","m"],
-    ["Gewinnmaximierung","Gewinnmaximierung","Gewinnmaximierung","Gewinnmaximierung","f"],
-    ["Gleichgewicht","Gleichgewichtes","Gleichgewicht","Gleichgewicht","n"],
-    ["Globalisierung","Globalisierung","Globalisierung","Globalisierung","f"],
-    ["Gratifikation","Gratifikation","Gratifikation","Gratifikation","f"],
-    ["Gültigkeitsbereich","Gültigkeitsbereiches","Gültigkeitsbereich","Gültigkeitsbereich","m"],
-    ["Handelsspanne","Handelsspanne","Handelsspanne","Handelsspanne","f"],
-    ["Hochpreis-Politik","Hochpreis-Politik","Hochpreis-Politik","Hochpreis-Politik","f"],
-    ["Hybridisierung","Hybridisierung","Hybridisierung","Hybridisierung","f"],
-    ["Hypothese","Hypothese","Hypothese","Hypothese","f"],
-    ["Implikation","Implikation","Implikation","Implikation","f"],
-    ["Indikation","Indikation","Indikation","Indikation","f"],
-    ["Individualisierung","Individualisierung","Individualisierung","Individualisierung","f"],
-    ["Infrastruktur","Infrastruktur","Infrastruktur","Infrastruktur","f"],
-    ["Initiative","Initiative","Initiative","Initiative","f"],
-    ["Interaktion","Interaktion","Interaktion","Interaktion","f"],
-    ["Interessenallianz","Interessenallianz","Interessenallianz","Interessenallianz","f"],
-    ["Interface","Interfaces","Interface","Interface","n"],
-    ["Interims-Fachbereich","Interims-Fachbereiches","Interims-Fachbereich","Interims-Fachbereich","m"],
-    ["Investitionsrücklagen","Investitionsrücklagen","Investitionsrücklagen","Investitionsrücklagen","f"],
-    ["Irreversibilität","Irreversibilität","Irreversibilität","Irreversibilität","f"],
-    ["Iso-9000-Zertifizierung","Iso-9000-Zertifizierung","Iso-9000-Zertifizierung","Iso-9000-Zertifizierung","f"],
-    ["Kernaussage","Kernaussage","Kernaussage","Kernaussage","f"],
-    ["Kernbereich","Kernbereiches","Kernbereich","Kernbereich","m"],
-    ["Kommerzialisierung","Kommerzialisierung","Kommerzialisierung","Kommerzialisierung","f"],
-    ["Kompressionsartefakt","Kompressionsartefakts","Kompressionsartefakt","Kompressionsartefakt","n"],
-    ["Konkretisierung","Konkretisierung","Konkretisierung","Konkretisierung","f"],
-    ["Konkretisierung","Konkretisierung","Konkretisierung","Konkretisierung","f"],
-    ["Konzentration","Konzentration","Konzentration","Konzentration","f"],
-    ["Kritik","Kritik","Kritik","Kritik","f"],
-    ["Lebenserwartung","Lebenserwartung","Lebenserwartung","Lebenserwartung","f"],
-    ["Liberalisierung","Liberalisierung","Liberalisierung","Liberalisierung","f"],
-    ["Lokalisation","Lokalisation","Lokalisation","Lokalisation","f"],
-    ["Lustprinzip","Lustprinzips","Lustprinzip","Lustprinzip","n"],
-    ["Manipulation","Manipulation","Manipulation","Manipulation","f"],
-    ["Marketing-Strategie","Marketing-Strategie","Marketing-Strategie","Marketing-Strategie","f"],
-    ["Mitarbeiter-Loyalität","Mitarbeiter-Loyalität","Mitarbeiter-Loyalität","Mitarbeiter-Loyalität","f"],
-    ["Mobilität","Mobilität","Mobilität","Mobilität","f"],
-    ["Modelanalyse","Modelanalyse","Modelanalyse","Modelanalyse","f"],
-    ["Monopol","Monopols","Monopol","Monopol","n"],
-    ["Nachvollziehbarkeit","Nachvollziehbarkeit","Nachvollziehbarkeit","Nachvollziehbarkeit","f"],
-    ["Nachwirkung","Nachwirkung","Nachwirkung","Nachwirkung","f"],
-    ["Nebenwirkung","Nebenwirkung","Nebenwirkung","Nebenwirkung","f"],
-    ["Nettoergebnis","Nettoergebnisses","Nettoergebnis","Nettoergebnis","n"],
-    ["Neutralität","Neutralität","Neutralität","Neutralität","f"],
-    ["Nutzungsdauer","Nutzungsdauer","Nutzungsdauer","Nutzungsdauer","f"],
-    ["Operationspotential","Operationspotentials","Operationspotential","Operationspotential","n"],
-    ["Option","Option","Option","Option","f"],
-    ["Orientierung","Orientierung","Orientierung","Orientierung","f"],
-    ["Outputoptimierung","Outputoptimierung","Outputoptimierung","Outputoptimierung","f"],
-    ["Overkill","Overkills","Overkill","Overkill","m"],
-    ["Perfektion","Perfektion","Perfektion","Perfektion","f"],
-    ["Performance","Performance","Performance","Performance","f"],
-    ["Peripherie","Peripherie","Peripherie","Peripherie","f"],
-    ["Personifizierung","Personifizierung","Personifizierung","Personifizierung","f"],
-    ["Praxisorientierung","Praxisorientierung","Praxisorientierung","Praxisorientierung","f"],
-    ["Produkt","Produktes","Produkt","Produkt","n"],
-    ["Produktivität","Produktivität","Produktivität","Produktivität","f"],
-    ["Prozessoptimierung","Prozessoptimierung","Prozessoptimierung","Prozessoptimierung","f"],
-    ["Qualität","Qualität","Qualität","Qualität","f"],
-    ["Qualitätskontrolle","Qualitätskontrolle","Qualitätskontrolle","Qualitätskontrolle","f"],
-    ["Qualitätsmanagement","Qualitätsmanagements","Qualitätsmanagement","Qualitätsmanagement","n"],
-    ["Querverbindung","Querverbindung","Querverbindung","Querverbindung","f"],
-    ["Radikalisierung","Radikalisierung","Radikalisierung","Radikalisierung","f"],
-    ["Randbezirk","Randbezirks","Randbezirk","Randbezirk","m"],
-    ["Recycling","Recyclings","Recycling","Recycling","n"],
-    ["Reduktion","Reduktion","Reduktion","Reduktion","f"],
-    ["Retention","Retention","Retention","Retention","f"],
-    ["Risikobereitschaft","Risikobereitschaft","Risikobereitschaft","Risikobereitschaft","f"],
-    ["Risk-Management","Risk-Managements","Risk-Management","Risk-Management","n"],
-    ["Routine","Routine","Routine","Routine","f"],
-    ["Rückwirkung","Rückwirkung","Rückwirkung","Rückwirkung","f"],
-    ["Security-Bulletin","Security-Bulletins","Security-Bulletin","Security-Bulletin","n"],
-    ["Sicherheit","Sicherheit","Sicherheit","Sicherheit","f"],
-    ["Spekulation","Spekulation","Spekulation","Spekulation","f"],
-    ["Strukturbereinigung","Strukturbereinigung","Strukturbereinigung","Strukturbereinigung","f"],
-    ["Substitution","Substitution","Substitution","Substitution","f"],
-    ["Synergieeffekt","Synergieeffektes","Synergieeffekt","Synergieeffekt","m"],
-    ["System","Systems","System","System","n"],
-    ["Systemanalyse","Systemanalyse","Systemanalyse","Systemanalyse","f"],
-    ["Systemparameter","Systemparameters","Systemparameter","Systemparameter","m"],
-    ["Teamgeist","Teamgeists","Teamgeist","Teamgeist","m"],
-    ["Technisierung","Technisierung","Technisierung","Technisierung","f"],
-    ["Timing","Timings","Timing","Timing","n"],
-    ["Typisierung","Typisierung","Typisierung","Typisierung","f"],
-    ["Überreaktion","Überreaktion","Überreaktion","Überreaktion","f"],
-    ["Umwegsrentabilität","Umwegsrentabilität","Umwegsrentabilität","Umwegsrentabilität","f"],
-    ["Unsicherheit","Unsicherheit","Unsicherheit","Unsicherheit","f"],
-    ["Unternehmensphilosophie","Unternehmensphilosophie","Unternehmensphilosophie","Unternehmensphilosophie","f"],
-    ["Ursächlichkeit","Ursächlichkeit","Ursächlichkeit","Ursächlichkeit","f"],
-    ["Verifikation","Verifikation","Verifikation","Verifikation","f"],
-    ["Verlustreduktion","Verlustreduktion","Verlustreduktion","Verlustreduktion","f"],
-    ["Verwendung","Verwendung","Verwendung","Verwendung","f"],
-    ["Vorlauf","Vorlaufs","Vorlauf","Vorlauf","m"],
-    ["Vorteilsnutzung","Vorteilsnutzung","Vorteilsnutzung","Vorteilsnutzung","f"],
-    ["Wanderbewegung","Wanderbewegung","Wanderbewegung","Wanderbewegung","f"],
-    ["Weiterentwicklung","Weiterentwicklung","Weiterentwicklung","Weiterentwicklung","f"],
-    ["Widersprüchlichkeit","Widersprüchlichkeit","Widersprüchlichkeit","Widersprüchlichkeit","f"],
-    ["Wirtschaftswachstum","Wirtschaftswachstums","Wirtschaftswachstum","Wirtschaftswachstum","n"],
-    ["Zentralisierung","Zentralisierung","Zentralisierung","Zentralisierung","f"],
-    ["Zerfallserscheinung","Zerfallserscheinung","Zerfallserscheinung","Zerfallserscheinung","f"],
-    ["Zufallsprinzip","Zufallsprinzips","Zufallsprinzip","Zufallsprinzip","n"],
-    ["Zukunftsprognose","Zukunftsprognose","Zukunftsprognose","Zukunftsprognose","f"],
-    ["Zuwachs","Zuwachses","Zuwachs","Zuwachs","m"]
+    [
+      "Abstraktion",
+      "Abstraktion",
+      "Abstraktion",
+      "Abstraktion",
+      "f"
+    ],
+    [
+      "Affinität",
+      "Affinität",
+      "Affinität",
+      "Affinität",
+      "f"
+    ],
+    [
+      "Aktienkurs",
+      "Aktienkurses",
+      "Aktienkurs",
+      "Aktienkurs",
+      "m"
+    ],
+    [
+      "Aktionspotential",
+      "Aktionspotentials",
+      "Aktionspotential",
+      "Aktionspotential",
+      "n"
+    ],
+    [
+      "Akzeleration",
+      "Akzeleration",
+      "Akzeleration",
+      "Akzeleration",
+      "f"
+    ],
+    [
+      "Analyse",
+      "Analyse",
+      "Analyse",
+      "Analyse",
+      "f"
+    ],
+    [
+      "Anfangspotential",
+      "Anfangspotentials",
+      "Anfangspotential",
+      "Anfangspotential",
+      "n"
+    ],
+    [
+      "Aufwandminimierung",
+      "Aufwandminimierung",
+      "Aufwandminimierung",
+      "Aufwandminimierung",
+      "f"
+    ],
+    [
+      "Aussagekraft",
+      "Aussagekraft",
+      "Aussagekraft",
+      "Aussagekraft",
+      "f"
+    ],
+    [
+      "Autonomie",
+      "Autonomie",
+      "Autonomie",
+      "Autonomie",
+      "f"
+    ],
+    [
+      "Avisierung",
+      "Avisierung",
+      "Avisierung",
+      "Avisierung",
+      "f"
+    ],
+    [
+      "Bargeldrücklage",
+      "Bargeldrücklage",
+      "Bargeldrücklage",
+      "Bargeldrücklage",
+      "f"
+    ],
+    [
+      "Benutzerzufriedenheit",
+      "Benutzerzufriedenheit",
+      "Benutzerzufriedenheit",
+      "Benutzerzufriedenheit",
+      "f"
+    ],
+    [
+      "Betriebsvermögen",
+      "Betriebsvermögens",
+      "Betriebsvermögen",
+      "Betriebsvermögen",
+      "n"
+    ],
+    [
+      "Bildungsoffensive",
+      "Bildungsoffensive",
+      "Bildungsoffensive",
+      "Bildungsoffensive",
+      "f"
+    ],
+    [
+      "Brand-Switch",
+      "Brand-Switch",
+      "Brand-Switch",
+      "Brand-Switch",
+      "n"
+    ],
+    [
+      "Breakeven-Point",
+      "Breakeven-Points",
+      "Breakeven-Point",
+      "Breakeven-Point",
+      "m"
+    ],
+    [
+      "Budgetkonsolidierung",
+      "Budgetkonsolidierung",
+      "Budgetkonsolidierung",
+      "Budgetkonsolidierung",
+      "f"
+    ],
+    [
+      "Budgetsituation",
+      "Budgetsituation",
+      "Budgetsituation",
+      "Budgetsituation",
+      "f"
+    ],
+    [
+      "Cashflow",
+      "Cashflows",
+      "Cashflow",
+      "Cashflow",
+      "m"
+    ],
+    [
+      "Chance",
+      "Chance",
+      "Chance",
+      "Chance",
+      "f"
+    ],
+    [
+      "Change-Management-Aktion",
+      "Change-Management-Aktion",
+      "Change-Management-Aktion",
+      "Change-Management-Aktion",
+      "f"
+    ],
+    [
+      "Charakterisierung",
+      "Charakterisierung",
+      "Charakterisierung",
+      "Charakterisierung",
+      "f"
+    ],
+    [
+      "Consumer-Markt",
+      "Consumer-Marktes",
+      "Consumer-Markt",
+      "Consumer-Markt",
+      "m"
+    ],
+    [
+      "Datenfluktuation",
+      "Datenfluktuation",
+      "Datenfluktuation",
+      "Datenfluktuation",
+      "f"
+    ],
+    [
+      "Datenschutz",
+      "Datenschutzes",
+      "Datenschutz",
+      "Datenschutz",
+      "m"
+    ],
+    [
+      "Datenstruktur",
+      "Datenstruktur",
+      "Datenstruktur",
+      "Datenstruktur",
+      "f"
+    ],
+    [
+      "Detailanalyse",
+      "Detailanalyse",
+      "Detailanalyse",
+      "Detailanalyse",
+      "f"
+    ],
+    [
+      "Dezentralisierung",
+      "Dezentralisierung",
+      "Dezentralisierung",
+      "Dezentralisierung",
+      "f"
+    ],
+    [
+      "Dollarschwäche",
+      "Dollarschwäche",
+      "Dollarschwäche",
+      "Dollarschwäche",
+      "f"
+    ],
+    [
+      "Duchlaufparameter",
+      "Duchlaufparameters",
+      "Duchlaufparameter",
+      "Duchlaufparameter",
+      "m"
+    ],
+    [
+      "Dysfunktion",
+      "Dysfunktion",
+      "Dysfunktion",
+      "Dysfunktion",
+      "f"
+    ],
+    [
+      "Effizienz",
+      "Effizienz",
+      "Effizienz",
+      "Effizienz",
+      "f"
+    ],
+    [
+      "Entwicklungsarbeit",
+      "Entwicklungsarbeit",
+      "Entwicklungsarbeit",
+      "Entwicklungsarbeit",
+      "f"
+    ],
+    [
+      "Ergebnisoptimierung",
+      "Ergebnisoptimierung",
+      "Ergebnisoptimierung",
+      "Ergebnisoptimierung",
+      "f"
+    ],
+    [
+      "Ertrag",
+      "Ertrags ",
+      "Ertrag",
+      "Ertrag",
+      "m"
+    ],
+    [
+      "Ertragssteigerung",
+      "Ertragssteigerung",
+      "Ertragssteigerung",
+      "Ertragssteigerung",
+      "f"
+    ],
+    [
+      "Extrapolierung",
+      "Extrapolierung",
+      "Extrapolierung",
+      "Extrapolierung",
+      "f"
+    ],
+    [
+      "Extremfall-Vermeidung",
+      "Extremfall-Vermeidung",
+      "Extremfall-Vermeidung",
+      "Extremfall-Vermeidung",
+      "f"
+    ],
+    [
+      "Falsifikation",
+      "Falsifikation",
+      "Falsifikation",
+      "Falsifikation",
+      "f"
+    ],
+    [
+      "Fiktion",
+      "Fiktion",
+      "Fiktion",
+      "Fiktion",
+      "f"
+    ],
+    [
+      "Finanzgebarung",
+      "Finanzgebarung",
+      "Finanzgebarung",
+      "Finanzgebarung",
+      "f"
+    ],
+    [
+      "Finanzierung",
+      "Finanzierung",
+      "Finanzierung",
+      "Finanzierung",
+      "f"
+    ],
+    [
+      "Fond-Rücklagen",
+      "Fond-Rücklagen",
+      "Fond-Rücklagen",
+      "Fond-Rücklagen",
+      "f"
+    ],
+    [
+      "Fundamentalisierung",
+      "Fundamentalisierung",
+      "Fundamentalisierung",
+      "Fundamentalisierung",
+      "f"
+    ],
+    [
+      "Funktionalität",
+      "Funktionalität",
+      "Funktionalität",
+      "Funktionalität",
+      "f"
+    ],
+    [
+      "Gateway-Funktion",
+      "Gateway-Funktion",
+      "Gateway-Funktion",
+      "Gateway-Funktion",
+      "f"
+    ],
+    [
+      "Generaloption",
+      "Generaloption",
+      "Generaloption",
+      "Generaloption",
+      "f"
+    ],
+    [
+      "Gesamtsituation",
+      "Gesamtsituation",
+      "Gesamtsituation",
+      "Gesamtsituation",
+      "f"
+    ],
+    [
+      "Gesamtstruktur",
+      "Gesamtstruktur",
+      "Gesamtstruktur",
+      "Gesamtstruktur",
+      "f"
+    ],
+    [
+      "Gewinn",
+      "Gewinns",
+      "Gewinn",
+      "Gewinn",
+      "m"
+    ],
+    [
+      "Gewinnmaximierung",
+      "Gewinnmaximierung",
+      "Gewinnmaximierung",
+      "Gewinnmaximierung",
+      "f"
+    ],
+    [
+      "Gleichgewicht",
+      "Gleichgewichtes",
+      "Gleichgewicht",
+      "Gleichgewicht",
+      "n"
+    ],
+    [
+      "Globalisierung",
+      "Globalisierung",
+      "Globalisierung",
+      "Globalisierung",
+      "f"
+    ],
+    [
+      "Gratifikation",
+      "Gratifikation",
+      "Gratifikation",
+      "Gratifikation",
+      "f"
+    ],
+    [
+      "Gültigkeitsbereich",
+      "Gültigkeitsbereiches",
+      "Gültigkeitsbereich",
+      "Gültigkeitsbereich",
+      "m"
+    ],
+    [
+      "Handelsspanne",
+      "Handelsspanne",
+      "Handelsspanne",
+      "Handelsspanne",
+      "f"
+    ],
+    [
+      "Hochpreis-Politik",
+      "Hochpreis-Politik",
+      "Hochpreis-Politik",
+      "Hochpreis-Politik",
+      "f"
+    ],
+    [
+      "Hybridisierung",
+      "Hybridisierung",
+      "Hybridisierung",
+      "Hybridisierung",
+      "f"
+    ],
+    [
+      "Hypothese",
+      "Hypothese",
+      "Hypothese",
+      "Hypothese",
+      "f"
+    ],
+    [
+      "Implikation",
+      "Implikation",
+      "Implikation",
+      "Implikation",
+      "f"
+    ],
+    [
+      "Indikation",
+      "Indikation",
+      "Indikation",
+      "Indikation",
+      "f"
+    ],
+    [
+      "Individualisierung",
+      "Individualisierung",
+      "Individualisierung",
+      "Individualisierung",
+      "f"
+    ],
+    [
+      "Infrastruktur",
+      "Infrastruktur",
+      "Infrastruktur",
+      "Infrastruktur",
+      "f"
+    ],
+    [
+      "Initiative",
+      "Initiative",
+      "Initiative",
+      "Initiative",
+      "f"
+    ],
+    [
+      "Interaktion",
+      "Interaktion",
+      "Interaktion",
+      "Interaktion",
+      "f"
+    ],
+    [
+      "Interessenallianz",
+      "Interessenallianz",
+      "Interessenallianz",
+      "Interessenallianz",
+      "f"
+    ],
+    [
+      "Interface",
+      "Interfaces",
+      "Interface",
+      "Interface",
+      "n"
+    ],
+    [
+      "Interims-Fachbereich",
+      "Interims-Fachbereiches",
+      "Interims-Fachbereich",
+      "Interims-Fachbereich",
+      "m"
+    ],
+    [
+      "Investitionsrücklagen",
+      "Investitionsrücklagen",
+      "Investitionsrücklagen",
+      "Investitionsrücklagen",
+      "f"
+    ],
+    [
+      "Irreversibilität",
+      "Irreversibilität",
+      "Irreversibilität",
+      "Irreversibilität",
+      "f"
+    ],
+    [
+      "Iso-9000-Zertifizierung",
+      "Iso-9000-Zertifizierung",
+      "Iso-9000-Zertifizierung",
+      "Iso-9000-Zertifizierung",
+      "f"
+    ],
+    [
+      "Kernaussage",
+      "Kernaussage",
+      "Kernaussage",
+      "Kernaussage",
+      "f"
+    ],
+    [
+      "Kernbereich",
+      "Kernbereiches",
+      "Kernbereich",
+      "Kernbereich",
+      "m"
+    ],
+    [
+      "Kommerzialisierung",
+      "Kommerzialisierung",
+      "Kommerzialisierung",
+      "Kommerzialisierung",
+      "f"
+    ],
+    [
+      "Kompressionsartefakt",
+      "Kompressionsartefakts",
+      "Kompressionsartefakt",
+      "Kompressionsartefakt",
+      "n"
+    ],
+    [
+      "Konkretisierung",
+      "Konkretisierung",
+      "Konkretisierung",
+      "Konkretisierung",
+      "f"
+    ],
+    [
+      "Konkretisierung",
+      "Konkretisierung",
+      "Konkretisierung",
+      "Konkretisierung",
+      "f"
+    ],
+    [
+      "Konzentration",
+      "Konzentration",
+      "Konzentration",
+      "Konzentration",
+      "f"
+    ],
+    [
+      "Kritik",
+      "Kritik",
+      "Kritik",
+      "Kritik",
+      "f"
+    ],
+    [
+      "Lebenserwartung",
+      "Lebenserwartung",
+      "Lebenserwartung",
+      "Lebenserwartung",
+      "f"
+    ],
+    [
+      "Liberalisierung",
+      "Liberalisierung",
+      "Liberalisierung",
+      "Liberalisierung",
+      "f"
+    ],
+    [
+      "Lokalisation",
+      "Lokalisation",
+      "Lokalisation",
+      "Lokalisation",
+      "f"
+    ],
+    [
+      "Lustprinzip",
+      "Lustprinzips",
+      "Lustprinzip",
+      "Lustprinzip",
+      "n"
+    ],
+    [
+      "Manipulation",
+      "Manipulation",
+      "Manipulation",
+      "Manipulation",
+      "f"
+    ],
+    [
+      "Marketing-Strategie",
+      "Marketing-Strategie",
+      "Marketing-Strategie",
+      "Marketing-Strategie",
+      "f"
+    ],
+    [
+      "Mitarbeiter-Loyalität",
+      "Mitarbeiter-Loyalität",
+      "Mitarbeiter-Loyalität",
+      "Mitarbeiter-Loyalität",
+      "f"
+    ],
+    [
+      "Mobilität",
+      "Mobilität",
+      "Mobilität",
+      "Mobilität",
+      "f"
+    ],
+    [
+      "Modelanalyse",
+      "Modelanalyse",
+      "Modelanalyse",
+      "Modelanalyse",
+      "f"
+    ],
+    [
+      "Monopol",
+      "Monopols",
+      "Monopol",
+      "Monopol",
+      "n"
+    ],
+    [
+      "Nachvollziehbarkeit",
+      "Nachvollziehbarkeit",
+      "Nachvollziehbarkeit",
+      "Nachvollziehbarkeit",
+      "f"
+    ],
+    [
+      "Nachwirkung",
+      "Nachwirkung",
+      "Nachwirkung",
+      "Nachwirkung",
+      "f"
+    ],
+    [
+      "Nebenwirkung",
+      "Nebenwirkung",
+      "Nebenwirkung",
+      "Nebenwirkung",
+      "f"
+    ],
+    [
+      "Nettoergebnis",
+      "Nettoergebnisses",
+      "Nettoergebnis",
+      "Nettoergebnis",
+      "n"
+    ],
+    [
+      "Neutralität",
+      "Neutralität",
+      "Neutralität",
+      "Neutralität",
+      "f"
+    ],
+    [
+      "Nutzungsdauer",
+      "Nutzungsdauer",
+      "Nutzungsdauer",
+      "Nutzungsdauer",
+      "f"
+    ],
+    [
+      "Operationspotential",
+      "Operationspotentials",
+      "Operationspotential",
+      "Operationspotential",
+      "n"
+    ],
+    [
+      "Option",
+      "Option",
+      "Option",
+      "Option",
+      "f"
+    ],
+    [
+      "Orientierung",
+      "Orientierung",
+      "Orientierung",
+      "Orientierung",
+      "f"
+    ],
+    [
+      "Outputoptimierung",
+      "Outputoptimierung",
+      "Outputoptimierung",
+      "Outputoptimierung",
+      "f"
+    ],
+    [
+      "Overkill",
+      "Overkills",
+      "Overkill",
+      "Overkill",
+      "m"
+    ],
+    [
+      "Perfektion",
+      "Perfektion",
+      "Perfektion",
+      "Perfektion",
+      "f"
+    ],
+    [
+      "Performance",
+      "Performance",
+      "Performance",
+      "Performance",
+      "f"
+    ],
+    [
+      "Peripherie",
+      "Peripherie",
+      "Peripherie",
+      "Peripherie",
+      "f"
+    ],
+    [
+      "Personifizierung",
+      "Personifizierung",
+      "Personifizierung",
+      "Personifizierung",
+      "f"
+    ],
+    [
+      "Praxisorientierung",
+      "Praxisorientierung",
+      "Praxisorientierung",
+      "Praxisorientierung",
+      "f"
+    ],
+    [
+      "Produkt",
+      "Produktes",
+      "Produkt",
+      "Produkt",
+      "n"
+    ],
+    [
+      "Produktivität",
+      "Produktivität",
+      "Produktivität",
+      "Produktivität",
+      "f"
+    ],
+    [
+      "Prozessoptimierung",
+      "Prozessoptimierung",
+      "Prozessoptimierung",
+      "Prozessoptimierung",
+      "f"
+    ],
+    [
+      "Qualität",
+      "Qualität",
+      "Qualität",
+      "Qualität",
+      "f"
+    ],
+    [
+      "Qualitätskontrolle",
+      "Qualitätskontrolle",
+      "Qualitätskontrolle",
+      "Qualitätskontrolle",
+      "f"
+    ],
+    [
+      "Qualitätsmanagement",
+      "Qualitätsmanagements",
+      "Qualitätsmanagement",
+      "Qualitätsmanagement",
+      "n"
+    ],
+    [
+      "Querverbindung",
+      "Querverbindung",
+      "Querverbindung",
+      "Querverbindung",
+      "f"
+    ],
+    [
+      "Radikalisierung",
+      "Radikalisierung",
+      "Radikalisierung",
+      "Radikalisierung",
+      "f"
+    ],
+    [
+      "Randbezirk",
+      "Randbezirks",
+      "Randbezirk",
+      "Randbezirk",
+      "m"
+    ],
+    [
+      "Recycling",
+      "Recyclings",
+      "Recycling",
+      "Recycling",
+      "n"
+    ],
+    [
+      "Reduktion",
+      "Reduktion",
+      "Reduktion",
+      "Reduktion",
+      "f"
+    ],
+    [
+      "Retention",
+      "Retention",
+      "Retention",
+      "Retention",
+      "f"
+    ],
+    [
+      "Risikobereitschaft",
+      "Risikobereitschaft",
+      "Risikobereitschaft",
+      "Risikobereitschaft",
+      "f"
+    ],
+    [
+      "Risk-Management",
+      "Risk-Managements",
+      "Risk-Management",
+      "Risk-Management",
+      "n"
+    ],
+    [
+      "Routine",
+      "Routine",
+      "Routine",
+      "Routine",
+      "f"
+    ],
+    [
+      "Rückwirkung",
+      "Rückwirkung",
+      "Rückwirkung",
+      "Rückwirkung",
+      "f"
+    ],
+    [
+      "Security-Bulletin",
+      "Security-Bulletins",
+      "Security-Bulletin",
+      "Security-Bulletin",
+      "n"
+    ],
+    [
+      "Sicherheit",
+      "Sicherheit",
+      "Sicherheit",
+      "Sicherheit",
+      "f"
+    ],
+    [
+      "Spekulation",
+      "Spekulation",
+      "Spekulation",
+      "Spekulation",
+      "f"
+    ],
+    [
+      "Strukturbereinigung",
+      "Strukturbereinigung",
+      "Strukturbereinigung",
+      "Strukturbereinigung",
+      "f"
+    ],
+    [
+      "Substitution",
+      "Substitution",
+      "Substitution",
+      "Substitution",
+      "f"
+    ],
+    [
+      "Synergieeffekt",
+      "Synergieeffektes",
+      "Synergieeffekt",
+      "Synergieeffekt",
+      "m"
+    ],
+    [
+      "System",
+      "Systems",
+      "System",
+      "System",
+      "n"
+    ],
+    [
+      "Systemanalyse",
+      "Systemanalyse",
+      "Systemanalyse",
+      "Systemanalyse",
+      "f"
+    ],
+    [
+      "Systemparameter",
+      "Systemparameters",
+      "Systemparameter",
+      "Systemparameter",
+      "m"
+    ],
+    [
+      "Teamgeist",
+      "Teamgeists",
+      "Teamgeist",
+      "Teamgeist",
+      "m"
+    ],
+    [
+      "Technisierung",
+      "Technisierung",
+      "Technisierung",
+      "Technisierung",
+      "f"
+    ],
+    [
+      "Timing",
+      "Timings",
+      "Timing",
+      "Timing",
+      "n"
+    ],
+    [
+      "Typisierung",
+      "Typisierung",
+      "Typisierung",
+      "Typisierung",
+      "f"
+    ],
+    [
+      "Überreaktion",
+      "Überreaktion",
+      "Überreaktion",
+      "Überreaktion",
+      "f"
+    ],
+    [
+      "Umwegsrentabilität",
+      "Umwegsrentabilität",
+      "Umwegsrentabilität",
+      "Umwegsrentabilität",
+      "f"
+    ],
+    [
+      "Unsicherheit",
+      "Unsicherheit",
+      "Unsicherheit",
+      "Unsicherheit",
+      "f"
+    ],
+    [
+      "Unternehmensphilosophie",
+      "Unternehmensphilosophie",
+      "Unternehmensphilosophie",
+      "Unternehmensphilosophie",
+      "f"
+    ],
+    [
+      "Ursächlichkeit",
+      "Ursächlichkeit",
+      "Ursächlichkeit",
+      "Ursächlichkeit",
+      "f"
+    ],
+    [
+      "Verifikation",
+      "Verifikation",
+      "Verifikation",
+      "Verifikation",
+      "f"
+    ],
+    [
+      "Verlustreduktion",
+      "Verlustreduktion",
+      "Verlustreduktion",
+      "Verlustreduktion",
+      "f"
+    ],
+    [
+      "Verwendung",
+      "Verwendung",
+      "Verwendung",
+      "Verwendung",
+      "f"
+    ],
+    [
+      "Vorlauf",
+      "Vorlaufs",
+      "Vorlauf",
+      "Vorlauf",
+      "m"
+    ],
+    [
+      "Vorteilsnutzung",
+      "Vorteilsnutzung",
+      "Vorteilsnutzung",
+      "Vorteilsnutzung",
+      "f"
+    ],
+    [
+      "Wanderbewegung",
+      "Wanderbewegung",
+      "Wanderbewegung",
+      "Wanderbewegung",
+      "f"
+    ],
+    [
+      "Weiterentwicklung",
+      "Weiterentwicklung",
+      "Weiterentwicklung",
+      "Weiterentwicklung",
+      "f"
+    ],
+    [
+      "Widersprüchlichkeit",
+      "Widersprüchlichkeit",
+      "Widersprüchlichkeit",
+      "Widersprüchlichkeit",
+      "f"
+    ],
+    [
+      "Wirtschaftswachstum",
+      "Wirtschaftswachstums",
+      "Wirtschaftswachstum",
+      "Wirtschaftswachstum",
+      "n"
+    ],
+    [
+      "Zentralisierung",
+      "Zentralisierung",
+      "Zentralisierung",
+      "Zentralisierung",
+      "f"
+    ],
+    [
+      "Zerfallserscheinung",
+      "Zerfallserscheinung",
+      "Zerfallserscheinung",
+      "Zerfallserscheinung",
+      "f"
+    ],
+    [
+      "Zufallsprinzip",
+      "Zufallsprinzips",
+      "Zufallsprinzip",
+      "Zufallsprinzip",
+      "n"
+    ],
+    [
+      "Zukunftsprognose",
+      "Zukunftsprognose",
+      "Zukunftsprognose",
+      "Zukunftsprognose",
+      "f"
+    ],
+    [
+      "Zuwachs",
+      "Zuwachses",
+      "Zuwachs",
+      "Zuwachs",
+      "m"
+    ]
   ],
-  "artikel_bestimmt_fall_1" : {
-    "m" : "der",
-    "f" : "die",
-    "n" : "das"
+  "artikel_bestimmt_fall_1": {
+    "m": "der",
+    "f": "die",
+    "n": "das"
   },
-  "artikel_bestimmt_fall_2" : {
-    "m" : "des",
-    "f" : "der",
-    "n" : "des"
+  "artikel_bestimmt_fall_2": {
+    "m": "des",
+    "f": "der",
+    "n": "des"
   },
-  "artikel_unbestimmt_fall_4" : {
-    "m" : "einen",
-    "f" : "eine",
-    "n" : "ein"
+  "artikel_unbestimmt_fall_4": {
+    "m": "einen",
+    "f": "eine",
+    "n": "ein"
   },
-  "adjektiv_endung_unbest_fall_1" : {
-    "m" : "er",
-    "f" : "e",
-    "n" : "es"
+  "adjektiv_endung_unbest_fall_1": {
+    "m": "er",
+    "f": "e",
+    "n": "es"
   },
-  "adjektiv_endung_unbest_fall_4" : {
-    "m" : "en",
-    "f" : "e",
-    "n" : "es"
+  "adjektiv_endung_unbest_fall_4": {
+    "m": "en",
+    "f": "e",
+    "n": "es"
   },
-  "lokationIndex" : {
-    "m" : 0,
-    "f" : 1,
-    "n" : 0
+  "lokationIndex": {
+    "m": 0,
+    "f": 1,
+    "n": 0
   }
-
 }

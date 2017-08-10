@@ -8,21 +8,19 @@ export class InlineQueryResultCachedVideo extends InlineQueryResult {
         return "video"
     }
 
-    video_file_id : string;
-    title : string;
-    description : string;
-    caption : string;
-    input_message_content : InputMessageContent;
-    reply_markup : any; //TODO
-    constructor(
-        id : string,
-        video_file_id : string,
-        title? : string,
-        description? : string,
-        caption? : string,
-        reply_markup? :any,
-        input_message_content? : InputMessageContent
-    ) {
+    video_file_id: string;
+    title: string;
+    description: string;
+    caption: string;
+    input_message_content: InputMessageContent;
+    reply_markup: any; //TODO
+    constructor(id: string,
+                video_file_id: string,
+                title?: string,
+                description?: string,
+                caption?: string,
+                reply_markup?: any,
+                input_message_content?: InputMessageContent) {
         super(id);
         this.video_file_id = video_file_id;
         this.title = title;

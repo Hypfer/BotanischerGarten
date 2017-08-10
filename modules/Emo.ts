@@ -8,7 +8,7 @@ import {IncomingMessage} from "../lib/DataObjects/Messages/IncomingMessage";
  * Created by hypfer on 07.06.17.
  */
 export class Emo extends Module {
-    Emotes : any;
+    Emotes: any;
 
     protected loadAssets(): void {
         this.Emotes = require("../assets/emotes.json");
@@ -17,8 +17,8 @@ export class Emo extends Module {
     protected registerMessageHandlers(MessageChain: any) {
         const self = this;
 
-        MessageChain.add(function emo(msg : IncomingMessage, next){
-            if(!msg.Message.text || msg.Message.text.length === 0) {
+        MessageChain.add(function emo(msg: IncomingMessage, next) {
+            if (!msg.Message.text || msg.Message.text.length === 0) {
                 return next();
             }
 
@@ -30,7 +30,7 @@ export class Emo extends Module {
                 if (command) {
                     const emote = command.Args[0];
 
-                    if(emote && self.Emotes[emote]) {
+                    if (emote && self.Emotes[emote]) {
                         self.Bot.sendReply(new OutgoingTextMessage(self.Emotes[emote]), msg.Message.chat.id);
                     } else {
                         self.Bot.sendReply(new OutgoingTextMessage("Invalid emote."), msg.Message.chat.id);
@@ -45,7 +45,7 @@ export class Emo extends Module {
     protected registerInlineHandlers(InlineChain: any) {
         const self = this;
 
-        InlineChain.add(function emo(msg : IncomingMessage, next){
+        InlineChain.add(function emo(msg: IncomingMessage, next) {
             let query = msg.Message.query.toLowerCase();
 
             let command = Helpers.checkForCommand("emo", query, false);
@@ -54,7 +54,7 @@ export class Emo extends Module {
                 const offset = msg.Message.offset === "" ? 0 : parseInt(msg.Message.offset);
 
                 query = command.Args[0];
-                if(!query) {
+                if (!query) {
                     query = "";
                 }
 
@@ -69,7 +69,7 @@ export class Emo extends Module {
                     }
                 });
 
-                if(offset) {
+                if (offset) {
                     resultNames.splice(0, offset);
                 }
 
@@ -87,13 +87,13 @@ export class Emo extends Module {
                 });
 
                 /*
-                if (query === "") {
-                    results = Helpers.shuffleArray(results);
-                } */
+                 if (query === "") {
+                 results = Helpers.shuffleArray(results);
+                 } */
 
                 self.Bot.answerInlineQuery(msg.Message.id, results, {
                     cache_time: 5, //Damit neue results zeitnah auftauchen
-                    next_offset: offset+50
+                    next_offset: offset + 50
                 });
             } else {
                 next();

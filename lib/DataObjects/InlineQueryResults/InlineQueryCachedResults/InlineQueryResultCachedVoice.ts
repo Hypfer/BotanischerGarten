@@ -7,19 +7,18 @@ export class InlineQueryResultCachedVoice extends InlineQueryResult {
     protected getType(): string {
         return "voice";
     }
-    voice_file_id : string;
-    title : string;
-    caption : string;
-    input_message_content : InputMessageContent;
-    reply_markup : any; //TODO
-    constructor(
-        id : string,
-        voice_file_id : string,
-        title : string,
-        caption? : string,
-        reply_markup? :any,
-        input_message_content? : InputMessageContent
-    ) {
+
+    voice_file_id: string;
+    title: string;
+    caption: string;
+    input_message_content: InputMessageContent;
+    reply_markup: any; //TODO
+    constructor(id: string,
+                voice_file_id: string,
+                title: string,
+                caption?: string,
+                reply_markup?: any,
+                input_message_content?: InputMessageContent) {
         super(id);
         this.voice_file_id = voice_file_id;
         this.title = title;

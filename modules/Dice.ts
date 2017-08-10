@@ -11,8 +11,8 @@ export class Dice extends Module {
     protected registerMessageHandlers(MessageChain: any): void {
         const self = this;
 
-        MessageChain.add(function w20(msg : IncomingMessage, next) {
-            if(!msg.Message.text || msg.Message.text.length === 0) {
+        MessageChain.add(function w20(msg: IncomingMessage, next) {
+            if (!msg.Message.text || msg.Message.text.length === 0) {
                 return next();
             }
 
@@ -23,8 +23,8 @@ export class Dice extends Module {
             }
         });
 
-        MessageChain.add(function w6(msg : IncomingMessage, next) {
-            if(!msg.Message.text || msg.Message.text.length === 0) {
+        MessageChain.add(function w6(msg: IncomingMessage, next) {
+            if (!msg.Message.text || msg.Message.text.length === 0) {
                 return next();
             }
 
@@ -39,7 +39,7 @@ export class Dice extends Module {
     protected registerInlineHandlers(InlineChain: any): void {
         const self = this;
 
-        InlineChain.add(function w20(msg : IncomingMessage, next){
+        InlineChain.add(function w20(msg: IncomingMessage, next) {
             const query = msg.Message.query.toLowerCase();
             const command = Helpers.checkForCommand("w20", query, false);
 
@@ -47,9 +47,9 @@ export class Dice extends Module {
                 const roll = Dice.w(20).toString();
 
                 const results = [new InlineQueryResultArticle(
-                    "w20:"+roll,
+                    "w20:" + roll,
                     "Dice: W20",
-                    new InputTextMessageContent("W20: " +roll),
+                    new InputTextMessageContent("W20: " + roll),
                     undefined,
                     undefined,
                     undefined,
@@ -65,7 +65,7 @@ export class Dice extends Module {
             }
         });
 
-        InlineChain.add(function w6(msg : IncomingMessage, next){
+        InlineChain.add(function w6(msg: IncomingMessage, next) {
             const query = msg.Message.query.toLowerCase();
             const command = Helpers.checkForCommand("w6", query, false);
 
@@ -73,9 +73,9 @@ export class Dice extends Module {
                 const roll = Dice.w(6).toString();
 
                 let results = [new InlineQueryResultArticle(
-                    "w6:"+roll,
+                    "w6:" + roll,
                     "Dice: W6",
-                    new InputTextMessageContent("W6: " +roll),
+                    new InputTextMessageContent("W6: " + roll),
                     undefined,
                     undefined,
                     undefined,
@@ -100,7 +100,7 @@ export class Dice extends Module {
         return;
     }
 
-    private static w(n : number) : number{
+    private static w(n: number): number {
         return Math.floor(Math.random() * (n)) + 1;
     }
 

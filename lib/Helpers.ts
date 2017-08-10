@@ -6,15 +6,15 @@ export class Helpers {
     static commandPrefix = "#";
 
 
-    static arrayRandom(arr : Array<any>, remove : boolean) : any {
-        if(remove) {
-            return arr.splice(Math.floor(Math.random() * arr.length), 1 )[0];
+    static arrayRandom(arr: Array<any>, remove: boolean): any {
+        if (remove) {
+            return arr.splice(Math.floor(Math.random() * arr.length), 1)[0];
         } else {
             return arr[Math.floor(Math.random() * arr.length)];
         }
     }
 
-    static shuffleArray (arr : Array<any>) : Array<any> {
+    static shuffleArray(arr: Array<any>): Array<any> {
         let i = 0
             , j = 0
             , temp = null;
@@ -29,19 +29,19 @@ export class Helpers {
         return arr;
     }
 
-    static randomIntFromInterval(min : number, max : number) : number {
-        return Math.floor(Math.random()*(max-min+1)+min);
+    static randomIntFromInterval(min: number, max: number): number {
+        return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
-    static checkForCommand(command : string, msg : string, usePrefix : boolean) : Command {
-        msg = msg? msg : "";
+    static checkForCommand(command: string, msg: string, usePrefix: boolean): Command {
+        msg = msg ? msg : "";
         msg = msg.toLowerCase();
         command = command.toLowerCase();
-        command = usePrefix ? Helpers.commandPrefix+command : command;
+        command = usePrefix ? Helpers.commandPrefix + command : command;
 
-        if(msg.indexOf(command) === 0) {
+        if (msg.indexOf(command) === 0) {
             const splitMsg = msg.split(" ");
-            if(splitMsg[0] === command) {
+            if (splitMsg[0] === command) {
                 return new Command(splitMsg.slice(1));
             }
         }

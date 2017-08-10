@@ -8,17 +8,17 @@ export class LoginTokenService extends Service {
         return "loginToken";
     }
 
-    public createToken(callback : Function) {
-        const token : string = uuid.v4();
-        super.Save(token, {}, function(){
+    public createToken(callback: Function) {
+        const token: string = uuid.v4();
+        super.Save(token, {}, function () {
             callback(token);
         });
     }
 
-    public consumeToken(token : string, callback: Function) {
+    public consumeToken(token: string, callback: Function) {
         const self = this;
-        super.GetById(token, function(doc){
-            if(doc) {
+        super.GetById(token, function (doc) {
+            if (doc) {
                 self.deleteToken(token, callback);
             } else {
                 callback(false);
@@ -27,7 +27,7 @@ export class LoginTokenService extends Service {
     }
 
     private deleteToken(token: string, callback: Function) {
-        super.DeleteById(token, function(){
+        super.DeleteById(token, function () {
             callback(true);
         })
     }

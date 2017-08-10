@@ -4,26 +4,26 @@ import {InputMessageContent} from "./InputMessageContents/InputMessageContent";
  * Created by hypfer on 07.06.17.
  */
 export class InlineQueryResultArticle extends InlineQueryResult {
-    title : string;
-    input_message_content : InputMessageContent;
-    reply_markup : any; //TODO
-    url : string;
-    hide_url : string;
-    description : string;
-    thumb_url : string;
-    thumb_width : number;
-    thumb_height : number;
+    title: string;
+    input_message_content: InputMessageContent;
+    reply_markup: any; //TODO
+    url: string;
+    hide_url: string;
+    description: string;
+    thumb_url: string;
+    thumb_width: number;
+    thumb_height: number;
 
-    constructor(id : string,
-                title : string,
-                input_message_content : InputMessageContent,
-                reply_markup? : any, //TODO
-                url? : string,
-                hide_url? : string,
-                description? : string,
-                thumb_url? : string,
-                thumb_width? : number,
-                thumb_height? : number){
+    constructor(id: string,
+                title: string,
+                input_message_content: InputMessageContent,
+                reply_markup?: any, //TODO
+                url?: string,
+                hide_url?: string,
+                description?: string,
+                thumb_url?: string,
+                thumb_width?: number,
+                thumb_height?: number) {
         super(id);
         this.title = title;
         this.input_message_content = input_message_content;

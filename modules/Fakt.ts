@@ -9,31 +9,31 @@ import uuid = require("uuid");
  * Created by hypfer on 07.06.17.
  */
 export class Fakt extends Module {
-    Facts : any;
-    FactSets : Array<string>;
+    Facts: any;
+    FactSets: Array<string>;
     static Fallback = "Fakt ist: Es gibt keine Fakten.";
 
     protected registerMessageHandlers(MessageChain: any): void {
         const self = this;
 
-        MessageChain.add(function fakt(msg : IncomingMessage, next) {
-            if(!msg.Message.text || msg.Message.text.length === 0) {
+        MessageChain.add(function fakt(msg: IncomingMessage, next) {
+            if (!msg.Message.text || msg.Message.text.length === 0) {
                 return next();
             }
 
             const command = Helpers.checkForCommand("fakt", msg.Message.text, true);
             if (command) {
                 let answer = Fakt.Fallback;
-                if(command.Args && command.Args.length > 0) {
-                    if(command.Args[0] === "?") {
+                if (command.Args && command.Args.length > 0) {
+                    if (command.Args[0] === "?") {
                         answer = "Kategorien: " + self.FactSets.join(", ");
                     } else {
-                        if(self.Facts[command.Args[0]]) {
+                        if (self.Facts[command.Args[0]]) {
                             answer = Helpers.arrayRandom(self.Facts[command.Args[0]], false);
                         }
                     }
                 } else {
-                    if(self.FactSets && self.FactSets.length > 0) {
+                    if (self.FactSets && self.FactSets.length > 0) {
                         answer = Helpers.arrayRandom(self.Facts[Helpers.arrayRandom(self.FactSets, false)], false);
                     }
                 }
@@ -48,7 +48,7 @@ export class Fakt extends Module {
     protected registerInlineHandlers(InlineChain: any): void {
         const self = this;
 
-        InlineChain.add(function emo(msg : IncomingMessage, next) {
+        InlineChain.add(function emo(msg: IncomingMessage, next) {
             let query = msg.Message.query.toLowerCase();
 
             const command = Helpers.checkForCommand("fakt", query, false);
@@ -75,13 +75,13 @@ export class Fakt extends Module {
                     }
 
                     results[i] = new InlineQueryResultArticle(
-                                        uuid.v4(),
-                                        "Fakt ist:",
-                                        new InputTextMessageContent(result),
-                                        undefined,
-                                        undefined,
-                                        undefined,
-                                        result
+                        uuid.v4(),
+                        "Fakt ist:",
+                        new InputTextMessageContent(result),
+                        undefined,
+                        undefined,
+                        undefined,
+                        result
                     );
                 }
 
@@ -90,7 +90,7 @@ export class Fakt extends Module {
 
                 self.Bot.answerInlineQuery(msg.Message.id, results, {
                     cache_time: 5, //Damit neue results zeitnah auftauchen
-                    next_offset: offset+50
+                    next_offset: offset + 50
                 });
             } else {
                 next();

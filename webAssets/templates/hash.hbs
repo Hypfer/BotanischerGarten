@@ -2,19 +2,21 @@
 <html>
 <head>
     <title>{{hash_name}} - {{bot_friendly_name}}</title>
-    <link rel="stylesheet" type="text/css" href="/s/plyr.css" />
-    <link rel="stylesheet" type="text/css" href="/s/style.css" />
-    <link rel="icon" type="image/gif" href="/s/favicon.gif" />
+    <link rel="stylesheet" type="text/css" href="/s/plyr.css"/>
+    <link rel="stylesheet" type="text/css" href="/s/style.css"/>
+    <link rel="icon" type="image/gif" href="/s/favicon.gif"/>
 
-    <meta name="Description" content="{{hash_name}}" />
+    <meta name="Description" content="{{hash_name}}"/>
 </head>
 <body>
 <div class="return"><a href="/" title="random">{{bot_friendly_name}}</a></div>
 <div class="controls">
     {{#if first_id}}<a id="first" href="/hash/{{first_id}}">α</a>&nbsp;|&nbsp;{{else}}&nbsp;&nbsp;&nbsp;&nbsp;{{/if}}
-    {{#if next_id}}<a id="next" href="/hash/{{next_id}}"><<-</a>&nbsp;|&nbsp;{{else}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{/if}}
+    {{#if next_id}}
+        <a id="next" href="/hash/{{next_id}}"><<-</a>&nbsp;|&nbsp;{{else}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{/if}}
     &nbsp;<a id="random" href="/">random</a>&nbsp;
-    {{#if prev_id}}&nbsp;| <a id="prev" href="/hash/{{prev_id}}">->></a>{{else}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{/if}}
+    {{#if prev_id}}
+        &nbsp;| <a id="prev" href="/hash/{{prev_id}}">->></a>{{else}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{/if}}
     {{#if last_id}}&nbsp;| <a id="prev" href="/hash/{{last_id}}">ω</a>{{else}}&nbsp;&nbsp;&nbsp;&nbsp;{{/if}}
 
 </div>
@@ -23,11 +25,12 @@
 
         {{#if image}}
             <a href="/b/{{hash_db_id}}" target="_blank">
-                <img src="/b/{{hash_db_id}}" style="max-width: 640px;height:auto;" />
+                <img src="/b/{{hash_db_id}}" style="max-width: 640px;height:auto;"/>
             </a>
         {{/if}}
         {{#if video}}
-            <video id="player" src="/b/{{hash_db_id}}" preload="auto" controls loop style="max-width: 640px;height:auto;"></video>
+            <video id="player" src="/b/{{hash_db_id}}" preload="auto" controls loop
+                   style="max-width: 640px;height:auto;"></video>
         {{/if}}
         {{#if gif}}
             <video id="player" src="/b/{{hash_db_id}}" preload="auto" loop></video>
@@ -50,16 +53,16 @@
 <div class="panel info">
       <span class="id">Hash: {{hash_name}} | by: <span class="name">
           {{#if user_nickname}}
-            <a href="https://telegram.me/{{user_nickname}}" target="_blank">@{{user_nickname}}</a>
+              <a href="https://telegram.me/{{user_nickname}}" target="_blank">@{{user_nickname}}</a>
           {{/if}}{{user_name}}</span>
-          </span><br />
-      {{#if mime}}<span class="mime">mime: {{mime}}</span>&nbsp;<br />{{/if}}
-      {{#if size}}<span class="size">size: {{size}} byte</span><br />{{/if}}
-      <span class="timestamp">{{timestamp}}</span><br>
+          </span><br/>
+    {{#if mime}}<span class="mime">mime: {{mime}}</span>&nbsp;<br/>{{/if}}
+    {{#if size}}<span class="size">size: {{size}} byte</span><br/>{{/if}}
+    <span class="timestamp">{{timestamp}}</span><br>
 </div>
 
 <script src="/s/shit.js"></script>
 <script src="/s/plyr.js"></script>
-<script>plyr.setup( { autoplay: "false" }  );</script>
+<script>plyr.setup({autoplay: "false"});</script>
 </body>
 </html>

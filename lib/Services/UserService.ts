@@ -3,22 +3,22 @@ import {User} from "../DataObjects/User";
 /**
  * Created by hypfer on 06.06.17.
  */
-type UserCallback = (user : User) => any;
-export class UserService extends Service{
+type UserCallback = (user: User) => any;
+export class UserService extends Service {
 
     protected getCollection(): string {
         return "User";
     }
 
-    FindUser(user : User, callback : UserCallback) : any {
+    FindUser(user: User, callback: UserCallback): any {
         const self = this;
 
-        super.GetById(user.ID, function(result){
-            if(result) {
-                if(result.FirstName !== user.FirstName ||
-                   result.Username !== user.Username) {
+        super.GetById(user.ID, function (result) {
+            if (result) {
+                if (result.FirstName !== user.FirstName ||
+                    result.Username !== user.Username) {
                     user.Roles = result.Roles;
-                    self.SaveUser(user, function(){
+                    self.SaveUser(user, function () {
                         callback(user);
                     })
                 }
@@ -29,11 +29,12 @@ export class UserService extends Service{
         });
 
     }
-    FindUserById(id : number, callback : UserCallback) : any {
+
+    FindUserById(id: number, callback: UserCallback): any {
         const self = this;
 
-        super.GetById(id, function(result){
-            if(result) {
+        super.GetById(id, function (result) {
+            if (result) {
                 callback(new User(result.ID, result.FirstName, result.Roles, result.Username));
             } else {
                 callback(undefined);
@@ -42,11 +43,11 @@ export class UserService extends Service{
 
     }
 
-    SaveUser(user: User, callback : UserCallback) : any {
+    SaveUser(user: User, callback: UserCallback): any {
         super.Save(user.ID, user, callback);
     }
 
-    DeleteUser(user: User, callback : Function) : any {
+    DeleteUser(user: User, callback: Function): any {
         super.DeleteById(user.ID, callback);
     }
 }

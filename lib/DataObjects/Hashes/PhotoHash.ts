@@ -6,11 +6,13 @@ export class PhotoHash extends BinaryDataHash {
     protected getHashType(): string {
         return "PhotoHash";
     }
-    Height : number;
-    Width : number;
-    constructor(id : string, ownerID : number, DbId: string, Source : number, Public : Boolean, dataStreamHex : string,
-                dataStreamSize : number, dataStreamMime : string, fileId : string,
-                dataStreamInternalID : string, height: number, width: number) {
+
+    Height: number;
+    Width: number;
+
+    constructor(id: string, ownerID: number, DbId: string, Source: number, Public: Boolean, dataStreamHex: string,
+                dataStreamSize: number, dataStreamMime: string, fileId: string,
+                dataStreamInternalID: string, height: number, width: number) {
         super(id, ownerID, DbId, Source, Public, dataStreamHex, dataStreamSize,
             dataStreamMime, fileId, dataStreamInternalID);
         this.Height = height;

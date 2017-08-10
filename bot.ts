@@ -26,21 +26,21 @@ import {GroupService} from "./lib/Services/GroupService";
  */
 export class Bot {
     //Ein Singleton!
-    private static instance : Bot;
-    TgBot : TelegramBot;
-    Repository : MongoRepository;
-    UserService : UserService;
-    GroupService : GroupService;
-    CommandManager : CommandManager;
-    MessageChain : any;
-    InlineChain : any;
-    private Config : any;
+    private static instance: Bot;
+    TgBot: TelegramBot;
+    Repository: MongoRepository;
+    UserService: UserService;
+    GroupService: GroupService;
+    CommandManager: CommandManager;
+    MessageChain: any;
+    InlineChain: any;
+    private Config: any;
 
 
-    constructor(config : any, repository : MongoRepository) {
+    constructor(config: any, repository: MongoRepository) {
         const self = this;
 
-        if(Bot.instance) {
+        if (Bot.instance) {
             return Bot.instance;
         }
         this.Config = config;
@@ -53,14 +53,14 @@ export class Bot {
         this.InlineChain = new Chain();
 
 
-        this.TgBot.on('message', function(msg) {
-            if(self.Config.debug &&
+        this.TgBot.on('message', function (msg) {
+            if (self.Config.debug &&
                 self.Config.debug.incoming &&
                 self.Config.debug.incoming.message) {
                 console.dir(msg);
             }
-            self.buildIncomingMessage(msg, function(Message : IncomingMessage){
-                if(Message.From.ID === -1 && msg.chat.type === "private") {
+            self.buildIncomingMessage(msg, function (Message: IncomingMessage) {
+                if (Message.From.ID === -1 && msg.chat.type === "private") {
                     if (msg.text === "/start") {
                         self.UserService.SaveUser(
                             new User(msg.from.id, msg.from.first_name, [], msg.from.username),
@@ -69,23 +69,23 @@ export class Bot {
                             }
                         )
                     }
-                } else if(Message.From.ID !== -1 && msg.chat.type === "private" && msg.text === "/stop") {
+                } else if (Message.From.ID !== -1 && msg.chat.type === "private" && msg.text === "/stop") {
                     self.UserService.DeleteUser(
                         Message.From,
-                        function() {
-                            self.GroupService.GetGroupsWithUser(Message.From.ID, function(groups){
+                        function () {
+                            self.GroupService.GetGroupsWithUser(Message.From.ID, function (groups) {
                                 const deleteFunctions = [];
-                                groups.forEach(function(group : Group){
-                                    deleteFunctions.push(function(callback){
+                                groups.forEach(function (group: Group) {
+                                    deleteFunctions.push(function (callback) {
                                         group.removeMember(Message.From.ID);
-                                        self.GroupService.SaveGroup(group, function() {
+                                        self.GroupService.SaveGroup(group, function () {
                                             callback();
                                         })
                                     })
                                 });
 
 
-                                async.waterfall(deleteFunctions, function() {
+                                async.waterfall(deleteFunctions, function () {
                                     self.sendReply(
                                         new OutgoingTextMessage("Your Account has been deleted."),
                                         msg.chat.id
@@ -96,12 +96,12 @@ export class Bot {
                         }
                     )
                 } else {
-                    if(Message.From.hasRole("user")) {
+                    if (Message.From.hasRole("user")) {
                         self.MessageChain.start(Message,
-                            function(context) {
+                            function (context) {
                                 //success
                             },
-                            function(context) {
+                            function (context) {
                                 //interrupted
                             });
                     }
@@ -109,20 +109,20 @@ export class Bot {
             });
         });
 
-        this.TgBot.on('inline_query', function(msg){
-            if(self.Config.debug &&
+        this.TgBot.on('inline_query', function (msg) {
+            if (self.Config.debug &&
                 self.Config.debug.incoming &&
                 self.Config.debug.incoming.inline) {
                 console.dir(msg);
             }
 
-            self.buildIncomingMessage(msg, function(Message : IncomingMessage){
-                if(Message.From.hasRole("user")) {
+            self.buildIncomingMessage(msg, function (Message: IncomingMessage) {
+                if (Message.From.hasRole("user")) {
                     self.InlineChain.start(Message,
-                        function(context) {
+                        function (context) {
                             //success
                         },
-                        function(context) {
+                        function (context) {
                             //interrupted
                         });
                 }
@@ -132,50 +132,51 @@ export class Bot {
         Bot.instance = this;
     }
 
-    sendReply(message: OutgoingMessage, chatId : number, callback? : Function) {
+    sendReply(message: OutgoingMessage, chatId: number, callback?: Function) {
         const self = this;
 
-        callback = callback ? callback : function() {};
+        callback = callback ? callback : function () {
+        };
 
-        if(message instanceof OutgoingTextMessage) {
-            if(message.Text.length <= 4096) {
-                this.TgBot.sendMessage(chatId, message.Text).then(function() {
+        if (message instanceof OutgoingTextMessage) {
+            if (message.Text.length <= 4096) {
+                this.TgBot.sendMessage(chatId, message.Text).then(function () {
                     callback();
                 });
             } else {
                 const splitMessage = new OutgoingTextMessage(message.Text.substr(4096));
-                this.TgBot.sendMessage(chatId, message.Text.substr(0,4096)).then(function(){
+                this.TgBot.sendMessage(chatId, message.Text.substr(0, 4096)).then(function () {
                     self.sendReply(splitMessage, chatId, callback);
                 });
             }
-        } else if(message instanceof OutgoingPhotoMessage) {
+        } else if (message instanceof OutgoingPhotoMessage) {
             this.TgBot.sendPhoto(chatId, message.FileId).catch((error) => {
                 console.error("FileID is invalid. Sending raw file");
-                self.Repository.GetData(message.DataStreamInternalID, function(data){
+                self.Repository.GetData(message.DataStreamInternalID, function (data) {
                     message.DataStreamHex = data;
-                    self.TgBot.sendPhoto(chatId, Buffer.from(message.DataStreamHex, "hex")).then(function(msg){
+                    self.TgBot.sendPhoto(chatId, Buffer.from(message.DataStreamHex, "hex")).then(function (msg) {
                         callback(msg);
-                    }).then(function(){
+                    }).then(function () {
                         callback();
                     });
                 });
             });
-        } else if(message instanceof OutgoingVideoMessage) {
+        } else if (message instanceof OutgoingVideoMessage) {
             this.TgBot.sendVideo(chatId, message.FileId).catch((error) => {
                 console.error("FileID is invalid. Sending raw file");
-                self.Repository.GetData(message.DataStreamInternalID, function(data){
+                self.Repository.GetData(message.DataStreamInternalID, function (data) {
                     message.DataStreamHex = data;
-                    self.TgBot.sendVideo(chatId, Buffer.from(message.DataStreamHex, "hex")).then(function(msg){
+                    self.TgBot.sendVideo(chatId, Buffer.from(message.DataStreamHex, "hex")).then(function (msg) {
                         callback(msg);
-                    }).then(function(){
+                    }).then(function () {
                         callback();
                     });
                 });
             });
-        } else if(message instanceof OutgoingVideoMessageMessage) {
+        } else if (message instanceof OutgoingVideoMessageMessage) {
             this.TgBot.sendVideoNote(chatId, message.FileId).catch((error) => {
                 console.error("FileID is invalid. Sending raw file");
-                self.Repository.GetData(message.DataStreamInternalID, function(data){
+                self.Repository.GetData(message.DataStreamInternalID, function (data) {
                     message.DataStreamHex = data;
                     self.TgBot.sendVideoNote(chatId, Buffer.from(message.DataStreamHex, "hex")).then(function (msg) {
                         callback(msg);
@@ -184,15 +185,15 @@ export class Bot {
                     });
                 });
             });
-        } else if(message instanceof OutgoingAudioMessage) {
+        } else if (message instanceof OutgoingAudioMessage) {
             this.TgBot.sendAudio(chatId, message.FileId).catch((error) => {
                 console.error("FileID is invalid. Sending raw file");
-                self.Repository.GetData(message.DataStreamInternalID, function(data){
+                self.Repository.GetData(message.DataStreamInternalID, function (data) {
                     message.DataStreamHex = data;
                     self.TgBot.sendAudio(chatId, Buffer.from(message.DataStreamHex, "hex"),
                         {
                             "title": message.Title,
-                            "performer" : message.Performer
+                            "performer": message.Performer
                         }).then(function (msg) {
                         callback(msg);
                     }).then(function () {
@@ -200,10 +201,10 @@ export class Bot {
                     });
                 });
             });
-        } else if(message instanceof OutgoingDocumentMessage) {
+        } else if (message instanceof OutgoingDocumentMessage) {
             this.TgBot.sendDocument(chatId, message.FileId).catch((error) => {
                 console.error("FileID is invalid. Sending raw file");
-                self.Repository.GetData(message.DataStreamInternalID, function(data){
+                self.Repository.GetData(message.DataStreamInternalID, function (data) {
                     message.DataStreamHex = data;
                     self.TgBot.sendDocument(chatId, Buffer.from(message.DataStreamHex, "hex")
                     ).then(function (msg) {
@@ -213,10 +214,10 @@ export class Bot {
                     });
                 });
             });
-        } else if(message instanceof OutgoingStickerMessage) {
+        } else if (message instanceof OutgoingStickerMessage) {
             this.TgBot.sendSticker(chatId, message.FileId).catch((error) => {
                 console.error("FileID is invalid. Sending raw file");
-                self.Repository.GetData(message.DataStreamInternalID, function(data){
+                self.Repository.GetData(message.DataStreamInternalID, function (data) {
                     message.DataStreamHex = data;
                     self.TgBot.sendSticker(chatId, Buffer.from(message.DataStreamHex, "hex")
                     ).then(function (msg) {
@@ -226,10 +227,10 @@ export class Bot {
                     });
                 });
             });
-        } else if(message instanceof OutgoingVoiceMessage) {
+        } else if (message instanceof OutgoingVoiceMessage) {
             this.TgBot.sendVoice(chatId, message.FileId).catch((error) => {
                 console.error("FileID is invalid. Sending raw file");
-                self.Repository.GetData(message.DataStreamInternalID, function(data){
+                self.Repository.GetData(message.DataStreamInternalID, function (data) {
                     message.DataStreamHex = data;
                     self.TgBot.sendVoice(chatId, Buffer.from(message.DataStreamHex, "hex")
                     ).then(function (msg) {
@@ -239,50 +240,50 @@ export class Bot {
                     });
                 });
             });
-        } else if(message instanceof OutgoingLocationMessage) {
-            if(message instanceof OutgoingVenueMessage) {
+        } else if (message instanceof OutgoingLocationMessage) {
+            if (message instanceof OutgoingVenueMessage) {
                 this.TgBot.sendVenue(chatId, message.Latitude, message.Longitude,
-                    message.Title, message.Address).then(function() {
+                    message.Title, message.Address).then(function () {
                     callback();
                 });
             } else {
-                this.TgBot.sendLocation(chatId, message.Latitude, message.Longitude).then(function() {
+                this.TgBot.sendLocation(chatId, message.Latitude, message.Longitude).then(function () {
                     callback();
                 });
             }
-        } else if(message instanceof OutgoingContactMessage) {
-            this.TgBot.sendContact(chatId, message.Phone_number, message.First_name).then(function() {
+        } else if (message instanceof OutgoingContactMessage) {
+            this.TgBot.sendContact(chatId, message.Phone_number, message.First_name).then(function () {
                 callback();
             });
         }
     }
 
-    answerInlineQuery(id : string, results : Array<InlineQueryResult>, options : any) {
+    answerInlineQuery(id: string, results: Array<InlineQueryResult>, options: any) {
         if (results.length > 50) {
             results = results.slice(0, 50);
         }
         this.TgBot.answerInlineQuery(id, results, options);
     }
 
-    private buildIncomingMessage(msg : any, callback : Function) {
+    private buildIncomingMessage(msg: any, callback: Function) {
         const self = this;
         let user, group;
 
-        if(msg.from) {
+        if (msg.from) {
             user = new User(msg.from.id, msg.from.first_name, [], msg.from.username);
         } else {
             user = new User(-1, "Unknown", []);
         }
 
-        this.UserService.FindUser(user, function(user){
-            if(user) {
-                if(msg.chat) {
+        this.UserService.FindUser(user, function (user) {
+            if (user) {
+                if (msg.chat) {
                     group = new Group(msg.chat.id, msg.chat.type, msg.chat.title);
 
-                    self.GroupService.FindGroup(group, function(group){
+                    self.GroupService.FindGroup(group, function (group) {
                         let changed = false;
 
-                        if(!group.isMember(user.ID)) {
+                        if (!group.isMember(user.ID)) {
                             group.addMember(user.ID);
                             changed = true;
                         }
@@ -294,23 +295,23 @@ export class Bot {
                         //to send a message to the group they want to be part of
                         //This way the user object is already in memory :-)
                         /*
-                        if(msg.new_chat_members && msg.new_chat_members.length > 0) {
-                            msg.new_chat_members.forEach(function(member){
-                                group.addMember(member.id);
-                            });
-                            changed = true;
-                        }
-                        if(msg.new_chat_member) {
-                            group.addMember(msg.new_chat_member.id);
-                            changed = true;
-                        } */
-                        if(msg.left_chat_member) {
+                         if(msg.new_chat_members && msg.new_chat_members.length > 0) {
+                         msg.new_chat_members.forEach(function(member){
+                         group.addMember(member.id);
+                         });
+                         changed = true;
+                         }
+                         if(msg.new_chat_member) {
+                         group.addMember(msg.new_chat_member.id);
+                         changed = true;
+                         } */
+                        if (msg.left_chat_member) {
                             group.removeMember(msg.left_chat_member.id);
                             changed = true;
                         }
 
-                        if(changed === true) {
-                            self.GroupService.SaveGroup(group, function() {
+                        if (changed === true) {
+                            self.GroupService.SaveGroup(group, function () {
                                 callback(new IncomingMessage(user, msg, group));
                             })
                         } else {

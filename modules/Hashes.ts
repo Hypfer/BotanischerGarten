@@ -973,7 +973,7 @@ export class Hashes extends Module {
 
                             if (hash instanceof PhotoHash || hash instanceof StickerHash ||
                                 (hash instanceof DocumentHash && hash.DataStreamMime === "image/gif")) {
-                                if (hash instanceof PhotoHash) {
+                                if (hash instanceof PhotoHash || hash instanceof StickerHash) {
                                     if (hash.Height && hash.Width) {
                                         const dimensions = Hashes.calculateDimensionsForHash(hash.Height, hash.Width);
                                         templateContent["height"] = dimensions.height;
@@ -981,6 +981,8 @@ export class Hashes extends Module {
                                     } else {
                                         templateContent["autoSize"] = true;
                                     }
+                                } else {
+                                    templateContent["autoSize"] = true;
                                 }
                                 templateContent["image"] = true;
                             } else if (hash instanceof DocumentHash && hash.DataStreamMime === "video/mp4") {

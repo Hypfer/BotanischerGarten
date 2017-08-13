@@ -68,6 +68,10 @@ export class HashService extends Service {
         super.DeleteById(hash.ID, callback);
     }
 
+    GetHashesForOverviewWebpage(callback : Function) {
+        super.FindAndSort({"Public" : true}, {"_id" : -1}, callback);
+    }
+
     private static deserializeHash(hash) {
         if (hash) {
             //"deserialize"

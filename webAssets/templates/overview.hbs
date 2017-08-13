@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{bot_friendly_name}}</title>
+    <link rel="icon" type="image/gif" href="/s/favicon.gif" />
+    <link rel="stylesheet" type="text/css" href="/s/style.css">
+    <link rel="stylesheet" type="text/css" href="/s/indexstyle.css">
+</head>
+<body>
+<div class="navbar"><a href="/">{{bot_friendly_name}}</a> | <a href="/random">Random</a></div>
+<ul id="posts">
+    {{#each hashes}}
+        <li class="post">
+            <div>
+                <a href="/hash/{{this.ID}}" title="{{this.DataStreamMime}}">
+                    <div style="width: 100%; height: 100%">
+                        <img class="thumb" src="/t/{{this._id}}" />
+                    </div>
+                </a>
+            </div>
+        </li>
+    {{/each}}
+</ul>
+<script src="./s/jquery-3.1.0.min.js"></script>
+</body>
+</html>

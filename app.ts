@@ -47,9 +47,9 @@ const _Repository = new MongoRepository(config, function () {
     _App.use(sendSeekable);
     _App.use(bodyParser.json());
     _App.use(bodyParser.urlencoded({extended: true}));
-    _App.use('/s', express.static('webAssets/static'));
+    _App.use('/s', express.static(path.join(_Bot.WebAssetPath + '/static')));
     _App.set('view engine', 'hbs');
-    _App.set('views', path.join(__dirname + '/webAssets/templates'));
+    _App.set('views', path.join(_Bot.WebAssetPath + '/templates'));
 
     const Modules = [
         new Emo(config, _Bot, _App),
@@ -64,7 +64,7 @@ const _Repository = new MongoRepository(config, function () {
     ];
 
     _App.use(function (req, res, next) {
-        res.status(404).sendFile(path.join(__dirname + '/webAssets/static/404.html'));
+        res.status(404).sendFile(path.join(_Bot.WebAssetPath +  '/static/404.html'));
     });
 
     _App.listen(3000);

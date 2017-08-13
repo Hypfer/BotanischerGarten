@@ -1,0 +1,9 @@
+* {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+li.post > div{
+    width: 128px;
+    height: 128px;
+}

@@ -21,6 +21,7 @@ import {OutgoingContactMessage} from "./lib/DataObjects/Messages/OutgoingMessage
 import {MongoRepository} from "./lib/Repositories/MongoRepository";
 import {Group} from "./lib/DataObjects/Group";
 import {GroupService} from "./lib/Services/GroupService";
+import * as path from "path";
 /**
  * Created by hypfer on 06.06.17.
  */
@@ -41,6 +42,7 @@ export class Bot {
         last_name : string,
         username : string
     };
+    WebAssetPath : any;
 
 
     constructor(config: any, repository: MongoRepository) {
@@ -63,6 +65,7 @@ export class Bot {
             last_name: "",
             username: ""
         };
+        this.WebAssetPath = path.join(__dirname + '/webAssets/');
 
         this.TgBot.getMe().then(function(me){
             self.About.id = me.id;

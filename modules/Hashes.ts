@@ -48,6 +48,7 @@ import * as uuid from "uuid";
 import {BinaryDataHash} from "../lib/DataObjects/Hashes/BinaryDataHash";
 import {LoginTokenService} from "../lib/Services/LoginTokenService";
 import {Thumbnail} from "../lib/DataObjects/Hashes/Thumbnail";
+import * as path from "path";
 /**
  * Created by hypfer on 08.06.17.
  */
@@ -128,26 +129,20 @@ export class Hashes extends Module {
     protected registerMessageHandlers(MessageChain: any): void {
         const self = this;
 
-        MessageChain.add(function migrateOldHashes(msg: IncomingMessage, next) {
+        //db.getCollection('Hashes').updateMany({Thumb: {$exists : false}, $or: [{HashType: "PhotoHash"},{HashType: "StickerHash"},{HashType: "VideoHash"},{HashType: "DocumentHash"}]}, {$set: {FileId: ""}})
+        MessageChain.add(function sendAllFileIDsWithoutThumbnails(msg: IncomingMessage, next) {
             if (msg.From.hasRole("admin") && msg.Message.text &&
-                msg.Message.chat.type === "private" && msg.Message.text === "migrateHashes") {
-                const oldHashes = require("../commands.json");
-                const oldHashKeys = Object.keys(oldHashes);
+                msg.Message.chat.type === "private" && msg.Message.text === "sendAllFileIDsWithoutThumbnails") {
                 let timeout = 0;
-                oldHashKeys.forEach(function (hashKey) {
-                    self.checkCommandExists(hashKey, function (exists) {
-                        if (exists === false) {
-                            const migrationMessage = Hashes.migrationMessageBuilder(oldHashes[hashKey], msg.From.ID);
-                            if (migrationMessage) {
-                                setTimeout(function () {
-                                    self.saveNewHash(hashKey, migrationMessage, true);
-                                }, timeout);
 
-                                timeout = timeout + 5000;
-                            }
-                        }
-                    });
+                self.HashService.Find({Thumb: {$exists : false}}, function(docs){
+                    docs.forEach(function(doc){
+                        setTimeout(function(){
+                            self.handleHash(doc.ID, msg.Message.chat.id, msg.From);
+                        }, timeout);
 
+                        timeout = timeout + 500;
+                    })
                 });
             } else {
                 next();
@@ -323,9 +318,29 @@ export class Hashes extends Module {
                 function (msg) {
                     if (msg) {
                         hash.FileId = msg.photo[msg.photo.length - 1].file_id;
-                        self.HashService.SaveHash(hash, function () {
-                            console.info("Updated fileID with valid one.")
-                        });
+                        if(msg.photo[0] && !(hash.Thumb)) {
+                            self.downloadFile(msg.photo[0].file_id, function(err, thumbData){
+                                if(err) {
+                                    console.error("Failed to get Thumbnail");
+                                    console.error(err);
+                                } else {
+                                    hash.Thumb = new Thumbnail(
+                                        thumbData.DataStreamHex,
+                                        thumbData.DataStreamSize,
+                                        thumbData.DataStreamMime,
+                                        msg.photo[0].height,
+                                        msg.photo[0].width
+                                    )
+                                }
+                                self.HashService.SaveHash(hash, function () {
+                                    console.info("Updated fileID with valid one.")
+                                });
+                            });
+                        } else {
+                            self.HashService.SaveHash(hash, function () {
+                                console.info("Updated fileID with valid one.")
+                            });
+                        }
                     }
                 });
         } else if (hash instanceof VideoHash) {
@@ -334,9 +349,29 @@ export class Hashes extends Module {
                 function (msg) {
                     if (msg) {
                         hash.FileId = msg.video.file_id;
-                        self.HashService.SaveHash(hash, function () {
-                            console.info("Updated fileID with valid one.")
-                        });
+                        if(msg.video.thumb && !(hash.Thumb)) {
+                            self.downloadFile(msg.video.thumb.file_id, function(err, thumbData){
+                                if(err) {
+                                    console.error("Failed to get Thumbnail");
+                                    console.error(err);
+                                } else {
+                                    hash.Thumb = new Thumbnail(
+                                        thumbData.DataStreamHex,
+                                        thumbData.DataStreamSize,
+                                        thumbData.DataStreamMime,
+                                        msg.video.thumb.height,
+                                        msg.video.thumb.width
+                                    )
+                                }
+                                self.HashService.SaveHash(hash, function () {
+                                    console.info("Updated fileID with valid one.")
+                                });
+                            });
+                        } else {
+                            self.HashService.SaveHash(hash, function () {
+                                console.info("Updated fileID with valid one.")
+                            });
+                        }
                     }
                 });
         } else if (hash instanceof VideoMessageHash) {
@@ -345,9 +380,29 @@ export class Hashes extends Module {
                 function (msg) {
                     if (msg) {
                         hash.FileId = msg.video_note.file_id;
-                        self.HashService.SaveHash(hash, function () {
-                            console.info("Updated fileID with valid one.")
-                        });
+                        if(msg.video_note.thumb && !(hash.Thumb)) {
+                            self.downloadFile(msg.video_note.thumb.file_id, function(err, thumbData){
+                                if(err) {
+                                    console.error("Failed to get Thumbnail");
+                                    console.error(err);
+                                } else {
+                                    hash.Thumb = new Thumbnail(
+                                        thumbData.DataStreamHex,
+                                        thumbData.DataStreamSize,
+                                        thumbData.DataStreamMime,
+                                        msg.video_note.thumb.height,
+                                        msg.video_note.thumb.width
+                                    )
+                                }
+                                self.HashService.SaveHash(hash, function () {
+                                    console.info("Updated fileID with valid one.")
+                                });
+                            });
+                        } else {
+                            self.HashService.SaveHash(hash, function () {
+                                console.info("Updated fileID with valid one.")
+                            });
+                        }
                     }
                 });
         } else if (hash instanceof AudioHash) {
@@ -371,9 +426,29 @@ export class Hashes extends Module {
                         } else {
                             hash.FileId = msg.document.file_id;
                         }
-                        self.HashService.SaveHash(hash, function () {
-                            console.info("Updated fileID with valid one.")
-                        });
+                        if(msg.document.thumb && !(hash.Thumb)) {
+                            self.downloadFile(msg.document.thumb.file_id, function(err, thumbData){
+                                if(err) {
+                                    console.error("Failed to get Thumbnail");
+                                    console.error(err);
+                                } else {
+                                    hash.Thumb = new Thumbnail(
+                                        thumbData.DataStreamHex,
+                                        thumbData.DataStreamSize,
+                                        thumbData.DataStreamMime,
+                                        msg.document.thumb.height,
+                                        msg.document.thumb.width
+                                    )
+                                }
+                                self.HashService.SaveHash(hash, function () {
+                                    console.info("Updated fileID with valid one.")
+                                });
+                            });
+                        } else {
+                            self.HashService.SaveHash(hash, function () {
+                                console.info("Updated fileID with valid one.")
+                            });
+                        }
                     }
                 });
         } else if (hash instanceof StickerHash) {
@@ -382,9 +457,29 @@ export class Hashes extends Module {
                 function (msg) {
                     if (msg) {
                         hash.FileId = msg.sticker.file_id;
-                        self.HashService.SaveHash(hash, function () {
-                            console.info("Updated fileID with valid one.")
-                        });
+                        if(msg.sticker.thumb && !(hash.Thumb)) {
+                            self.downloadFile(msg.sticker.thumb.file_id, function(err, thumbData){
+                                if(err) {
+                                    console.error("Failed to get Thumbnail");
+                                    console.error(err);
+                                } else {
+                                    hash.Thumb = new Thumbnail(
+                                        thumbData.DataStreamHex,
+                                        thumbData.DataStreamSize,
+                                        thumbData.DataStreamMime,
+                                        msg.sticker.thumb.height,
+                                        msg.sticker.thumb.width
+                                    )
+                                }
+                                self.HashService.SaveHash(hash, function () {
+                                    console.info("Updated fileID with valid one.")
+                                });
+                            });
+                        } else {
+                            self.HashService.SaveHash(hash, function () {
+                                console.info("Updated fileID with valid one.")
+                            });
+                        }
                     }
                 });
         } else if (hash instanceof VoiceHash) {
@@ -973,17 +1068,34 @@ export class Hashes extends Module {
                     bot_friendly_name: self.Bot.About.first_name
                 });
             } else {
-                //random
-                self.HashService.GetRandomIds(1, {"Public": true}, function (ids) {
-                    if (ids.length > 0) {
-                        self.HashService.GetHashById(ids[0], function (hash: Hash) {
-                            res.redirect("/hash/" + hash.ID);
-                        });
-                    } else {
-                        next();
-                    }
+                self.HashService.GetHashesForOverviewWebpage(function(docs){
+                    let hashes = [];
+                    docs.forEach(function (doc){
+                        hashes.push({
+                            _id : doc._id.toString(),
+                            ID: doc.ID,
+                            DataStreamMime: doc.DataStreamMime,
+                        })
+                    });
+                    res.render('overview', {
+                        bot_username: self.Bot.About.username,
+                        bot_friendly_name: self.Bot.About.first_name,
+                        hashes : hashes
+                    })
                 });
             }
+        });
+
+        this.App.get('/random', function(req, res, next){
+            self.HashService.GetRandomIds(1, {"Public": true}, function (ids) {
+                if (ids.length > 0) {
+                    self.HashService.GetHashById(ids[0], function (hash: Hash) {
+                        res.redirect("/hash/" + hash.ID);
+                    });
+                } else {
+                    next();
+                }
+            });
         });
 
         this.App.post('/login', function (req, res, next) {
@@ -999,6 +1111,7 @@ export class Hashes extends Module {
             }
         });
 
+        //TODO: Check if valid objectID
         this.App.get('/b/:id', function (req, res, next) {
             if (!req.session.authenticated) {
                 res.redirect("/");
@@ -1012,9 +1125,38 @@ export class Hashes extends Module {
                             })
                         } else {
                             //venue und so n scheiss
+                            res.error(500);
                         }
                     } else {
                         next();
+                    }
+                });
+            }
+        });
+
+        //TODO: Check if valid objectID
+        this.App.get('/t/:id', function (req, res, next) {
+            if (!req.session.authenticated) {
+                res.redirect("/");
+            } else {
+                self.HashService.GetHashByDbId(req.params.id, function (hash : Hash) {
+                    if (hash) {
+                        if(hash instanceof DocumentHash ||
+                           hash instanceof PhotoHash ||
+                           hash instanceof StickerHash ||
+                           hash instanceof VideoHash ||
+                           hash instanceof VideoMessageHash) {
+                            if(hash.Thumb){
+                                res.type(hash.Thumb.DataStreamMime);
+                                res.sendSeekable(Buffer.from(hash.Thumb.DataStreamHex, "hex"));
+                            } else {
+                                res.sendFile(path.join(self.Bot.WebAssetPath + '/static/404_thumb.png'));
+                            }
+                        } else {
+                            res.sendFile(path.join(self.Bot.WebAssetPath + '/static/404_thumb.png'));
+                        }
+                    } else {
+                        res.sendFile(path.join(self.Bot.WebAssetPath + '/static/404_thumb.png'));
                     }
                 });
             }
@@ -1071,6 +1213,15 @@ export class Hashes extends Module {
                                     templateContent["autoSize"] = true;
                                 }
 
+                                templateContent["video"] = true;
+                            } else if (hash instanceof VideoMessageHash) {
+                                if (hash.Height && hash.Width) {
+                                    const dimensions = Hashes.calculateDimensionsForHash(hash.Height, hash.Width);
+                                    templateContent["height"] = dimensions.height;
+                                    templateContent["width"] = dimensions.width;
+                                } else {
+                                    templateContent["autoSize"] = true;
+                                }
                                 templateContent["video"] = true;
                             } else if (hash instanceof DocumentHash) {
                                 templateContent["file"] = true;

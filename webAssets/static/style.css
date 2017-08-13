@@ -55,12 +55,15 @@ li.post {
     margin-top: 5px;
     line-height: 128px;
     -webkit-flex: 1 1 auto;
-    ms-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
     flex: 1 1 auto;
 }
 
 .thumb {
     border: 2px solid #4c4a4a;
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
 }
 
 .thumb:hover {
@@ -176,7 +179,6 @@ code {
 
 img {
     vertical-align: middle;
-    max-height: 770px;
     border: 1px solid black;
     box-shadow: 0 0 5px #000;
 }

@@ -11,6 +11,7 @@ import {VoiceHash} from "../DataObjects/Hashes/VoiceHash";
 import {LocationHash} from "../DataObjects/Hashes/LocationHash";
 import {VenueHash} from "../DataObjects/Hashes/VenueHash";
 import {ContactHash} from "../DataObjects/Hashes/ContactHash";
+import {Thumbnail} from "../DataObjects/Hashes/Thumbnail";
 /**
  * Created by hypfer on 08.06.17.
  */
@@ -74,23 +75,72 @@ export class HashService extends Service {
                 case "TextHash":
                     return new TextHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public, hash.Text);
                 case "PhotoHash":
-                    return new PhotoHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
-                        hash.DataStreamHex,
-                        hash.DataStreamSize, hash.DataStreamMime,
-                        hash.FileId, hash.DataStreamInternalID,
-                        hash.Height, hash.Width);
+                    if(hash.Thumb) {
+                        return new PhotoHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                            hash.DataStreamHex,
+                            hash.DataStreamSize, hash.DataStreamMime,
+                            hash.FileId, hash.DataStreamInternalID,
+                            hash.Height, hash.Width,
+                            new Thumbnail(
+                                hash.Thumb.DataStreamHex,
+                                hash.Thumb.DataStreamSize,
+                                hash.Thumb.DataStreamMime,
+                                hash.Thumb.Height,
+                                hash.Thumb.Width
+                            )
+                        );
+                    } else {
+                        return new PhotoHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                            hash.DataStreamHex,
+                            hash.DataStreamSize, hash.DataStreamMime,
+                            hash.FileId, hash.DataStreamInternalID,
+                            hash.Height, hash.Width
+                        );
+                    }
                 case "VideoHash":
-                    return new VideoHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
-                        hash.DataStreamHex,
-                        hash.DataStreamSize, hash.DataStreamMime,
-                        hash.FileId, hash.DataStreamInternalID,
-                        hash.Height, hash.Width, hash.Duration);
+                    if(hash.Thumb) {
+                        return new VideoHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                            hash.DataStreamHex,
+                            hash.DataStreamSize, hash.DataStreamMime,
+                            hash.FileId, hash.DataStreamInternalID,
+                            hash.Height, hash.Width, hash.Duration,
+                            new Thumbnail(
+                                hash.Thumb.DataStreamHex,
+                                hash.Thumb.DataStreamSize,
+                                hash.Thumb.DataStreamMime,
+                                hash.Thumb.Height,
+                                hash.Thumb.Width
+                            )
+                        );
+                    } else {
+                        return new VideoHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                            hash.DataStreamHex,
+                            hash.DataStreamSize, hash.DataStreamMime,
+                            hash.FileId, hash.DataStreamInternalID,
+                            hash.Height, hash.Width, hash.Duration);
+                    }
                 case "VideoMessageHash":
-                    return new VideoMessageHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
-                        hash.DataStreamHex,
-                        hash.DataStreamSize, hash.DataStreamMime,
-                        hash.FileId, hash.DataStreamInternalID,
-                        hash.Height, hash.Width, hash.Duration);
+                    if(hash.Thumb) {
+                        return new VideoMessageHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                            hash.DataStreamHex,
+                            hash.DataStreamSize, hash.DataStreamMime,
+                            hash.FileId, hash.DataStreamInternalID,
+                            hash.Height, hash.Width, hash.Duration,
+                            new Thumbnail(
+                                hash.Thumb.DataStreamHex,
+                                hash.Thumb.DataStreamSize,
+                                hash.Thumb.DataStreamMime,
+                                hash.Thumb.Height,
+                                hash.Thumb.Width
+                            )
+                        );
+                    } else {
+                        return new VideoMessageHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                            hash.DataStreamHex,
+                            hash.DataStreamSize, hash.DataStreamMime,
+                            hash.FileId, hash.DataStreamInternalID,
+                            hash.Height, hash.Width, hash.Duration);
+                    }
                 case "AudioHash":
                     return new AudioHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
                         hash.DataStreamHex,
@@ -98,15 +148,45 @@ export class HashService extends Service {
                         hash.FileId, hash.DataStreamInternalID,
                         hash.Performer, hash.Title, hash.Duration);
                 case "DocumentHash":
-                    return new DocumentHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
-                        hash.DataStreamHex,
-                        hash.DataStreamSize, hash.DataStreamMime, hash.FileId,
-                        hash.DataStreamInternalID);
+                    if(hash.Thumb) {
+                        return new DocumentHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                            hash.DataStreamHex,
+                            hash.DataStreamSize, hash.DataStreamMime, hash.FileId,
+                            hash.DataStreamInternalID,
+                            new Thumbnail(
+                                hash.Thumb.DataStreamHex,
+                                hash.Thumb.DataStreamSize,
+                                hash.Thumb.DataStreamMime,
+                                hash.Thumb.Height,
+                                hash.Thumb.Width
+                            )
+                        );
+                    } else {
+                        return new DocumentHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                            hash.DataStreamHex,
+                            hash.DataStreamSize, hash.DataStreamMime, hash.FileId,
+                            hash.DataStreamInternalID);
+                    }
                 case "StickerHash":
-                    return new StickerHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
-                        hash.DataStreamHex,
-                        hash.DataStreamSize, hash.DataStreamMime, hash.FileId,
-                        hash.DataStreamInternalID, hash.Width, hash.Height, hash.Emoji);
+                    if(hash.Thumb) {
+                        return new StickerHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                            hash.DataStreamHex,
+                            hash.DataStreamSize, hash.DataStreamMime, hash.FileId,
+                            hash.DataStreamInternalID, hash.Width, hash.Height, hash.Emoji,
+                            new Thumbnail(
+                                hash.Thumb.DataStreamHex,
+                                hash.Thumb.DataStreamSize,
+                                hash.Thumb.DataStreamMime,
+                                hash.Thumb.Height,
+                                hash.Thumb.Width
+                            )
+                        );
+                    } else {
+                        return new StickerHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
+                            hash.DataStreamHex,
+                            hash.DataStreamSize, hash.DataStreamMime, hash.FileId,
+                            hash.DataStreamInternalID, hash.Width, hash.Height, hash.Emoji);
+                    }
                 case "VoiceHash":
                     return new VoiceHash(hash.ID, hash.OwnerID, hash._id, hash.Source, hash.Public,
                         hash.DataStreamHex,

@@ -47,6 +47,7 @@ import {User} from "../lib/DataObjects/User";
 import * as uuid from "uuid";
 import {BinaryDataHash} from "../lib/DataObjects/Hashes/BinaryDataHash";
 import {LoginTokenService} from "../lib/Services/LoginTokenService";
+import {Thumbnail} from "../lib/DataObjects/Hashes/Thumbnail";
 /**
  * Created by hypfer on 08.06.17.
  */
@@ -445,44 +446,65 @@ export class Hashes extends Module {
                     msg.Message.reply_to_message.photo[msg.Message.reply_to_message.photo.length - 1].file_id,
                     msg.Message.reply_to_message.photo[msg.Message.reply_to_message.photo.length - 1].height,
                     msg.Message.reply_to_message.photo[msg.Message.reply_to_message.photo.length - 1].width,
-                    msg, Public);
+                    msg, Public,
+                    msg.Message.reply_to_message.photo[0].file_id,
+                    msg.Message.reply_to_message.photo[0].height,
+                    msg.Message.reply_to_message.photo[0].width
+                );
             } else if (msg.Message.reply_to_message.video) {
                 return this.saveVideoByFileId(command,
                     msg.Message.reply_to_message.video.file_id,
                     msg.Message.reply_to_message.video.height,
                     msg.Message.reply_to_message.video.width,
                     msg.Message.reply_to_message.video.duration,
-                    msg, Public);
+                    msg, Public,
+                    msg.Message.reply_to_message.video.thumb.file_id,
+                    msg.Message.reply_to_message.video.thumb.height,
+                    msg.Message.reply_to_message.video.thumb.width
+                );
             } else if (msg.Message.reply_to_message.video_note) {
                 return this.downloadFile(msg.Message.reply_to_message.video_note.file_id,
                     function (err: any, data: BinaryData) {
                         if (err) {
-                            self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: " + JSON.stringify(err)), msg.Message.chat.id);
+                            self.sendSaveFailed(err, msg.Message.chat.id);
                         } else {
-                            return self.HashService.SaveHash(
-                                new VideoMessageHash(
-                                    command,
-                                    msg.From.ID,
-                                    "",
-                                    msg.Message.chat.id, Public,
-                                    data.DataStreamHex,
-                                    data.DataStreamSize,
-                                    data.DataStreamMime,
-                                    msg.Message.reply_to_message.video_note.file_id,
-                                    "UNKNOWN",
-                                    msg.Message.reply_to_message.video_note.length,
-                                    msg.Message.reply_to_message.video_note.length,
-                                    msg.Message.reply_to_message.video_note.duration
-                                ), function () {
-                                    self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as VideoMessageHash"), msg.Message.chat.id);
-                                });
+                            self.downloadFile(msg.Message.reply_to_message.video_note.thumb.file_id, function(err, thumbData){
+                                if(err) {
+                                    self.sendSaveFailed(err, msg.Message.chat.id);
+                                } else {
+                                    return self.HashService.SaveHash(
+                                        new VideoMessageHash(
+                                            command,
+                                            msg.From.ID,
+                                            "",
+                                            msg.Message.chat.id, Public,
+                                            data.DataStreamHex,
+                                            data.DataStreamSize,
+                                            data.DataStreamMime,
+                                            msg.Message.reply_to_message.video_note.file_id,
+                                            "UNKNOWN",
+                                            msg.Message.reply_to_message.video_note.length,
+                                            msg.Message.reply_to_message.video_note.length,
+                                            msg.Message.reply_to_message.video_note.duration,
+                                            new Thumbnail(
+                                                thumbData.DataStreamHex,
+                                                thumbData.DataStreamSize,
+                                                thumbData.DataStreamMime,
+                                                msg.Message.reply_to_message.video_note.thumb.height,
+                                                msg.Message.reply_to_message.video_note.thumb.width
+                                            )
+                                        ), function () {
+                                            self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as VideoMessageHash"), msg.Message.chat.id);
+                                        });
+                                }
+                            });
                         }
                     });
             } else if (msg.Message.reply_to_message.audio) {
                 return this.downloadFile(msg.Message.reply_to_message.audio.file_id,
                     function (err: any, data: BinaryData) {
                         if (err) {
-                            self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: " + JSON.stringify(err)), msg.Message.chat.id);
+                            self.sendSaveFailed(err, msg.Message.chat.id);
                         } else {
                             let hash: Hash;
                             if (msg.Message.reply_to_message.audio.title && msg.Message.reply_to_message.audio.mime_type === "audio/mpeg") {
@@ -522,12 +544,10 @@ export class Hashes extends Module {
                 return this.downloadFile(msg.Message.reply_to_message.document.file_id,
                     function (err: any, data: BinaryData) {
                         if (err) {
-                            self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: " + JSON.stringify(err)), msg.Message.chat.id);
+                            self.sendSaveFailed(err, msg.Message.chat.id);
                         } else {
-                            let hashToSave: Hash;
-
                             if (msg.Message.reply_to_message.document.mime_type === "audio/x-opus+ogg") {
-                                hashToSave = new VoiceHash(
+                                saveIt(new VoiceHash(
                                     command,
                                     msg.From.ID,
                                     "",
@@ -538,21 +558,49 @@ export class Hashes extends Module {
                                     msg.Message.reply_to_message.document.file_id,
                                     "UNKNOWN",
                                     undefined
-                                );
-                                self.Bot.sendReply(new OutgoingTextMessage("This will not work properly if the file isn't mono."), msg.Message.chat.id);
+                                ));
                             } else {
-                                hashToSave = new DocumentHash(
-                                    command,
-                                    msg.From.ID,
-                                    "",
-                                    msg.Message.chat.id, Public,
-                                    data.DataStreamHex,
-                                    data.DataStreamSize,
-                                    data.DataStreamMime,
-                                    msg.Message.reply_to_message.document.file_id,
-                                    "UNKNOWN"
-                                );
+                                if(msg.Message.reply_to_message.document.thumb) {
+                                    self.downloadFile(msg.Message.reply_to_message.document.thumb.file_id, function(err,thumbData){
+                                        if(err) {
+                                            self.sendSaveFailed(err, msg.Message.chat.id);
+                                        } else {
+                                            saveIt(new DocumentHash(
+                                                command,
+                                                msg.From.ID,
+                                                "",
+                                                msg.Message.chat.id, Public,
+                                                data.DataStreamHex,
+                                                data.DataStreamSize,
+                                                data.DataStreamMime,
+                                                msg.Message.reply_to_message.document.file_id,
+                                                "UNKNOWN",
+                                                new Thumbnail(
+                                                    thumbData.DataStreamHex,
+                                                    thumbData.DataStreamSize,
+                                                    thumbData.DataStreamMime,
+                                                    msg.Message.reply_to_message.document.thumb.height,
+                                                    msg.Message.reply_to_message.document.thumb.width
+                                                )
+                                            ));
+                                        }
+                                    });
+                                } else {
+                                    saveIt(new DocumentHash(
+                                        command,
+                                        msg.From.ID,
+                                        "",
+                                        msg.Message.chat.id, Public,
+                                        data.DataStreamHex,
+                                        data.DataStreamSize,
+                                        data.DataStreamMime,
+                                        msg.Message.reply_to_message.document.file_id,
+                                        "UNKNOWN"
+                                    ));
+                                }
                             }
+                        }
+                        function saveIt(hashToSave : Hash) {
                             return self.HashService.SaveHash(hashToSave, function () {
                                 self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as " + hashToSave.HashType), msg.Message.chat.id);
                             });
@@ -562,32 +610,45 @@ export class Hashes extends Module {
                 return this.downloadFile(msg.Message.reply_to_message.sticker.file_id,
                     function (err: any, data: BinaryData) {
                         if (err) {
-                            self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: " + JSON.stringify(err)), msg.Message.chat.id);
+                            self.sendSaveFailed(err, msg.Message.chat.id);
                         } else {
-                            return self.HashService.SaveHash(
-                                new StickerHash(
-                                    command,
-                                    msg.From.ID,
-                                    "",
-                                    msg.Message.chat.id, Public,
-                                    data.DataStreamHex,
-                                    data.DataStreamSize,
-                                    data.DataStreamMime,
-                                    msg.Message.reply_to_message.sticker.file_id,
-                                    "UNKNOWN",
-                                    msg.Message.reply_to_message.sticker.width,
-                                    msg.Message.reply_to_message.sticker.height,
-                                    msg.Message.reply_to_message.sticker.emoji
-                                ), function () {
-                                    self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as StickerHash"), msg.Message.chat.id);
-                                });
+                            self.downloadFile(msg.Message.reply_to_message.sticker.thumb.file_id, function(err, thumbData){
+                                if(err) {
+                                    self.sendSaveFailed(err, msg.Message.chat.id);
+                                } else {
+                                    return self.HashService.SaveHash(
+                                        new StickerHash(
+                                            command,
+                                            msg.From.ID,
+                                            "",
+                                            msg.Message.chat.id, Public,
+                                            data.DataStreamHex,
+                                            data.DataStreamSize,
+                                            data.DataStreamMime,
+                                            msg.Message.reply_to_message.sticker.file_id,
+                                            "UNKNOWN",
+                                            msg.Message.reply_to_message.sticker.width,
+                                            msg.Message.reply_to_message.sticker.height,
+                                            msg.Message.reply_to_message.sticker.emoji,
+                                            new Thumbnail(
+                                                thumbData.DataStreamHex,
+                                                thumbData.DataStreamSize,
+                                                thumbData.DataStreamMime,
+                                                msg.Message.reply_to_message.sticker.thumb.height,
+                                                msg.Message.reply_to_message.sticker.thumb.width
+                                            )
+                                        ), function () {
+                                            self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as StickerHash"), msg.Message.chat.id);
+                                        });
+                                }
+                            });
                         }
                     });
             } else if (msg.Message.reply_to_message.voice) {
                 return this.downloadFile(msg.Message.reply_to_message.voice.file_id,
                     function (err: any, data: BinaryData) {
                         if (err) {
-                            self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: " + JSON.stringify(err)), msg.Message.chat.id);
+                            self.sendSaveFailed(err, msg.Message.chat.id);
                         } else {
                             return self.HashService.SaveHash(
                                 new VoiceHash(
@@ -645,19 +706,27 @@ export class Hashes extends Module {
                     msg.Message.photo[msg.Message.photo.length - 1].file_id,
                     msg.Message.photo[msg.Message.photo.length - 1].height,
                     msg.Message.photo[msg.Message.photo.length - 1].width,
-                    msg, Public);
+                    msg, Public,
+                    msg.Message.photo[0].file_id,
+                    msg.Message.photo[0].height,
+                    msg.Message.photo[0].width
+                );
             } else if (msg.Message.video) {
                 return this.saveVideoByFileId(command,
                     msg.Message.video.file_id,
                     msg.Message.video.height,
                     msg.Message.video.width,
                     msg.Message.video.duration,
-                    msg, Public);
+                    msg, Public,
+                    msg.Message.video.thumb.file_id,
+                    msg.Message.video.thumb.height,
+                    msg.Message.video.thumb.width
+                );
             } else if (msg.Message.document) {
                 return this.downloadFile(msg.Message.document.file_id,
                     function (err: any, data: BinaryData) {
                         if (err) {
-                            self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: " + JSON.stringify(err)), msg.Message.chat.id);
+                            self.sendSaveFailed(err, msg.Message.chat.id);
                         } else {
                             return self.HashService.SaveHash(
                                 new DocumentHash(
@@ -1105,60 +1174,88 @@ export class Hashes extends Module {
     }
 
     private saveVideoByFileId(command: string, file_id: string, height: number,
-                              width: number, duration: number, msg: any, Public: Boolean) {
+                              width: number, duration: number, msg: any, Public: Boolean,
+                              thumb_id : string, thumb_height : number, thumb_width: number) {
         const self = this;
 
         this.downloadFile(file_id,
             function (err: any, data: BinaryData) {
                 if (err) {
-                    self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: " + JSON.stringify(err)), msg.Message.chat.id);
+                    self.sendSaveFailed(err, msg.Message.chat.id);
                 } else {
-                    return self.HashService.SaveHash(
-                        new VideoHash(
-                            command,
-                            msg.From.ID,
-                            "",
-                            msg.Message.chat.id, Public,
-                            data.DataStreamHex,
-                            data.DataStreamSize,
-                            data.DataStreamMime,
-                            file_id,
-                            "UNKNOWN",
-                            height,
-                            width,
-                            duration
-                        ), function () {
-                            self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as VideoHash"), msg.Message.chat.id);
-                        });
+                    self.downloadFile(thumb_id, function(err, thumbData){
+                        if(err){
+                            self.sendSaveFailed(err, msg.Message.chat.id);
+                        } else {
+                            self.HashService.SaveHash(
+                                new VideoHash(
+                                    command,
+                                    msg.From.ID,
+                                    "",
+                                    msg.Message.chat.id, Public,
+                                    data.DataStreamHex,
+                                    data.DataStreamSize,
+                                    data.DataStreamMime,
+                                    file_id,
+                                    "UNKNOWN",
+                                    height,
+                                    width,
+                                    duration,
+                                    new Thumbnail(
+                                        thumbData.DataStreamHex,
+                                        thumbData.DataStreamSize,
+                                        thumbData.DataStreamMime,
+                                        thumb_height,
+                                        thumb_width
+                                    )
+                                ), function () {
+                                    self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as VideoHash"), msg.Message.chat.id);
+                                });
+                        }
+                    });
                 }
             });
     }
 
     private savePhotoByFileId(command: string, file_id: string, height: number,
-                              width: number, msg: any, Public: Boolean) {
+                              width: number, msg: any, Public: Boolean,
+                              thumb_id : string, thumb_height : number, thumb_width: number) {
         const self = this;
 
         this.downloadFile(file_id,
             function (err: any, data: BinaryData) {
                 if (err) {
-                    self.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: " + JSON.stringify(err)), msg.Message.chat.id);
+                    self.sendSaveFailed(err, msg.Message.chat.id);
                 } else {
-                    return self.HashService.SaveHash(
-                        new PhotoHash(
-                            command,
-                            msg.From.ID,
-                            "",
-                            msg.Message.chat.id, Public,
-                            data.DataStreamHex,
-                            data.DataStreamSize,
-                            data.DataStreamMime,
-                            file_id,
-                            "UNKNOWN",
-                            height,
-                            width
-                        ), function () {
-                            self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as PhotoHash"), msg.Message.chat.id);
-                        });
+                    self.downloadFile(thumb_id, function(err, thumbData){
+                        if(err) {
+                            self.sendSaveFailed(err, msg.Message.chat.id);
+                        } else {
+                            self.HashService.SaveHash(
+                                new PhotoHash(
+                                    command,
+                                    msg.From.ID,
+                                    "",
+                                    msg.Message.chat.id, Public,
+                                    data.DataStreamHex,
+                                    data.DataStreamSize,
+                                    data.DataStreamMime,
+                                    file_id,
+                                    "UNKNOWN",
+                                    height,
+                                    width,
+                                    new Thumbnail(
+                                        thumbData.DataStreamHex,
+                                        thumbData.DataStreamSize,
+                                        thumbData.DataStreamMime,
+                                        thumb_height,
+                                        thumb_width
+                                    )
+                                ), function () {
+                                    self.Bot.sendReply(new OutgoingTextMessage("Saved " + command + " as PhotoHash"), msg.Message.chat.id);
+                                });
+                        }
+                    });
                 }
             });
     }
@@ -1186,6 +1283,10 @@ export class Hashes extends Module {
             }
 
         });
+    }
+
+    private sendSaveFailed(err, chat_id) {
+        this.Bot.sendReply(new OutgoingTextMessage("Error while saving Hash: " + JSON.stringify(err)), chat_id);
     }
 
     private checkCommandExists(command: string, callback) {

@@ -129,26 +129,6 @@ export class Hashes extends Module {
     protected registerMessageHandlers(MessageChain: any): void {
         const self = this;
 
-        //db.getCollection('Hashes').updateMany({Thumb: {$exists : false}, $or: [{HashType: "PhotoHash"},{HashType: "StickerHash"},{HashType: "VideoHash"},{HashType: "DocumentHash"}]}, {$set: {FileId: ""}})
-        MessageChain.add(function sendAllFileIDsWithoutThumbnails(msg: IncomingMessage, next) {
-            if (msg.From.hasRole("admin") && msg.Message.text &&
-                msg.Message.chat.type === "private" && msg.Message.text === "sendAllFileIDsWithoutThumbnails") {
-                let timeout = 0;
-
-                self.HashService.Find({Thumb: {$exists : false}}, function(docs){
-                    docs.forEach(function(doc){
-                        setTimeout(function(){
-                            self.handleHash(doc.ID, msg.Message.chat.id, msg.From);
-                        }, timeout);
-
-                        timeout = timeout + 500;
-                    })
-                });
-            } else {
-                next();
-            }
-        });
-
         MessageChain.add(function getLoginToken(msg: IncomingMessage, next) {
             if (msg.From.hasRole("user") && msg.Message.text === "/token") {
                 self.LoginTokenService.createToken(function (token) {

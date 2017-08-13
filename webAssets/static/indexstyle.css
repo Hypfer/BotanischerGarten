@@ -4,6 +4,6 @@
     box-sizing: content-box;
 }
 li.post > div{
-    width: 128px;
-    height: 128px;
+    width: 80px;
+    height: 80px;
 }

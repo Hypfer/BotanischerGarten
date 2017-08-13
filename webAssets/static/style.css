@@ -50,8 +50,8 @@ ul#posts {
 
 li.post {
     padding: 5px;
-    width: 128px;
-    height: 128px;
+    width: 80px;
+    height: 80px;
     margin-top: 5px;
     line-height: 128px;
     -webkit-flex: 1 1 auto;

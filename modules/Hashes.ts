@@ -1091,54 +1091,60 @@ export class Hashes extends Module {
             }
         });
 
-        //TODO: Check if valid objectID
         this.App.get('/b/:id', function (req, res, next) {
             if (!req.session.authenticated) {
                 res.redirect("/");
             } else {
-                self.HashService.GetHashByDbId(req.params.id, function (hash: Hash) {
-                    if (hash) {
-                        if (hash instanceof BinaryDataHash) {
-                            self.Bot.Repository.GetData(hash.DataStreamInternalID, function (data) {
-                                res.type(hash.DataStreamMime);
-                                res.sendSeekable(Buffer.from(data, "hex"));
-                            })
+                if(Helpers.isValidObjectId(req.params.id)) {
+                    self.HashService.GetHashByDbId(req.params.id, function (hash: Hash) {
+                        if (hash) {
+                            if (hash instanceof BinaryDataHash) {
+                                self.Bot.Repository.GetData(hash.DataStreamInternalID, function (data) {
+                                    res.type(hash.DataStreamMime);
+                                    res.sendSeekable(Buffer.from(data, "hex"));
+                                })
+                            } else {
+                                //venue und so n scheiss
+                                res.error(500);
+                            }
                         } else {
-                            //venue und so n scheiss
-                            res.error(500);
+                            next();
                         }
-                    } else {
-                        next();
-                    }
-                });
+                    });
+                } else {
+                    next();
+                }
             }
         });
 
-        //TODO: Check if valid objectID
         this.App.get('/t/:id', function (req, res, next) {
             if (!req.session.authenticated) {
                 res.redirect("/");
             } else {
-                self.HashService.GetHashByDbId(req.params.id, function (hash : Hash) {
-                    if (hash) {
-                        if(hash instanceof DocumentHash ||
-                           hash instanceof PhotoHash ||
-                           hash instanceof StickerHash ||
-                           hash instanceof VideoHash ||
-                           hash instanceof VideoMessageHash) {
-                            if(hash.Thumb){
-                                res.type(hash.Thumb.DataStreamMime);
-                                res.sendSeekable(Buffer.from(hash.Thumb.DataStreamHex, "hex"));
+                if(Helpers.isValidObjectId(req.params.id)) {
+                    self.HashService.GetHashByDbId(req.params.id, function (hash : Hash) {
+                        if (hash) {
+                            if(hash instanceof DocumentHash ||
+                                hash instanceof PhotoHash ||
+                                hash instanceof StickerHash ||
+                                hash instanceof VideoHash ||
+                                hash instanceof VideoMessageHash) {
+                                if(hash.Thumb){
+                                    res.type(hash.Thumb.DataStreamMime);
+                                    res.sendSeekable(Buffer.from(hash.Thumb.DataStreamHex, "hex"));
+                                } else {
+                                    res.sendFile(path.join(self.Bot.WebAssetPath + '/static/404_thumb.png'));
+                                }
                             } else {
                                 res.sendFile(path.join(self.Bot.WebAssetPath + '/static/404_thumb.png'));
                             }
                         } else {
                             res.sendFile(path.join(self.Bot.WebAssetPath + '/static/404_thumb.png'));
                         }
-                    } else {
-                        res.sendFile(path.join(self.Bot.WebAssetPath + '/static/404_thumb.png'));
-                    }
-                });
+                    });
+                } else {
+                    res.sendFile(path.join(self.Bot.WebAssetPath + '/static/404_thumb.png'));
+                }
             }
         });
 

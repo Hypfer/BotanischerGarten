@@ -47,7 +47,11 @@ export class Helpers {
         }
     }
 
-    static dateFromObjectId(objectId) {
+    static dateFromObjectId(objectId) : Date{
         return new Date(parseInt(objectId.substring(0, 8), 16) * 1000);
+    }
+
+    static isValidObjectId(objectId) : boolean {
+        return new RegExp("^[0-9a-fA-F]{24}$").test(objectId);
     }
 }

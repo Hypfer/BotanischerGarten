@@ -35,6 +35,12 @@ export class Bot {
     MessageChain: any;
     InlineChain: any;
     private Config: any;
+    About : {
+        id : number,
+        first_name : string,
+        last_name : string,
+        username : string
+    };
 
 
     constructor(config: any, repository: MongoRepository) {
@@ -51,7 +57,19 @@ export class Bot {
         this.CommandManager = new CommandManager();
         this.MessageChain = new Chain();
         this.InlineChain = new Chain();
+        this.About = {
+            id : -1,
+            first_name : "",
+            last_name: "",
+            username: ""
+        };
 
+        this.TgBot.getMe().then(function(me){
+            self.About.id = me.id;
+            self.About.first_name = me.first_name;
+            self.About.last_name = me.last_name;
+            self.About.username = me.username;
+        });
 
         this.TgBot.on('message', function (msg) {
             if (self.Config.debug &&

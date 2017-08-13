@@ -969,8 +969,8 @@ export class Hashes extends Module {
         this.App.get('/', function (req, res, next) {
             if (!req.session.authenticated) {
                 res.render('login', {
-                    bot_username: self.Config.bot.username,
-                    bot_friendly_name: self.Config.bot.friendly_name
+                    bot_username: self.Bot.About.username,
+                    bot_friendly_name: self.Bot.About.first_name
                 });
             } else {
                 //random
@@ -1028,8 +1028,8 @@ export class Hashes extends Module {
                 const hash_name = decodeURIComponent(req.url.replace("/hash/", ""));
                 let templateContent = {
                     hash_name: hash_name,
-                    bot_friendly_name: self.Config.bot.friendly_name,
-                    bot_username: self.Config.bot.username
+                    bot_username: self.Bot.About.username,
+                    bot_friendly_name: self.Bot.About.first_name
                 };
                 self.HashService.GetHashById(hash_name, function (hash: Hash) {
                     if (hash && hash.Public === true) {
@@ -1126,7 +1126,7 @@ export class Hashes extends Module {
 
                 const x = {
                     hash_name: null,
-                    bot_friedly_name: self.Config.bot.friendly_name,
+                    bot_friedly_name: self.Bot.About.first_name,
                     next_id: null,
                     prev_id: null,
                     user_name: null,

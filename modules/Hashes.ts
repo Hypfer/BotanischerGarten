@@ -1058,6 +1058,7 @@ export class Hashes extends Module {
                             VoiceHash : doc.HashType === "VoiceHash",
                             AudioHash : doc.HashType === "AudioHash",
                             DocumentHash : doc.HashType === "DocumentHash",
+                            TextHash: doc.HashType === "TextHash",
                             HasThumb : !!doc.Thumb
                         })
                     });
@@ -1148,6 +1149,8 @@ export class Hashes extends Module {
                                 res.redirect("/s/audio_thumb.png");
                             } else if (hash instanceof VoiceHash) {
                                 res.redirect("/s/voice_thumb.png");
+                            } else if (hash instanceof TextHash) {
+                                res.redirect("/s/text_thumb.png");
                             } else {
                                 res.redirect("/s/404_thumb.png");
                             }

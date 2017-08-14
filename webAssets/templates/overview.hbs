@@ -29,7 +29,11 @@
                                         {{#if this.AudioHash}}
                                             <img class="thumb" src="/s/audio_thumb.png" />
                                         {{else}}
-                                            <img class="thumb" src="/s/404_thumb.png" />
+                                            {{#if this.TextHash}}
+                                                <img class="thumb" src="/s/text_thumb.png" />
+                                            {{else}}
+                                                <img class="thumb" src="/s/404_thumb.png" />
+                                            {{/if}}
                                         {{/if}}
                                     {{/if}}
                                 {{/if}}

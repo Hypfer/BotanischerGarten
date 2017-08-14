@@ -69,7 +69,7 @@ export class HashService extends Service {
     }
 
     GetHashesForOverviewWebpage(callback : Function) {
-        super.FindAndSort({"Public" : true}, {"_id" : -1}, callback);
+        super.FindAndSortWithLimit({"Public" : true}, {"_id" : -1}, 5000, callback);
     }
 
     private static deserializeHash(hash) {

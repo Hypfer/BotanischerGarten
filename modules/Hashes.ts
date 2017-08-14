@@ -1129,12 +1129,20 @@ export class Hashes extends Module {
                                 hash instanceof StickerHash ||
                                 hash instanceof VideoHash ||
                                 hash instanceof VideoMessageHash) {
-                                if(hash.Thumb){
+                                if (hash.Thumb) {
                                     res.type(hash.Thumb.DataStreamMime);
                                     res.sendSeekable(Buffer.from(hash.Thumb.DataStreamHex, "hex"));
                                 } else {
-                                    res.sendFile(path.join(self.Bot.WebAssetPath + '/static/404_thumb.png'));
+                                    if (hash instanceof DocumentHash) {
+                                        res.sendFile(path.join(self.Bot.WebAssetPath + '/static/file_thumb.png'));
+                                    } else {
+                                        res.sendFile(path.join(self.Bot.WebAssetPath + '/static/404_thumb.png'));
+                                    }
                                 }
+                            } else if (hash instanceof AudioHash) {
+                                res.sendFile(path.join(self.Bot.WebAssetPath + '/static/audio_thumb.png'));
+                            } else if (hash instanceof VoiceHash) {
+                                res.sendFile(path.join(self.Bot.WebAssetPath + '/static/voice_thumb.png'));
                             } else {
                                 res.sendFile(path.join(self.Bot.WebAssetPath + '/static/404_thumb.png'));
                             }

@@ -14,12 +14,16 @@ export abstract class Service {
     protected abstract getCollection(): string;
 
     //pls dont use this
-    Find(condition: any, callback: Function) {
+    protected Find(condition: any, callback: Function) {
         this.Repository.Find(this.Collection, condition, callback);
     }
 
     protected FindAndSort(condition: any, sortCondition: any, callback: Function) {
         this.Repository.FindAndSort(this.Collection, condition, sortCondition, callback)
+    }
+
+    protected FindAndSortWithLimit(condition: any, sortCondition: any, limit: number, callback:Function) {
+        this.Repository.FindAndSortWithLimit(this.Collection, condition,sortCondition,limit,callback);
     }
 
     protected GetById(id: any, callback: Function) {

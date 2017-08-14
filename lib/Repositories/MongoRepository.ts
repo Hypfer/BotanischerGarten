@@ -142,6 +142,18 @@ export class MongoRepository {
         })
     }
 
+    FindAndSortWithLimit(collection: string, condition: any, sortCondition: any, limit: number, callback: Function) {
+        const self = this;
+        const _collection = this.DB.collection(collection);
+        condition = condition ? condition : {};
+        _collection.find(condition).sort(sortCondition).limit(limit).toArray(function (err, docs) {
+            if (err) {
+                throw new Error(JSON.stringify(err));
+            }
+            callback(docs);
+        })
+    }
+
     GetPreviousAndNextByDbId(collection: string, id: string, condition: any, callback: Function) {
         const self = this;
         const _collection = this.DB.collection(collection);

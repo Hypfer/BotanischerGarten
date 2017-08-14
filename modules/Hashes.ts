@@ -1132,26 +1132,27 @@ export class Hashes extends Module {
                                 if (hash.Thumb) {
                                     res.type(hash.Thumb.DataStreamMime);
                                     res.sendSeekable(Buffer.from(hash.Thumb.DataStreamHex, "hex"));
+                                    //TODO: Is this a good idea?
                                 } else {
                                     if (hash instanceof DocumentHash) {
-                                        res.sendFile(path.join(self.Bot.WebAssetPath + '/static/file_thumb.png'));
+                                        res.redirect("/s/file_thumb.png");
                                     } else {
-                                        res.sendFile(path.join(self.Bot.WebAssetPath + '/static/404_thumb.png'));
+                                        res.redirect("/s/404_thumb.png");
                                     }
                                 }
                             } else if (hash instanceof AudioHash) {
-                                res.sendFile(path.join(self.Bot.WebAssetPath + '/static/audio_thumb.png'));
+                                res.redirect("/s/audio_thumb.png");
                             } else if (hash instanceof VoiceHash) {
-                                res.sendFile(path.join(self.Bot.WebAssetPath + '/static/voice_thumb.png'));
+                                res.redirect("/s/voice_thumb.png");
                             } else {
-                                res.sendFile(path.join(self.Bot.WebAssetPath + '/static/404_thumb.png'));
+                                res.redirect("/s/404_thumb.png");
                             }
                         } else {
-                            res.sendFile(path.join(self.Bot.WebAssetPath + '/static/404_thumb.png'));
+                            res.redirect("/s/404_thumb.png");
                         }
                     });
                 } else {
-                    res.sendFile(path.join(self.Bot.WebAssetPath + '/static/404_thumb.png'));
+                    res.redirect("/s/404_thumb.png");
                 }
             }
         });

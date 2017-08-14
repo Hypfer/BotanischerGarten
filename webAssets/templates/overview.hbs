@@ -14,7 +14,27 @@
             <div>
                 <a href="/hash/{{this.ID}}" title="{{this.DataStreamMime}}">
                     <div style="width: 100%; height: 100%">
-                        <img class="thumb" src="/t/{{this._id}}" />
+                        {{#if this.HasThumb}}
+                            <img class="thumb" src="/t/{{this._id}}" />
+                        {{else}}
+                            {{#if this.DocumentHash}}
+                                <img class="thumb" src="/s/file_thumb.png" />
+                            {{else}}
+                                {{#if this.AudioHash}}
+                                    <img class="thumb" src="/s/audio_thumb.png" />
+                                {{else}}
+                                    {{#if this.VoiceHash}}
+                                        <img class="thumb" src="/s/voice_thumb.png" />
+                                    {{else}}
+                                        {{#if this.AudioHash}}
+                                            <img class="thumb" src="/s/audio_thumb.png" />
+                                        {{else}}
+                                            <img class="thumb" src="/s/404_thumb.png" />
+                                        {{/if}}
+                                    {{/if}}
+                                {{/if}}
+                            {{/if}}
+                        {{/if}}
                     </div>
                 </a>
             </div>

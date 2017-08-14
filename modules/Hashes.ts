@@ -1055,6 +1055,10 @@ export class Hashes extends Module {
                             _id : doc._id.toString(),
                             ID: doc.ID,
                             DataStreamMime: doc.DataStreamMime,
+                            VoiceHash : doc.HashType === "VoiceHash",
+                            AudioHash : doc.HashType === "AudioHash",
+                            DocumentHash : doc.HashType === "DocumentHash",
+                            HasThumb : !!doc.Thumb
                         })
                     });
                     res.render('overview', {

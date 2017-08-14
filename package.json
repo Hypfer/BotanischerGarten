@@ -7,6 +7,7 @@
     "async": "^2.4.1",
     "body-parser": "^1.17.2",
     "chaining-tool": "0.0.4",
+    "compression": "^1.7.0",
     "connect-mongo": "^1.3.2",
     "deepmerge": "^1.3.2",
     "express": "^4.15.3",

@@ -9,6 +9,7 @@ import * as session from "express-session";
 import * as mongoSessionStore from "connect-mongo";
 import * as sendSeekable from "send-seekable";
 import * as bodyParser from "body-parser";
+import * as compression from "compression";
 //Own stuff
 import {Bot} from "./bot";
 import {Emo} from "./modules/Emo";
@@ -35,6 +36,7 @@ const _Repository = new MongoRepository(config, function () {
         collection: 'sessions'
     });
 
+    _App.use(compression());
     _App.use(require('express-session')({
         secret: config.sessionSecret,
         cookie: {

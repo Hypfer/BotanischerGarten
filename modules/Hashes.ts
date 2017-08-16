@@ -1043,10 +1043,7 @@ export class Hashes extends Module {
 
         this.App.get('/', function (req, res, next) {
             if (!req.session.authenticated) {
-                res.render('login', {
-                    bot_username: self.Bot.About.username,
-                    bot_friendly_name: self.Bot.About.first_name
-                });
+                res.redirect("/login");
             } else {
                 self.HashService.GetHashesForOverviewWebpage(function(docs){
                     let hashes = [];
@@ -1069,6 +1066,13 @@ export class Hashes extends Module {
                     })
                 });
             }
+        });
+
+        this.App.get("/login", function(req,res, next){
+            res.render('login', {
+                bot_username: self.Bot.About.username,
+                bot_friendly_name: self.Bot.About.first_name
+            });
         });
 
         this.App.get('/random', function(req, res, next){
@@ -1098,7 +1102,7 @@ export class Hashes extends Module {
 
         this.App.get('/b/:id', function (req, res, next) {
             if (!req.session.authenticated) {
-                res.redirect("/");
+                res.redirect("/login");
             } else {
                 if(Helpers.isValidObjectId(req.params.id)) {
                     self.HashService.GetHashByDbId(req.params.id, function (hash: Hash) {
@@ -1124,7 +1128,7 @@ export class Hashes extends Module {
 
         this.App.get('/t/:id', function (req, res, next) {
             if (!req.session.authenticated) {
-                res.redirect("/");
+                res.redirect("/login");
             } else {
                 if(Helpers.isValidObjectId(req.params.id)) {
                     self.HashService.GetHashByDbId(req.params.id, function (hash : Hash) {
@@ -1166,7 +1170,7 @@ export class Hashes extends Module {
 
         this.App.get('/hash/:hash(*)', function (req, res, next) {
             if (!req.session.authenticated) {
-                res.redirect("/");
+                res.redirect("/login");
             } else {
                 //this hack allows hashes with questionmarks
                 const hash_name = decodeURIComponent(req.url.replace("/hash/", ""));
@@ -1259,7 +1263,7 @@ export class Hashes extends Module {
                                     templateContent["next_id"] = obj.next.ID;
                                 }
 
-                                self.HashService.GetFirstAndLastId({}, function (obj) {
+                                self.HashService.GetFirstAndLastId({"Public" : true}, function (obj) {
                                     if (obj.first) {
                                         templateContent["first_id"] = obj.first.ID;
                                     }

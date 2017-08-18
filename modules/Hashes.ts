@@ -401,12 +401,12 @@ export class Hashes extends Module {
                 hash.FileId, hash.DataStreamInternalID), chatID,
                 function (msg) {
                     if (msg) {
-                        if (hash.DataStreamMime === "audio/mpeg") {
+                        if (msg.audio && hash.DataStreamMime === "audio/mpeg") {
                             hash.FileId = msg.audio.file_id;
                         } else {
                             hash.FileId = msg.document.file_id;
                         }
-                        if(msg.document.thumb && !(hash.Thumb)) {
+                        if(msg.document && msg.document.thumb && !(hash.Thumb)) {
                             self.downloadFile(msg.document.thumb.file_id, function(err, thumbData){
                                 if(err) {
                                     console.error("Failed to get Thumbnail");

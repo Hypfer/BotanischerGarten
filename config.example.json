@@ -9,5 +9,6 @@
       "inline": false
     }
   },
-  "sessionSecret": "foo"
+  "sessionSecret": "foo",
+  "domain" : "https://example.com"
 }

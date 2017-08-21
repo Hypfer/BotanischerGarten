@@ -132,7 +132,15 @@ export class Hashes extends Module {
         MessageChain.add(function getLoginToken(msg: IncomingMessage, next) {
             if (msg.From.hasRole("user") && msg.Message.text === "/token") {
                 self.LoginTokenService.createToken(function (token) {
-                    self.Bot.sendReply(new OutgoingTextMessage(token), msg.Message.chat.id);
+                    let tokenMsg = token;
+
+                    if(self.Config.domain) {
+                        tokenMsg +=  "\n\n";
+                        tokenMsg += self.Config.domain + "/login?token="
+                    }
+                    tokenMsg += token;
+
+                    self.Bot.sendReply(new OutgoingTextMessage(tokenMsg), msg.Message.chat.id);
                 });
             } else {
                 next();
@@ -1068,11 +1076,15 @@ export class Hashes extends Module {
             }
         });
 
-        this.App.get("/login", function(req,res, next){
-            res.render('login', {
-                bot_username: self.Bot.About.username,
-                bot_friendly_name: self.Bot.About.first_name
-            });
+        this.App.get("/login", function(req,res){
+            if(req.query && req.query.token) {
+                self.login(req.query.token, req, res);
+            } else {
+                res.render('login', {
+                    bot_username: self.Bot.About.username,
+                    bot_friendly_name: self.Bot.About.first_name
+                });
+            }
         });
 
         this.App.get('/random', function(req, res, next){
@@ -1089,12 +1101,7 @@ export class Hashes extends Module {
 
         this.App.post('/login', function (req, res, next) {
             if (req.body && req.body.token) {
-                self.LoginTokenService.consumeToken(req.body.token, function (result) {
-                    if (result === true) {
-                        req.session.authenticated = true;
-                    }
-                    res.redirect("/");
-                })
+               self.login(req.body.token, req, res);
             } else {
                 res.redirect("/");
             }
@@ -1299,6 +1306,15 @@ export class Hashes extends Module {
                 };
             }
         });
+    }
+
+    private login(token, req, res) {
+        this.LoginTokenService.consumeToken(token, function (result) {
+            if (result === true) {
+                req.session.authenticated = true;
+            }
+            res.redirect("/");
+        })
     }
 
     private static calculateDimensionsForHash(height : number, width : number) : any {

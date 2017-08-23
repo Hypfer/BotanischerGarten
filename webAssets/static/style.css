@@ -10,16 +10,16 @@ html, body {
 }
 
 body {
-    margin: 0em auto 3em auto;
+    margin: 0 auto 3em auto;
     background-color: #262626;
     color: #fff;
-    font-family: Monospace;
+    font-family: monospace;
     font-size: 12px;
     line-height: 1.42857143;
-}
-
-.contact {
-    margin: 20px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 input, select, textarea {
@@ -32,9 +32,7 @@ input, select, textarea {
 
 ul#posts {
     width: calc(100% - 210px);
-    margin: 0;
-    margin-left: 100px;
-    padding: 0;
+    margin: 0 0 0 100px;
     list-style: none;
     display: -webkit-box;
     display: -webkit-flex;
@@ -45,7 +43,7 @@ ul#posts {
     flex-flow: row wrap;
     justify-content: flex-start;
     -webkit-justify-content: flex-start;
-    padding-top: 2.2em;
+    padding: 2.2em 0 0;
 }
 
 li.post {
@@ -90,7 +88,7 @@ a:hover {
     justify-content: center;
     margin-top: 5px;
     background: #484747;
-    border: 0px solid #99ff00;
+    border: 0 solid #99ff00;
     padding: 5px;
 }
 
@@ -107,10 +105,9 @@ a:hover {
     text-align: center;
     font-weight: bold;
     width: 888px;
-    margin: 0 auto;
     padding-top: 0;
-    margin-top: 35px;
-    border: 0px solid #99ff00;
+    margin: 35px auto 0;
+    border: 0 solid #99ff00;
     color: #99ff00;
     background: #484747;
 }
@@ -134,9 +131,7 @@ a:hover {
     text-align: center;
     border: 0;
     width: 100%;
-    margin: 0 auto;
-    margin-bottom: 5px;
-    margin-top: -35px;
+    margin: -35px auto 5px;
     position: fixed;
     overflow: visible;
     z-index: 999;
@@ -146,10 +141,6 @@ a:hover {
     font-weight: bold;
 }
 
-.irc {
-    margin: 20px;
-}
-
 code {
     color: #9df943;
 }
@@ -157,8 +148,8 @@ code {
 .panel {
     margin-bottom: 0;
     background-color: #484747;
-    border: 0px solid #99ff00;
-    border-radius: 0px;
+    border: 0 solid #99ff00;
+    border-radius: 0;
     padding-left: 10px;
     padding-right: 10px;
     width: 25%;
@@ -170,11 +161,9 @@ code {
 }
 
 .panel.info {
-    margin: 0 auto;
-    margin-top: 5px;
     float: none;
     width: 888px;
-    margin-bottom: 5px;
+    margin: 5px auto;
 }
 
 img {
@@ -197,17 +186,27 @@ video#player {
     font-family: monospace;
     color: #9f0;
     font-size: 90%;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+.texthash {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
 }
 
 /* Plyr */
 .plyr--audio .plyr__controls {
-    padding: 0;
     border-radius: inherit;
     background: #262626;
     border: 0;
     color: #99ff00;
     width: 300px;
-    padding-right: 5px;
+    padding: 0 5px 0 0;
     height: 32px;
 }
 
@@ -231,7 +230,7 @@ video#player {
     right: 0;
     bottom: 0;
     z-index: 2;
-    padding: 0px 0px 0px;
+    padding: 0 0 0;
     background: rgba(38, 38, 38, 0.97);
     border-bottom-left-radius: inherit;
     border-bottom-right-radius: inherit;

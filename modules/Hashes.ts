@@ -184,7 +184,11 @@ export class Hashes extends Module {
             const command = Helpers.checkForCommand("define", commandContainingString, true);
             if (command) {
                 if (command.Args[0] && command.Args[0] !== "") {
-                    const newCommand = command.Args[0].toLowerCase();
+                    let newCommand = command.Args[0].toLowerCase();
+
+                    if (newCommand.indexOf("#") === 0) {
+                        newCommand = newCommand.substring(1); //Handle DAU
+                    }
 
                     if (msg.Message.reply_to_message || msg.Message.caption) {
                         self.checkCommandExists(newCommand, function (exists) {
@@ -218,7 +222,11 @@ export class Hashes extends Module {
             const command = Helpers.checkForCommand("priv", commandContainingString, true);
             if (command) {
                 if (command.Args[0] && command.Args[0] !== "") {
-                    const newCommand = command.Args[0].toLowerCase();
+                    let newCommand = command.Args[0].toLowerCase();
+
+                    if (newCommand.indexOf("#") === 0) {
+                        newCommand = newCommand.substring(1); //Handle DAU
+                    }
 
                     if (msg.Message.reply_to_message || msg.Message.caption) {
                         self.checkCommandExists(newCommand, function (exists) {
@@ -509,9 +517,6 @@ export class Hashes extends Module {
     private saveNewHash(command: string, msg: IncomingMessage, Public: Boolean) {
         const self = this;
 
-        if (command.indexOf("#") === 0) {
-            command = command.substring(1); //Handle DAU
-        }
         if (command.indexOf("type:") !== -1) {
             return this.Bot.sendReply(new OutgoingTextMessage("Command must not contain 'type:'"), msg.Message.chat.id);
         }

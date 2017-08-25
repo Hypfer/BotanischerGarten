@@ -10,6 +10,7 @@ import * as mongoSessionStore from "connect-mongo";
 import * as sendSeekable from "send-seekable";
 import * as bodyParser from "body-parser";
 import * as compression from "compression";
+import * as ipRangeCheck from "ip-range-check";
 //Own stuff
 import {Bot} from "./bot";
 import {Emo} from "./modules/Emo";
@@ -36,6 +37,17 @@ const _Repository = new MongoRepository(config, function () {
         collection: 'sessions'
     });
 
+    _App.use(function isTelegramIp(req,res,next){
+        (req as any).isTelegramIP = ipRangeCheck(req.connection.remoteAddress, [
+            "149.154.160.0/20",
+            "149.154.164.0/22",
+            "91.108.4.0/22",
+            "91.108.56.0/22",
+            "91.108.8.0/22",
+            "2001:67c:4e8::/48"
+        ]);
+        next();
+    });
     _App.use(compression());
     _App.use(require('express-session')({
         secret: config.sessionSecret,

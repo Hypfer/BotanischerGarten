@@ -1114,7 +1114,7 @@ export class Hashes extends Module {
         });
 
         this.App.get('/b/:id', function (req, res, next) {
-            if (!req.session.authenticated) {
+            if (!req.session.authenticated && !req.isTelegramIP) {
                 res.redirect("/login");
             } else {
                 if(Helpers.isValidObjectId(req.params.id)) {
@@ -1140,7 +1140,7 @@ export class Hashes extends Module {
         });
 
         this.App.get('/t/:id', function (req, res, next) {
-            if (!req.session.authenticated) {
+            if (!req.session.authenticated && !req.isTelegramIP) {
                 res.redirect("/login");
             } else {
                 if(Helpers.isValidObjectId(req.params.id)) {
@@ -1182,7 +1182,7 @@ export class Hashes extends Module {
         });
 
         this.App.get('/hash/:hash(*)', function (req, res, next) {
-            if (!req.session.authenticated) {
+            if (!req.session.authenticated && !req.isTelegramIP) {
                 res.redirect("/login");
             } else {
                 //this hack allows hashes with questionmarks

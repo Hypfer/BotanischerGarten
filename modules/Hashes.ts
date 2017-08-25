@@ -1294,7 +1294,7 @@ export class Hashes extends Module {
                         next();
                     }
                 });
-            //}
+            }
         });
     }
 

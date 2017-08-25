@@ -1055,9 +1055,9 @@ export class Hashes extends Module {
 
 
         this.App.get('/', function (req, res, next) {
-            if (!req.session.authenticated) {
+            /*if (!req.session.authenticated) {
                 res.redirect("/login");
-            } else {
+            } else { */
                 self.HashService.GetHashesForOverviewWebpage(function(docs){
                     let hashes = [];
                     docs.forEach(function (doc){
@@ -1078,7 +1078,7 @@ export class Hashes extends Module {
                         hashes : hashes
                     })
                 });
-            }
+            //}
         });
 
         this.App.get("/login", function(req,res){
@@ -1114,9 +1114,9 @@ export class Hashes extends Module {
         });
 
         this.App.get('/b/:id', function (req, res, next) {
-            if (!req.session.authenticated) {
+            /*if (!req.session.authenticated) {
                 res.redirect("/login");
-            } else {
+            } else { */
                 if(Helpers.isValidObjectId(req.params.id)) {
                     self.HashService.GetHashByDbId(req.params.id, function (hash: Hash) {
                         if (hash) {
@@ -1136,7 +1136,7 @@ export class Hashes extends Module {
                 } else {
                     next();
                 }
-            }
+            //}
         });
 
         this.App.get('/t/:id', function (req, res, next) {
@@ -1182,15 +1182,16 @@ export class Hashes extends Module {
         });
 
         this.App.get('/hash/:hash(*)', function (req, res, next) {
-            if (!req.session.authenticated) {
+            /* if (!req.session.authenticated) {
                 res.redirect("/login");
-            } else {
+            } else { */
                 //this hack allows hashes with questionmarks
                 const hash_name = decodeURIComponent(req.url.replace("/hash/", ""));
                 let templateContent = {
                     hash_name: hash_name,
                     bot_username: self.Bot.About.username,
-                    bot_friendly_name: self.Bot.About.first_name
+                    bot_friendly_name: self.Bot.About.first_name,
+                    domain: self.Config.domain
                 };
                 self.HashService.GetHashById(hash_name, function (hash: Hash) {
                     if (hash && hash.Public === true) {
@@ -1259,11 +1260,11 @@ export class Hashes extends Module {
 
                         self.Bot.UserService.FindUserById(hash.OwnerID, function (user) {
                             if (user) {
-                                if (user.Username) {
+                                /*if (user.Username) {
                                     templateContent["user_nickname"] = user.Username;
-                                } else {
+                                } else { */
                                     templateContent["user_name"] = user.FirstName;
-                                }
+                                //}
                             } else {
                                 templateContent["user_name"] = "Anonymous";
                             }
@@ -1293,24 +1294,7 @@ export class Hashes extends Module {
                         next();
                     }
                 });
-
-                const x = {
-                    hash_name: null,
-                    bot_friedly_name: self.Bot.About.first_name,
-                    next_id: null,
-                    prev_id: null,
-                    user_name: null,
-                    user_nickname: null,
-                    mime: null,
-                    size: null,
-                    timestamp: null,
-                    hash_db_id: null,
-                    image: null,
-                    video: null,
-                    gif: null,
-                    audio: null
-                };
-            }
+            //}
         });
     }
 

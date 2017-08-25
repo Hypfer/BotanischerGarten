@@ -40,7 +40,7 @@ const _Repository = new MongoRepository(config, function () {
     _App.use(require('express-session')({
         secret: config.sessionSecret,
         cookie: {
-            maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+            maxAge: 1000 * 60 * 60 * 24 * 3650 // 1 week
         },
         store: sessionStore,
         resave: true,

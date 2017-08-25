@@ -38,7 +38,7 @@ const _Repository = new MongoRepository(config, function () {
     });
 
     _App.use(function isTelegramIp(req,res,next){
-        (req as any).isTelegramIP = ipRangeCheck(req.connection.remoteAddress, [
+        (req as any).isTelegramIP = ipRangeCheck(req.headers['x-forwarded-for'] || req.connection.remoteAddress, [
             "149.154.160.0/20",
             "149.154.164.0/22",
             "91.108.4.0/22",

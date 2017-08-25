@@ -1140,9 +1140,9 @@ export class Hashes extends Module {
         });
 
         this.App.get('/t/:id', function (req, res, next) {
-            if (!req.session.authenticated) {
+            /*if (!req.session.authenticated) {
                 res.redirect("/login");
-            } else {
+            } else { */
                 if(Helpers.isValidObjectId(req.params.id)) {
                     self.HashService.GetHashByDbId(req.params.id, function (hash : Hash) {
                         if (hash) {
@@ -1178,7 +1178,7 @@ export class Hashes extends Module {
                 } else {
                     res.redirect("/s/404_thumb.png");
                 }
-            }
+            //}
         });
 
         this.App.get('/hash/:hash(*)', function (req, res, next) {

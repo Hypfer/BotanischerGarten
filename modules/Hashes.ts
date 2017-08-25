@@ -1077,14 +1077,11 @@ export class Hashes extends Module {
         });
 
         this.App.get("/login", function(req,res){
-            if(req.query && req.query.token) {
-                self.login(req.query.token, req, res);
-            } else {
-                res.render('login', {
-                    bot_username: self.Bot.About.username,
-                    bot_friendly_name: self.Bot.About.first_name
-                });
-            }
+            res.render('login', {
+                bot_username: self.Bot.About.username,
+                bot_friendly_name: self.Bot.About.first_name,
+                token: req.query && req.query.token ? req.query.token : ""
+            });
         });
 
         this.App.get('/random', function(req, res, next){

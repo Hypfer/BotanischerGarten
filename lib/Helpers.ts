@@ -54,4 +54,9 @@ export class Helpers {
     static isValidObjectId(objectId) : boolean {
         return new RegExp("^[0-9a-fA-F]{24}$").test(objectId);
     }
+
+    //https://stackoverflow.com/a/30851002
+    static regExpEscape(literal_string) {
+        return literal_string.replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&');
+    }
 }

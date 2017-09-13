@@ -1,6 +1,7 @@
 import * as mongo from "mongodb";
 import {Db, MongoClient, ObjectID} from "mongodb";
 import * as Grid from "gridfs";
+import {Helpers} from "../Helpers";
 /**
  * Created by hypfer on 08.06.17.
  */
@@ -298,7 +299,7 @@ export class MongoRepository {
                                      limit: number, skip: number, callback: Function) {
         const _collection = this.DB.collection(collection);
 
-        _collection.find({id: new RegExp(search, "i")}).skip(skip).limit(limit).toArray(function (err, docs) {
+        _collection.find({id: new RegExp(Helpers.regExpEscape(search), "i")}).skip(skip).limit(limit).toArray(function (err, docs) {
             if (err) {
                 throw new Error(JSON.stringify(err));
             }

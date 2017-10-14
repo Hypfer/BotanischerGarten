@@ -34,6 +34,18 @@ export class Dice extends Module {
                 next();
             }
         });
+
+        MessageChain.add(function coin(msg: IncomingMessage, next) {
+            if (!msg.Message.text || msg.Message.text.length === 0) {
+                return next();
+            }
+
+            if (Helpers.checkForCommand("coin", msg.Message.text, true)) {
+                self.Bot.sendReply(new OutgoingTextMessage(Dice.w(2) === 1 ? "Heads" : "Tails"), msg.Message.chat.id);
+            } else {
+                next();
+            }
+        });
     }
 
     protected registerInlineHandlers(InlineChain: any): void {
@@ -90,10 +102,36 @@ export class Dice extends Module {
                 next();
             }
         });
+
+        InlineChain.add(function coin(msg: IncomingMessage, next) {
+            const query = msg.Message.query.toLowerCase();
+            const command = Helpers.checkForCommand("coin", query, false);
+
+            if (command) {
+                const roll = Dice.w(2) === 1 ? "Heads" : "Tails";
+
+                let results = [new InlineQueryResultArticle(
+                    "Coin Flip:" + roll,
+                    "Coin Flip",
+                    new InputTextMessageContent("Coin Flip: " + roll),
+                    undefined,
+                    undefined,
+                    undefined,
+                    "Flip!")
+                ];
+
+                self.Bot.answerInlineQuery(msg.Message.id, results, {
+                    cache_time: 1, //Jede Sekunde eine neue Zahl
+                    is_personal: true
+                });
+            } else {
+                next();
+            }
+        });
     }
 
     protected defineCommands(): string[] {
-        return ["w20", "w6"];
+        return ["w20", "w6", "coin"];
     }
 
     protected loadAssets(): void {

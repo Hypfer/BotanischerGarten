@@ -21,8 +21,9 @@ export class UserService extends Service {
                     self.SaveUser(user, function () {
                         callback(user);
                     })
-                }
-                callback(new User(result.ID, result.FirstName, result.Roles, result.Username));
+                } else {
+                    callback(new User(result.ID, result.FirstName, result.Roles, result.Username));
+                }                
             } else {
                 callback(undefined);
             }

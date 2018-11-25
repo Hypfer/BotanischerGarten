@@ -81,7 +81,7 @@ const _Repository = new MongoRepository(config, function () {
         res.status(404).sendFile(path.join(_Bot.WebAssetPath +  '/static/404.html'));
     });
 
-    _App.listen(3000);
+    _App.listen(config.webPort);
 });
 
 

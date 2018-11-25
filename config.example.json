@@ -10,5 +10,6 @@
     }
   },
   "sessionSecret": "foo",
-  "domain" : "https://example.com"
+  "domain" : "https://example.com",
+  "webPort" : 3000
 }

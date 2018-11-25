@@ -295,15 +295,30 @@ export class MongoRepository {
         });
     }
 
-    GetIdsLikeSearchWithLimitAndSkip(collection: string, search: string,
-                                     limit: number, skip: number, callback: Function) {
-        const _collection = this.DB.collection(collection);
+    GetIdsLikeSearchWithLimitAndSkip(collection: string, search: string, limit: number, skip: number, callback: Function) {
+        const self = this;
+        const returnArr = [];
 
+        if(skip === 0) {
+            this.GetById(collection, search, function(doc){
+                if(doc) {
+                    returnArr.push(doc.id);
+                    self.GetIdsLikeSearchWithLimitAndSkipInternal(collection, search, limit-1, skip, returnArr, callback);
+                } else {
+                    self.GetIdsLikeSearchWithLimitAndSkipInternal(collection, search, limit, skip, returnArr, callback);
+                }
+            });
+        } else {
+            this.GetIdsLikeSearchWithLimitAndSkipInternal(collection, search, limit, skip, returnArr, callback);
+        }
+    }
+
+    private GetIdsLikeSearchWithLimitAndSkipInternal(collection: string, search: string, limit: number, skip: number, returnArr: Array<string>, callback: Function) {
+        const _collection = this.DB.collection(collection);
         _collection.find({id: new RegExp(Helpers.regExpEscape(search), "i")}).skip(skip).limit(limit).toArray(function (err, docs) {
             if (err) {
                 throw new Error(JSON.stringify(err));
             }
-            const returnArr = [];
             docs.forEach(function (doc) {
                 returnArr.push(doc.id);
             });
@@ -319,5 +334,4 @@ export class MongoRepository {
             callback(data.toString());
         })
     }
-
 }

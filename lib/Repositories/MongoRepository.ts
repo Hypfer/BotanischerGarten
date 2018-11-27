@@ -320,7 +320,9 @@ export class MongoRepository {
                 throw new Error(JSON.stringify(err));
             }
             docs.forEach(function (doc) {
-                returnArr.push(doc.id);
+                if(returnArr.indexOf(doc.id) === -1) {
+                    returnArr.push(doc.id);
+                }
             });
             callback(returnArr);
         });

@@ -65,67 +65,6 @@ export class Hashes extends Module {
 
     //TODO: Remove redundant code (not gonna happen)
 
-    private static migrationMessageBuilder(oldhash: any, migratorChat: number): IncomingMessage {
-        let replyToMessage;
-
-        switch (oldhash.type) {
-            case "text":
-                replyToMessage = {
-                    "text": oldhash.text
-                };
-                break;
-            case "photo":
-                replyToMessage = {
-                    "photo": [{file_id: oldhash.file_id}]
-                };
-                break;
-            case "voice":
-                replyToMessage = {
-                    "voice": {file_id: oldhash.file_id}
-                };
-                break;
-            case "document":
-                replyToMessage = {
-                    "document": {
-                        file_id: oldhash.file_id,
-                        mime_type: oldhash.mime_type
-                    }
-                };
-                break;
-            case "audio":
-                replyToMessage = {
-                    "audio": {
-                        file_id: oldhash.file_id
-                    }
-                };
-                break;
-            case "video":
-                replyToMessage = {
-                    "video": {
-                        file_id: oldhash.file_id
-                    }
-                };
-                break;
-            case "sticker":
-                replyToMessage = {
-                    "sticker": {
-                        file_id: oldhash.file_id
-                    }
-                };
-                break;
-        }
-
-        return new IncomingMessage(
-            new User(-1, "System", ["system"]),
-            {
-                "chat": {
-                    "id": migratorChat
-                },
-                reply_to_message: replyToMessage
-            }
-        )
-    }
-
     protected registerMessageHandlers(MessageChain: any): void {
         const self = this;
 
@@ -141,6 +80,28 @@ export class Hashes extends Module {
                     tokenMsg += token;
 
                     self.Bot.sendReply(new OutgoingTextMessage(tokenMsg), msg.Message.chat.id);
+                });
+            } else {
+                next();
+            }
+        });
+
+        MessageChain.add(function migrateOldHashes(msg : IncomingMessage, next) {
+            if(msg.From.hasRole("admin") && msg.Message.text &&
+                msg.Message.chat.type === "private" && msg.Message.text === "migrateHashes") {
+
+                self.HashService.GetAllIds(function (ids) {
+                    async.eachSeries(ids, function(hashId : string, done) {
+                        console.info("Migrating " + hashId);
+
+                        self.HashService.GetHashById(hashId, function(hash){
+                            self.sendHash(hash, msg.Message.chat.id);
+
+                            setTimeout(function() {
+                                done();
+                            }, 1500);
+                        });
+                    });
                 });
             } else {
                 next();

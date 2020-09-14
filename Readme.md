@@ -2,6 +2,8 @@
 ###### A modular Telegram bot 
 ___
 
+**Don't use this. It's very bad code**
+
 __BotanischerGarten__ is a modular, open-source telegram bot based on:
 * Node.js
 * Typescript

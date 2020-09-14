@@ -571,6 +571,19 @@ export class Hashes extends Module {
                                     msg.Message.reply_to_message.audio.title || command,
                                     msg.Message.reply_to_message.audio.duration
                                 )
+                            } else if (msg.Message.reply_to_message.audio.mime_type === "audio/x-opus+ogg") {
+                                hash = new VoiceHash(
+                                    command,
+                                    msg.From.ID,
+                                    "",
+                                    msg.Message.chat.id, Public,
+                                    data.DataStreamHex,
+                                    data.DataStreamSize,
+                                    data.DataStreamMime,
+                                    msg.Message.reply_to_message.audio.file_id,
+                                    "UNKNOWN",
+                                    undefined
+                                )
                             } else {
                                 hash = new DocumentHash(
                                     command,

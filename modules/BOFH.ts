@@ -5,23 +5,25 @@ import {InlineQueryResultArticle} from "../lib/DataObjects/InlineQueryResults/In
 import {InputTextMessageContent} from "../lib/DataObjects/InlineQueryResults/InputMessageContents/InputTextMessageContent";
 import {OutgoingTextMessage} from "../lib/DataObjects/Messages/OutgoingMessages/OutgoingTextMessage";
 import * as uuid from "uuid";
+import * as fs from "fs";
+import * as path from "path";
 /**
  * Created by hypfer on 09.06.17.
  */
-export class Stoll extends Module {
-    private StollAssets: any;
+export class BOFH extends Module {
+    private BofhAssets: any;
 
     protected registerMessageHandlers(MessageChain: any): void {
         const self = this;
 
-        MessageChain.add(function stoll(msg: IncomingMessage, next: Function) {
+        MessageChain.add(function bofh(msg: IncomingMessage, next: Function) {
             if (!msg.Message.text || msg.Message.text.length === 0) {
                 return next();
             }
 
-            const command = Helpers.checkForCommand("stoll", msg.Message.text, true);
+            const command = Helpers.checkForCommand("bofh", msg.Message.text, true);
             if (command) {
-                self.Bot.sendReply(new OutgoingTextMessage(self.getStoll()), msg.Message.chat.id);
+                self.Bot.sendReply(new OutgoingTextMessage(self.getBofh()), msg.Message.chat.id);
             } else {
                 next();
             }
@@ -31,26 +33,26 @@ export class Stoll extends Module {
     protected registerInlineHandlers(InlineChain: any): void {
         const self = this;
 
-        InlineChain.add(function stoll(msg: IncomingMessage, next: Function) {
+        InlineChain.add(function bofh(msg: IncomingMessage, next: Function) {
             const query = msg.Message.query.toLowerCase();
 
-            const command = Helpers.checkForCommand("stoll", query, false);
+            const command = Helpers.checkForCommand("bofh", query, false);
             if (command) {
                 const offset = msg.Message.offset === "" ? 0 : parseInt(msg.Message.offset);
 
                 const results = [];
 
                 for (let i = 0; i <= 15; i++) {
-                    const stoll = self.getStoll();
+                    const bofh = self.getBofh();
 
                     results[i] = new InlineQueryResultArticle(
                         uuid.v4(),
-                        "Axel Stoll sagt:",
-                        new InputTextMessageContent(stoll),
+                        "The cause of the problem is:",
+                        new InputTextMessageContent(bofh),
                         undefined,
                         undefined,
                         undefined,
-                        stoll
+                        bofh
                     );
                 }
                 self.Bot.answerInlineQuery(msg.Message.id, results, {
@@ -64,17 +66,15 @@ export class Stoll extends Module {
     }
 
     protected defineCommands(): Array<string> {
-        return ["stoll"];
+        return ["bofh"];
     }
 
     protected loadAssets(): void {
-        this.StollAssets = require("../assets/stoll.json");
+        this.BofhAssets = fs.readFileSync(path.join(__dirname, "../assets/bofh.txt")).toString().replace(/(\r\n|\r)/gm, "\n").split("\n").filter(e => e !== "");
     }
 
-    private getStoll(): string {
-        return Helpers.arrayRandom(this.StollAssets.teil1, false) + " " +
-            Helpers.arrayRandom(this.StollAssets.teil2, false) + " " +
-            Helpers.arrayRandom(this.StollAssets.teil3, false);
+    private getBofh(): string {
+        return Helpers.arrayRandom(this.BofhAssets, false);
     }
 
 }

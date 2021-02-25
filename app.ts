@@ -22,6 +22,7 @@ import {Bullshit} from "./modules/Bullshit";
 import {Dawa} from "./modules/Dawa";
 import {Stoll} from "./modules/Stoll";
 import {Unicode} from "./modules/Unicode";
+import {BOFH} from "./modules/BOFH";
 
 //This makes IRepository useless
 const MongoStore = mongoSessionStore(session);
@@ -72,6 +73,7 @@ const _Repository = new MongoRepository(config, function () {
         new Bullshit(config, _Bot, _App),
         new Dawa(config, _Bot, _App),
         new Stoll(config, _Bot, _App),
+        new BOFH(config, _Bot, _App),
         new Unicode(config, _Bot, _App),
 
         new Hashes(config, _Bot, _App)
